@@ -1,0 +1,346 @@
+
+
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <link rel="stylesheet" href="/Public/css/public.css" />
+	<link rel="stylesheet" href="/Public/css/font.css" />
+	<link rel="stylesheet" href="/Public/css/main.css" />
+	<script type="text/javascript" src="/Public/js/jquery-1.7.2.min.js"></script>
+	<script type="text/javascript" src="/Public/js/public.js"></script>
+	<link rel="shortcut icon" type="image/x-icon" href="/include/images/favicon.ico" />
+	<title>分布式光伏发电 - 易事特综合监控云平台</title>
+</head>
+<body class="body-grid">
+  	<div class="site-top">
+  		
+<div class="top-nav">
+	<span class="top-nav-menu">Back to menu</span>
+	<a class="top-nav-link" href="/index.php/Index/main.do">分布式光伏发电</a>
+</div>
+<div class="top-menu">
+	<a class="top-icon-btn icon-cog" title="设置"></a>
+	<a class="top-icon-btn icon-bell" title="告警" onclick="showWarningList()">
+		<span class="top-msg-num" id="msgNum">0</span>
+	</a>
+	<div class="selector-menu user-menu" id="userMenu">
+		<i class="icon-user"></i>
+		<b id="loginUser"></b>
+		<ul>
+			<li>
+				<a href="javascript:;">
+					账户设置
+				</a>
+			</li>
+			<li>
+				<a href="javascript:;" onclick="loginOut()">
+					退出登录
+				</a>
+			</li>
+		</ul>
+	</div>
+	<select class="ui-input selector-menu" onchange="resetLanguage(this.value)">
+		
+			<option value="1">
+				简体中文(中华人民共和国)
+			</option>
+		
+			<option value="2">
+				简体中文(新加坡)
+			</option>
+		
+			<option value="3">
+				繁体中文(台湾)
+			</option>
+		
+			<option value="4">
+				繁体中文(香港)
+			</option>
+		
+	</select>
+</div>
+<div class="cp-modal ui-dimmer" id="alarmStations">
+	<div class="cp-modal-inner ui-alert station-alarm">
+		<h5>告警电站列表</h5>		
+		<div class="station-alarm-list">loading...</div>
+	</div>
+</div>
+
+	<script type="text/javascript">
+/*
+		$.ajax({
+			url:"/index.php/Index/details!stationName.do?model.stationId=1",
+			data:"",
+			type:"GET",
+			dataType:"json",
+			cache:false,
+			success:function(data){
+				if(data.result == "true" || data.result==true){
+					showTitle(data.stationName);
+				}else{
+					showTitle("");
+				}
+			},
+			error:function(e){
+				showTitle("");
+			}
+		});
+		*/
+		function showTitle(str){
+			var html = ''; 
+			html += '<label class="top-nav-link" id="navStationName">'+str+'</label>';
+			$(".top-nav").append(html);
+		}
+	</script>
+
+<script type="text/javascript">
+/**
+ * 获取登录用户名
+ */
+/*
+$.ajax({
+	url:"/main/index!loginUser.do",
+	data:"",
+	type:"GET",
+	dataType:"json",
+	cache:false,
+	success:function(data){
+		$("#loginUser").html(data.loginUser);
+	},
+	error:function(e){
+		ajaxFailed(null, e);
+	}
+});
+*/
+
+/**
+ * 获取登录用户名下设备报障数量
+ */
+var pollingTime = 5,  // 数据刷新间隔：5s
+	isAjaxDone = false;  // ajax是否完成请求
+//getAlarmCount();
+
+// 定时请求
+var reqAlarmTimer = setInterval(function() {
+	if (isAjaxDone) {
+//		getAlarmCount();
+	}
+}, pollingTime * 1000);
+
+function getAlarmCount(){
+	isAjaxDone = false;
+	$.ajax({
+		url:"/index.php/Index/warning!getAlarmCount.do",
+		data:"",
+		type:"GET",
+		dataType:"json",
+		cache:false,
+		success:function(data){
+			var nums = data.counts;
+			nums = nums > 9 ? '9+' : nums;
+			$("#msgNum").html(nums);
+		},
+		error:function(e){
+			ajaxFailed(null, e);
+			location.reload();
+		}
+	}).always(function() {
+		isAjaxDone = true;
+	});
+}
+
+/**
+ * 获取登录用户名下含设备报障电站列表
+ */
+function showWarningList() {
+	if ($('#msgNum').text() == '0') {
+		return;
+	}
+	$.ajax({
+		url:"/index.php/Index/warning!getAlarmStation.do",
+		data:"",
+		type:"GET",
+		dataType:"json",
+		cache:false,
+		success:function(data){
+			/**
+			* 告警电站列表： data.stations
+			*/
+			showWarningStations(JSON.parse(data.stations));
+		},
+		error:function(e){
+			ajaxFailed($('#alarmStations').find('div.station-alarm-list'), e);
+		}
+	}).always(function() {
+		$('#alarmStations').addClass('is-show').one('click', function(e) {
+			if (e.target.className != 'ui-input') {
+				$(this).removeClass('is-show');
+			}
+		});
+	});
+}
+
+/**
+ * 告警电站列表显示
+ *@param obj = [
+          	{
+          		stationId:"",电站ID
+          		stationName:"",电站描述
+          		alarmCount:""//告警数量
+          	},      
+          	......
+          ]
+ */
+function showWarningStations(data) {
+	var html = '';
+	var getUrl = function(id) {
+		return "/index.php/Index/details.do?model.stationId="+ id +"&model.defaultWarning=1";
+	};
+	for (var i = 0; i < data.length; i++) {
+		html += 
+		'<a class="ui-input" href="' + getUrl(data[i].stationId) + '">' +
+			data[i].stationName +
+			'<i>' + data[i].alarmCount + '</i>' + 
+		'</a>';
+	}
+	$('#alarmStations').find('div.station-alarm-list').html(html);
+}
+
+/**
+ * 注销用户信息
+ */
+function loginOut(){
+	$.ajax({
+		url:"/index!loginOut.do",
+		data:"",
+		type:"GET",
+		dataType:"json",
+		cache:false,
+		success:function(data){
+			location.href="/index.do";
+		},
+		error:function(e){
+			ajaxFailed(null, e);
+		}
+	});
+}
+
+// 初始化title
+if ($('.top-nav').find('span.top-nav-link').length) {
+	var stationName = $('.top-nav').find('span.top-nav-link').text();
+	document.title = stationName + ' - ' + document.title;
+}
+</script>
+  	</div>
+	<div class="nav-box" id="navBox">
+		
+<ul class="nav-box-inner">
+	<li class="is-active">
+		<a class="main-nav" href="#">
+			<i class="icon-meter"></i>电站监测
+		</a>
+		<div class="subnav-list">
+			<a class="is-active" href="/index.php/Index/details">运行概况</a>
+			<a href="/index.php/Index/unit.do?model.stationId=1">设备实时监测</a>
+			<a href="/index.php/Index/energy.do?model.stationId=1">电站发电量</a>
+			<a href="/index.php/Index/conservation.do?model.stationId=1">节能减排</a>
+			<a href="/index.php/Index/warning.do?model.stationId=1">设备报障</a>
+		</div>
+	</li>
+	<li>
+		<a class="main-nav" href="#">
+			<i class="icon-equalizer2"></i>电站管理
+		</a>
+		<div class="subnav-list">
+			<a href="/index.php/Index/station!editStation.do?model.selectedId=1">系统设置</a>
+			<a href="/index.php/Index/station!editUnit.do?model.selectedId=1">单元管理</a>
+			<a href="/index.php/Index/collector.do?model.stationId=1">采集器管理</a>
+			<a href="/index.php/Index/device.do?model.stationId=1">设备管理</a>
+			<a href="/index.php/Index/device!linked.do?model.stationId=1">数据迁移</a>
+		</div>
+	</li>
+	<!-- 
+	<li>
+		<a class="main-nav" href="#">
+			<i class="icon-stats-dots"></i>分析评估
+		</a>
+	</li>
+	 -->
+	<li>
+		<a class="main-nav" href="#">
+			<i class="icon-clipboard"></i>统计报表
+		</a>
+		<div class="subnav-list">
+			<a href="/index.php/Index/energy!monthlyReport.do?model.stationId=1">月发电量报表</a>
+			<a href="/index.php/Index/energy!annuallyReport.do?model.stationId=1">年发电量报表</a>
+			<a href="/index.php/Index/device!deviceReport.do?model.stationId=1">设备运行数据报表</a>
+			<a href="/index.php/Index/warning!reportShow.do?model.stationId=1">设备故障报表</a>
+		</div>
+	</li>
+</ul>
+<script type="text/javascript">
+// 初始化
+$(function() {
+	$('#navBox').find('a').each(function(index) {
+		if ($(this).is('.main-nav')) {  // 一级导航
+			var subNav = $(this).next('div.subnav-list').children('a');			
+			// 一级导航绑定下属第一个二级导航的链接
+			if (subNav.length) {
+				var curPage = subNav.eq(0).attr('href');
+				$(this).attr('href', curPage);
+
+				// 初始加载第一个页面
+				var defaultWarning = 0
+				if(defaultWarning == 1){
+					refreshIframe("/index.php/Index/warning.do?model.stationId=1");
+				}else{
+					if (index == 0) {
+						refreshIframe($(this).attr('href'));
+					}
+				}
+			}
+		}
+		$(this).attr('target', 'stationShow');
+
+	}).click(function(e) {  // 绑定点击事件
+		if ($(this).is('.main-nav')) {
+			$(this).parent().addClass('is-active').siblings().removeClass('is-active');
+		} else {
+			$(this).addClass('is-active').siblings().removeClass('is-active');
+		}	
+		$('#stationShow').parent().addClass('is-loading');
+	});
+});
+
+/**
+ * 更新iframe框架内容
+ * @param  {string} href  页面url字符串
+ */
+function refreshIframe(href) {
+	var iframe = $('#stationShow');
+	resizeIframe();
+	iframe.attr('src', href).on('load', function() {
+		$(this).parent().removeClass('is-loading');
+	});
+}
+
+/**
+ * 动态计算iframe高度尺寸(一屏内)
+ */
+$(window).on('resize', resizeIframe);
+function resizeIframe() {
+	var winHt = $(window).height(),
+		topHt = $('.site-top').outerHeight() + 18,
+		navHt = $('#navBox').outerHeight() + 38,
+		height = winHt - topHt - navHt - 30;
+	$('#stationShow').parent().height(height);
+}
+</script>
+	</div>
+	<div class="iframe-box is-loading">
+		<iframe id="stationShow" name="stationShow" src="" frameborder="no" border="0"></iframe>
+	</div>
+</body>
+</html>
