@@ -71,9 +71,12 @@ scroll_to_more: true
 # Deployment
 ## Docs: https://hexo.io/docs/deployment.html
 deploy:
-  type: git
-  repo: https://github.com/kof98765/kof98765.github.io.git
-  branch: master
+  - type: git
+    repo: https://github.com/kof98765/kof98765.github.io.git
+    branch: master
+  - type : git
+    repo: git@192.168.162.180:/git/blog.git
+    branch: master
 
 archive:
     title: archives
