@@ -12,7 +12,7 @@ timezone:
 # custom Site settings
 # more detail check out docs
 SEOTitle: bingone's blog 
-header-img: //o7bkkhiex.bkt.clouddn.com/lion-blur-bg.jpg
+header-img:
 email: 277835572@qq.com
 description: "陶粤兵在 Github 上的个人博客"
 keyword: # seo key words
