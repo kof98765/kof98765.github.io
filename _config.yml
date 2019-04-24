@@ -74,7 +74,8 @@ scroll_to_more: true
 deploy:
   - type: git
     #repo: https://kof98765.github.io
-    repo: https://github.com/kof98765/kof98765.github.io.git
+    repo: git@github.com:kof98765/kof98765.github.io.git
+    #repo: https://github.com/kof98765/kof98765.github.io.git
     branch: master
 
 archive:
