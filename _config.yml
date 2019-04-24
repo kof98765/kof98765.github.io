@@ -65,7 +65,7 @@ pagination_dir: page
 ## Themes: https://hexo.io/themes/
 #theme: landscape
 #theme: hexo-theme-Anisina
-theme: hacker
+theme: jekyll-theme-hacker
 #Automatically scroll page to section which is under 
 scroll_to_more: true
 
