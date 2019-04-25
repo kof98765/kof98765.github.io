@@ -76,7 +76,7 @@ deploy:
   - type: git
     #repo: https://kof98765.github.io
     repo: https://github.com/kof98765/kof98765.github.io.git
-    branch: master
+    branch: blog
 
 archive:
     title: archives

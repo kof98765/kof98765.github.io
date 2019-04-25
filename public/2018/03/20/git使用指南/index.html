@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta name="generator" content="Hexo 3.8.0">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="null">
+    <meta name="keyword" content="undefined">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+        git使用指南 - undefined
+        
+    </title>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/aircloud.css">
+    <link rel="stylesheet" href="/css/gitment.css">
+    <!--<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">-->
+    <link href="//at.alicdn.com/t/font_620856_pl6z7sid89qkt9.css" rel="stylesheet" type="text/css">
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+<body>
+
+<div class="site-nav-toggle" id="site-nav-toggle">
+    <button>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+    </button>
+</div>
+
+<div class="index-about">
+    <i> null </i>
+</div>
+
+<div class="index-container">
+    
+    <div class="index-left">
+        
+<div class="nav" id="nav">
+    <div class="avatar-name">
+        <div class="avatar">
+            <img src="/undefined">
+        </div>
+        <div class="name">
+            <i>bingone</i>
+        </div>
+    </div>
+    <div class="contents" id="nav-content">
+        <ul>
+            <li>
+                <a href="/">
+                    <i class="iconfont icon-shouye1"></i>
+                    <span>主页</span>
+                </a>
+            </li>
+            <li>
+                <a href="/tags">
+                    <i class="iconfont icon-biaoqian1"></i>
+                    <span>标签</span>
+                </a>
+            </li>
+            <li>
+                <a href="/archives">
+                    <i class="iconfont icon-guidang2"></i>
+                    <span>存档</span>
+                </a>
+            </li>
+            <li>
+                <a href="/about/">
+                    <i class="iconfont icon-guanyu2"></i>
+                    <span>关于</span>
+                </a>
+            </li>
+            
+            <li>
+                <a id="search">
+                    <i class="iconfont icon-sousuo1"></i>
+                    <span>搜索</span>
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+    
+        <div id="toc" class="toc-article">
+    
+</div>
+    
+</div>
+
+
+<div class="search-field" id="search-field">
+    <div class="search-container">
+        <div class="search-input">
+            <span id="esc-search"> <i class="icon-fanhui iconfont"></i></span>
+            <input id="search-input">
+            <span id="begin-search">搜索</span>
+        </div>
+        <div class="search-result-container" id="search-result-container">
+
+        </div>
+    </div>
+</div>
+        <div class="index-about-mobile">
+            <i> null </i>
+        </div>
+    </div>
+    
+    <div class="index-middle">
+        <!-- Main Content -->
+        
+
+
+<div class="post-container">
+    <div class="post-title">
+        git使用指南
+    </div>
+
+    <div class="post-meta">
+        <span class="attr">发布于：<span>2018-03-20 08:06:30</span></span>
+        
+        <span class="attr">标签：/
+        
+        <a class="tag" href="/tags/#git" title="git">git</a>
+        <span>/</span>
+        
+        
+        </span>
+        <span class="attr">访问：<span id="busuanzi_value_page_pv"></span>
+</span>
+
+    </div>
+    <div class="post-content ">
+        <p>git 是一个开源的分布式版本控制系统，是Linus Torvalds 为了帮助管理Linux内核开发而开发的，适用于各种大大小小的项目版本管理</p>
+<p>分布式相比于集中式的最大区别在于开发者可以提交到本地，每个开发者通过克隆，在本地机器上拷贝一个完整的Git仓库</p>
+<p>首先来说一下基本使用流程<br>1.从服务器上克隆完整的代码仓库<br>git clone <a href="http://192.168.162.180:/git/charge" target="_blank" rel="noopener">http://192.168.162.180:/git/charge</a></p>
+<p>2.在自己的机器上根据不同的开发目的，创建分支，修改代码<br>git branch charge //创建了一个与服务器同名的本地仓库，作为自己的工作仓库，也可以命名为其它的，一般情况下，分支的默认名为master</p>
+<p>3.修改完代码后，将修改提交到本地仓库<br>git commit -a -m “修改记录”    //-m参数后面接的是之前修改过的内容描述</p>
+<p>4.上传到服务器<br>git push origin master //origin 代表远程服务器的别名，默认情况下是origin,master为默认分支名</p>
+<p>以上4步为第一次使用的场景，后面介绍使用过程中的一些命令</p>
+<p>1.查看远程服务器别名<br>git remote -v</p>
+<p>2.添加远程服务器<br>git remote add xxx <a href="http://xxx.com/xxx" target="_blank" rel="noopener">http://xxx.com/xxx</a></p>
+<p>3.查看所有分支<br>git branch -a //前面带星号的为当前分支</p>
+<p>4.创建分支<br>git branch xxx  //以当前分支为起点，创建一个新的分支</p>
+<p>5.重置分支<br>git reset –hard  //如果修改了很多东西，又觉得不满意，可以一键重置所有改动</p>
+<p>6.合并远程服务器最新代码<br>git pull origin master //如果本地的文件与服务器上的有差异，但差异点不一样，会自动合并成一个新的文件，如果差异点都在同一个地方，则需要手动合并，将冲突的地方修改好后，重新提交，上传到服务器</p>
+
+        
+        <br>
+        <div id="comment-container">
+        </div>
+        <div id="disqus_thread"></div>
+
+        <div id="lv-container">
+        </div>
+
+    </div>
+</div>
+
+    </div>
+</div>
+
+
+<footer class="footer">
+    <ul class="list-inline text-center">
+        
+        
+
+        
+
+        
+
+        
+
+        
+
+    </ul>
+    
+    <p>
+        <span id="busuanzi_container_site_pv">
+            <span id="busuanzi_value_site_pv"></span>PV
+        </span>
+        <span id="busuanzi_container_site_uv">
+            <span id="busuanzi_value_site_uv"></span>UV
+        </span>
+        Created By <a href="https://hexo.io/">Hexo</a>  Theme <a href="https://github.com/aircloud/hexo-theme-aircloud">AirCloud</a></p>
+</footer>
+
+
+
+
+</body>
+
+<script>
+    // We expose some of the variables needed by the front end
+    window.hexo_search_path = "search.xml"
+    window.hexo_root = "/"
+    window.isPost = true
+</script>
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+<script src="/js/index.js"></script>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+</html>

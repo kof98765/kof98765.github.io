@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta name="generator" content="Hexo 3.8.0">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="null">
+    <meta name="keyword" content="undefined">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+        Linux C编程:打造一个插件系统 - undefined
+        
+    </title>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/aircloud.css">
+    <link rel="stylesheet" href="/css/gitment.css">
+    <!--<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">-->
+    <link href="//at.alicdn.com/t/font_620856_pl6z7sid89qkt9.css" rel="stylesheet" type="text/css">
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+<body>
+
+<div class="site-nav-toggle" id="site-nav-toggle">
+    <button>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+    </button>
+</div>
+
+<div class="index-about">
+    <i> null </i>
+</div>
+
+<div class="index-container">
+    
+    <div class="index-left">
+        
+<div class="nav" id="nav">
+    <div class="avatar-name">
+        <div class="avatar">
+            <img src="/undefined">
+        </div>
+        <div class="name">
+            <i>bingone</i>
+        </div>
+    </div>
+    <div class="contents" id="nav-content">
+        <ul>
+            <li>
+                <a href="/">
+                    <i class="iconfont icon-shouye1"></i>
+                    <span>主页</span>
+                </a>
+            </li>
+            <li>
+                <a href="/tags">
+                    <i class="iconfont icon-biaoqian1"></i>
+                    <span>标签</span>
+                </a>
+            </li>
+            <li>
+                <a href="/archives">
+                    <i class="iconfont icon-guidang2"></i>
+                    <span>存档</span>
+                </a>
+            </li>
+            <li>
+                <a href="/about/">
+                    <i class="iconfont icon-guanyu2"></i>
+                    <span>关于</span>
+                </a>
+            </li>
+            
+            <li>
+                <a id="search">
+                    <i class="iconfont icon-sousuo1"></i>
+                    <span>搜索</span>
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+    
+        <div id="toc" class="toc-article">
+    
+</div>
+    
+</div>
+
+
+<div class="search-field" id="search-field">
+    <div class="search-container">
+        <div class="search-input">
+            <span id="esc-search"> <i class="icon-fanhui iconfont"></i></span>
+            <input id="search-input">
+            <span id="begin-search">搜索</span>
+        </div>
+        <div class="search-result-container" id="search-result-container">
+
+        </div>
+    </div>
+</div>
+        <div class="index-about-mobile">
+            <i> null </i>
+        </div>
+    </div>
+    
+    <div class="index-middle">
+        <!-- Main Content -->
+        
+
+
+<div class="post-container">
+    <div class="post-title">
+        Linux C编程:打造一个插件系统
+    </div>
+
+    <div class="post-meta">
+        <span class="attr">发布于：<span>2017-03-07 21:16:36</span></span>
+        
+        <span class="attr">标签：/
+        
+        <a class="tag" href="/tags/#linux" title="linux">linux</a>
+        <span>/</span>
+        
+        
+        </span>
+        <span class="attr">访问：<span id="busuanzi_value_page_pv"></span>
+</span>
+
+    </div>
+    <div class="post-content ">
+        <p>运行环境：linux<br>使用语言：c 或者c++</p>
+<p>插件，很多人用过，比如游戏插件，编辑器插件这些，<br>最著名的就数魔兽大脚插件啦，还有vim插件啦，eclipse插件啦，等等<br>插件有很多种形式，最常见的就是so文件，在windows上就是各种的dll啦</p>
+<p>下面就让我们来了解一下插件式编程吧〜〜</p>
+<p>举个例子，你开发了一个游戏，一开始只有三个关卡，分享给了你的小伙伴玩<br>大家玩得很爽，但很快，游戏通关了，还想玩，这时候怎么办呢？<br>常规做法就是再加两关，然后编译之后，再发给大家，那么问题就来了<br>每次想加新关卡，都需要重新编译一次，再下载一次，这个流量嘛，1+1.1+1.2+1.3,每次加个0.1,都够你受的^_^<br>这个时候嘛，就要引入插件系统了</p>
+<p>咱先来写个小程序<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//main.c</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"game.h"</span> <span class="comment">//关于游戏的定义</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">initGame</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">play</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">"我打，我打，我打打打\n"</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">loadMission</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	initGame();<span class="comment">//初始化游戏	</span></span><br><span class="line">	<span class="keyword">int</span> missionNum=loadMission();<span class="comment">//读取关卡数</span></span><br><span class="line"></span><br><span class="line">	<span class="keyword">while</span>(<span class="number">1</span>)</span><br><span class="line">	&#123;</span><br><span class="line">		</span><br><span class="line">		<span class="keyword">int</span> missionNo=getchar();<span class="comment">//选择关卡</span></span><br><span class="line">		missionNo=missionNo-<span class="string">'0'</span>;</span><br><span class="line">		<span class="keyword">if</span>(missionNo&gt;missionNum)</span><br><span class="line">		&#123;</span><br><span class="line">			<span class="built_in">printf</span>(<span class="string">"没有此关卡!\n"</span>);</span><br><span class="line">		&#125;</span><br><span class="line">		play();</span><br><span class="line">		</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>以上就是一个可扩展的游戏架构，够简单吧〜</p>
+<p>下面咱就开始设计这个游戏系统的插件吧</p>
+<p>在这里，游戏关卡就是我们的插件，一个插件就是一个关卡<br>先讲讲一个插件的构造吧<br>首先是这个关卡的描述，比如名称，难度等<br>其次就是这个关卡游戏过程了<br>最后，就是玩关卡的人</p>
+<p>按照以上描述，咱定几个结构体吧<br><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//game.h</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;string.h&gt;</span></span></span><br><span class="line"><span class="comment">//游戏玩家描述</span></span><br><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> _<span class="title">player</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">	<span class="keyword">int</span> life;<span class="comment">//玩家生命</span></span><br><span class="line">&#125;Player;</span><br><span class="line"><span class="comment">//游戏关卡描述</span></span><br><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> _<span class="title">mission</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">	<span class="keyword">int</span> level;<span class="comment">//关卡难度</span></span><br><span class="line">	<span class="keyword">char</span> missionName[<span class="number">30</span>];<span class="comment">//关卡名称</span></span><br><span class="line">	<span class="keyword">void</span> (*process)(Player *);<span class="comment">//游戏过程</span></span><br><span class="line">&#125;Mission;</span><br><span class="line"></span><br><span class="line">好了，下面就是一个插件的具体内容</span><br><span class="line">```c</span><br><span class="line"><span class="comment">//game.c</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"game.h"</span></span></span><br><span class="line"><span class="keyword">const</span> <span class="keyword">char</span> name[]=<span class="string">"第一关，插件入门"</span>;</span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> level=<span class="number">1</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">firstMission</span><span class="params">(Player *p)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">"oh my god ,somebody hurt me!\n"</span>);</span><br><span class="line">    p-&gt;life--;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"now my life is %d\n"</span>,p-&gt;life);</span><br><span class="line">    sleep(<span class="number">1</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">gameInfo</span><span class="params">(Mission *m)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	m-&gt;level=level;</span><br><span class="line">	<span class="keyword">int</span> len=<span class="built_in">strlen</span>(name);</span><br><span class="line">	<span class="built_in">memcpy</span>(m-&gt;missionName,name,len+<span class="number">1</span>);<span class="comment">//注意游戏名称不要太长</span></span><br><span class="line">	m-&gt;process=firstMission;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>Ok,以上就是一个关卡的所有东西了，虽然看着简单，不过还是建议动手敲敲^_^</p>
+<p>那我们先把这个插件制作出来吧，免得一会忘记了，在终端下执行以下命令：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gcc  game.c -fPIC -shared -o firstMission.so -ldl</span><br></pre></td></tr></table></figure></p>
+<p>linux和mac都一样</p>
+<p>关卡设计好了，接下来就是怎么样读取我们做好的关卡了</p>
+<p>现在实现咱们就loadMission()函数</p>
+<figure class="highlight 1c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br></pre></td><td class="code"><pre><span class="line">Mission mission[<span class="number">50</span>];</span><br><span class="line">int loadMission()</span><br><span class="line">&#123;</span><br><span class="line">    FILE * fp;</span><br><span class="line">    fp = fopen(<span class="string">"missionList.txt"</span>, <span class="string">"r"</span>);<span class="comment">//读取关卡列表文件</span></span><br><span class="line">    if (<span class="literal">NULL</span>== fp)    </span><br><span class="line">    &#123;</span><br><span class="line">        return <span class="number">0</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    int ret=<span class="number">0</span>;</span><br><span class="line">    char namelist[<span class="number">50</span>][<span class="number">50</span>];<span class="comment">//最多50个插件，每个插件的名字长度最多50</span></span><br><span class="line">    memset(namelist,<span class="number">0</span>,sizeof(namelist));</span><br><span class="line"></span><br><span class="line">    int count=<span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">    while(fgets((char *)<span class="meta">&amp;namelist[count], 50, fp)) </span></span><br><span class="line">    &#123;</span><br><span class="line">        ret=strlen(namelist[count]);<span class="comment">//计算实际字符串长度</span></span><br><span class="line">        if(namelist[count][ret-<span class="number">1</span>]=='\n')</span><br><span class="line">            namelist[count][ret-<span class="number">1</span>]='\0';<span class="comment">//fgets会读多一个换行，所以需要替换掉</span></span><br><span class="line">        count++;</span><br><span class="line">    &#125;	 </span><br><span class="line">    fclose(fp);</span><br><span class="line"></span><br><span class="line">    ret=<span class="number">0</span>;<span class="comment">//用于累加错误次数</span></span><br><span class="line">    for(int i=<span class="number">0</span>;i&lt;count;i++)</span><br><span class="line">    &#123;</span><br><span class="line">    	const char *errmsg;</span><br><span class="line"></span><br><span class="line">        dlerror();  <span class="comment">// 清除错误</span></span><br><span class="line">        void *m_hLib = (void *)dlopen(namelist[i], RTLD_LAZY);<span class="comment">//读取插件</span></span><br><span class="line">        </span><br><span class="line">        if( (errmsg = dlerror()) != <span class="literal">NULL</span> )</span><br><span class="line">        &#123;</span><br><span class="line">        	<span class="comment">//printf("err=%s\n",errmsg);打印错误</span></span><br><span class="line">        	ret++;<span class="comment">//累加错误次数</span></span><br><span class="line">            continue;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        if( m_hLib == <span class="literal">NULL</span> )</span><br><span class="line">        &#123;</span><br><span class="line">        	ret++;<span class="comment">//累加错误次数</span></span><br><span class="line">            continue;</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        dlerror();  <span class="comment">// 清除错误</span></span><br><span class="line">        Info info = (Info)dlsym( m_hLib, <span class="string">"gameInfo"</span> );<span class="comment">//提取出插件里面的函数</span></span><br><span class="line">        if( (errmsg = dlerror()) != <span class="literal">NULL</span> )</span><br><span class="line">        &#123;</span><br><span class="line">            dlclose(m_hLib);</span><br><span class="line">			printf(<span class="string">"err=%s\n"</span>,errmsg);</span><br><span class="line">            ret++;</span><br><span class="line">            continue;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        info(<span class="meta">&amp;mission[i]);<span class="comment">//获取到关卡数据</span></span></span><br><span class="line">    &#125;</span><br><span class="line">    ret=<span class="number">0</span>;<span class="comment">//关卡号</span></span><br><span class="line">    <span class="comment">//展示下关卡</span></span><br><span class="line">    for(int i=<span class="number">0</span>;i&lt;count;i++)</span><br><span class="line">    &#123;</span><br><span class="line">    	if(mission[i].level!=<span class="number">0</span>)</span><br><span class="line">    	&#123;</span><br><span class="line">    		printf(<span class="string">"%d.%s\n"</span>,ret+<span class="number">1</span>,mission[i].missionName);/正式发布的时候就不要啦〜〜</span><br><span class="line">    		ret++;</span><br><span class="line">    	&#125;</span><br><span class="line">    &#125;</span><br><span class="line">    count=count-ret;<span class="comment">//计算有效关卡数</span></span><br><span class="line">    return count;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>好了，上面的代码，不难吧？咱编译一下，就可以跑了<br>linux下<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gcc -o game main.c -Wl,rpath=.</span><br></pre></td></tr></table></figure></p>
+<p>mac下<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gcc -o game main.c -Wl,rpath . -dynamic</span><br></pre></td></tr></table></figure></p>
+<p>再准备一个游戏菜单文件，执行<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">echo firstMission.so &gt;missionlist.txt</span><br></pre></td></tr></table></figure></p>
+<p>好了，再执行<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./game</span><br></pre></td></tr></table></figure></p>
+<p>一切顺利的话，你应该能看到自己的关卡列表了〜<br>接下来干嘛呢？我们现在仅仅是提取出了关卡的名字，还没开始玩游戏呢<br>以下是改动后的main.c文件</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br></pre></td><td class="code"><pre><span class="line">#include &lt;sys/types.h&gt;</span><br><span class="line">#include &lt;sys/stat.h&gt;</span><br><span class="line">#include &lt;fcntl.h&gt;</span><br><span class="line">#include &lt;unistd.h&gt;</span><br><span class="line">#include &lt;stdio.h&gt;</span><br><span class="line">#include &lt;stdlib.h&gt;</span><br><span class="line">#include &lt;dlfcn.h&gt;</span><br><span class="line">#include &quot;game.h&quot; //关于游戏的定义</span><br><span class="line"></span><br><span class="line">Mission mission[50];</span><br><span class="line">void initGame()</span><br><span class="line">&#123;</span><br><span class="line">    memset(mission,0,sizeof(mission));</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">int loadMission()</span><br><span class="line">&#123;</span><br><span class="line">    FILE * fp;</span><br><span class="line">    fp = fopen(&quot;missionList.txt&quot;, &quot;r&quot;);//读取关卡列表文件</span><br><span class="line">    if (NULL== fp)    </span><br><span class="line">    &#123;</span><br><span class="line">        return 0;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    int ret=0;</span><br><span class="line">    char namelist[50][50];//最多50个插件，每个插件的名字长度最多50</span><br><span class="line">    memset(namelist,0,sizeof(namelist));</span><br><span class="line">    int count=0;</span><br><span class="line">    while(fgets((char *)&amp;namelist[count], 50, fp)) </span><br><span class="line">    &#123;</span><br><span class="line">        ret=strlen(namelist[count]);//计算实际字符串长度</span><br><span class="line">        if(namelist[count][ret-1]==&apos;\n&apos;)</span><br><span class="line">            namelist[count][ret-1]=&apos;\0&apos;;//fgets会读多一个换行，所以需要替换掉</span><br><span class="line">        count++;</span><br><span class="line">    &#125;    </span><br><span class="line">    fclose(fp);</span><br><span class="line"></span><br><span class="line">    ret=0;</span><br><span class="line">    for(int i=0;i&lt;count;i++)</span><br><span class="line">    &#123;</span><br><span class="line">        const char *errmsg;</span><br><span class="line"></span><br><span class="line">        dlerror();  // 清除错误</span><br><span class="line">        void *m_hLib = (void *)dlopen(namelist[i], RTLD_LAZY);</span><br><span class="line">        </span><br><span class="line">        if( (errmsg = dlerror()) != NULL )</span><br><span class="line">        &#123;</span><br><span class="line">            //printf(&quot;err=%s\n&quot;,errmsg);打印错误</span><br><span class="line">            ret++;//累加错误次数</span><br><span class="line">            continue;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        if( m_hLib == NULL )</span><br><span class="line">        &#123;</span><br><span class="line">            ret++;//累加错误次数</span><br><span class="line">            continue;</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        dlerror();  // 清除错误</span><br><span class="line">        Info info = (Info)dlsym( m_hLib, &quot;gameInfo&quot; );</span><br><span class="line">        if( (errmsg = dlerror()) != NULL )</span><br><span class="line">        &#123;</span><br><span class="line">            dlclose(m_hLib);</span><br><span class="line">            printf(&quot;err=%s\n&quot;,errmsg);</span><br><span class="line">            ret++;</span><br><span class="line">            continue;</span><br><span class="line">        &#125;</span><br><span class="line">        info(&amp;mission[i]);</span><br><span class="line">    &#125;</span><br><span class="line">    //展示下关卡</span><br><span class="line">    for(int i=0;i&lt;count;i++)</span><br><span class="line">    &#123;</span><br><span class="line">        if(mission[i].level!=0)</span><br><span class="line">        &#123;</span><br><span class="line">            printf(&quot;%d.%s\n&quot;,i+1,mission[i].missionName);//正式发布的时候就不要啦〜〜</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    count=count-ret;//计算有效关卡数</span><br><span class="line">    return count;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line">int main()</span><br><span class="line">&#123;</span><br><span class="line">    initGame();//初始化游戏  </span><br><span class="line">    int missionNum=loadMission();//读取关卡数</span><br><span class="line">    if(missionNum==0)</span><br><span class="line">    &#123;</span><br><span class="line">        printf(&quot;游戏异常退出\n&quot;);</span><br><span class="line">        return -1;</span><br><span class="line">    &#125;</span><br><span class="line">    //初始化一个角色，并满血</span><br><span class="line">    Player p;</span><br><span class="line">    </span><br><span class="line"></span><br><span class="line">    while(1)</span><br><span class="line">    &#123;</span><br><span class="line">        p.life=100;</span><br><span class="line">        printf(&quot;请选择关卡\n&quot;);</span><br><span class="line">        for(int i=0;i&lt;missionNum;i++)</span><br><span class="line">        &#123;</span><br><span class="line">            printf(&quot;%d.%s\n&quot;,i+1,mission[i].missionName);</span><br><span class="line">        &#125;</span><br><span class="line">        int missionNo=getchar();//选择关卡</span><br><span class="line"></span><br><span class="line">        missionNo=missionNo-&apos;0&apos;;</span><br><span class="line">        if(missionNo&gt;missionNum || missionNo&lt;1)</span><br><span class="line">        &#123;</span><br><span class="line">            printf(&quot;没有此关卡!\n&quot;);</span><br><span class="line">            continue;</span><br><span class="line">        &#125;</span><br><span class="line">        //读取来的关卡肯定是有难度等级的，没有就是无效关卡</span><br><span class="line">        if(mission[missionNo-1].level!=0)</span><br><span class="line">        &#123;</span><br><span class="line">            while(p.life&gt;0)</span><br><span class="line">                mission[missionNo-1].process(&amp;p);</span><br><span class="line">        &#125;</span><br><span class="line">        printf(&quot;Game Over!\n\n\n&quot;);</span><br><span class="line">        </span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这就是一个完整的游戏啦，感兴趣的同学可以继续扩展哟〜〜后面就是不断得出扩展啦</p>
+<p>你问我怎么扩展？<br>好吧，自己把game.c里面的内容改改，然后编译出来，换个名字，然后在missionlist.txt里面加一行，就ok了</p>
+<p>还不懂？那你只能给我打赏了^_^</p>
+
+        
+        <br>
+        <div id="comment-container">
+        </div>
+        <div id="disqus_thread"></div>
+
+        <div id="lv-container">
+        </div>
+
+    </div>
+</div>
+
+    </div>
+</div>
+
+
+<footer class="footer">
+    <ul class="list-inline text-center">
+        
+        
+
+        
+
+        
+
+        
+
+        
+
+    </ul>
+    
+    <p>
+        <span id="busuanzi_container_site_pv">
+            <span id="busuanzi_value_site_pv"></span>PV
+        </span>
+        <span id="busuanzi_container_site_uv">
+            <span id="busuanzi_value_site_uv"></span>UV
+        </span>
+        Created By <a href="https://hexo.io/">Hexo</a>  Theme <a href="https://github.com/aircloud/hexo-theme-aircloud">AirCloud</a></p>
+</footer>
+
+
+
+
+</body>
+
+<script>
+    // We expose some of the variables needed by the front end
+    window.hexo_search_path = "search.xml"
+    window.hexo_root = "/"
+    window.isPost = true
+</script>
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+<script src="/js/index.js"></script>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+</html>
