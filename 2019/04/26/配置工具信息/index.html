@@ -11,7 +11,7 @@
 
     <title>
         
-        tags - undefined
+        配置工具信息 - undefined
         
     </title>
 
@@ -59,7 +59,7 @@
                     <span>主页</span>
                 </a>
             </li>
-            <li class="active">
+            <li>
                 <a href="/tags">
                     <i class="iconfont icon-biaoqian1"></i>
                     <span>标签</span>
@@ -88,6 +88,10 @@
         </ul>
     </div>
     
+        <div id="toc" class="toc-article">
+    
+</div>
+    
 </div>
 
 
@@ -110,59 +114,36 @@
     
     <div class="index-middle">
         <!-- Main Content -->
-        <div id="tag_cloud" class="tags">
-    
-    <a href="#git" title="git" rel="1">git</a>
-    
-    <a href="#linux" title="linux" rel="1">linux</a>
-    
-</div>
-
-<!-- 标签列表 -->
+        
 
 
-<div class="one-tag-list">
-                <span class="fa fa-tag listing-seperator" id="git">
-                    <span class="tag-text">git</span>
-                </span>
-    
-    <!-- <li class="listing-item">
-    <time datetime="{{ post.date | date:"%Y-%m-%d" }}">{{ post.date | date:"%Y-%m-%d" }}</time>
-    <a href="{{ post.url }}" title="{{ post.title }}">{{ post.title }}</a>
-    </li> -->
-    <div class="post-preview">
-        <a href="/2019/04/25/git使用指南/">
-            <h2 class="post-title">
-                git使用指南
-            </h2>
-            
-        </a>
-        <!-- <p class="post-meta">{{ post.date | date:"%Y-%m-%d" }}</p> -->
+<div class="post-container">
+    <div class="post-title">
+        配置工具信息
     </div>
-    
-</div>
 
-<div class="one-tag-list">
-                <span class="fa fa-tag listing-seperator" id="linux">
-                    <span class="tag-text">linux</span>
-                </span>
-    
-    <!-- <li class="listing-item">
-    <time datetime="{{ post.date | date:"%Y-%m-%d" }}">{{ post.date | date:"%Y-%m-%d" }}</time>
-    <a href="{{ post.url }}" title="{{ post.title }}">{{ post.title }}</a>
-    </li> -->
-    <div class="post-preview">
-        <a href="/2017/03/07/Linux-C编程-打造一个插件系统/">
-            <h2 class="post-title">
-                Linux C编程:打造一个插件系统
-            </h2>
-            
-        </a>
-        <!-- <p class="post-meta">{{ post.date | date:"%Y-%m-%d" }}</p> -->
+    <div class="post-meta">
+        <span class="attr">发布于：<span>2019-04-26 11:17:57</span></span>
+        
+        
+        <span class="attr">访问：<span id="busuanzi_value_page_pv"></span>
+</span>
+
     </div>
-    
-</div>
+    <div class="post-content ">
+        <p>版本：20190426<br>对应SDK版本：16<br>改动：<br>1.实时数据页现在只传输当前选择的设备数据，持续一分钟<br>可通过点击表格内的点来刷新持续时间<br>2.程序设置信息管理已升级，支持保存中文注释信息，通过双击表格内条目更新<br>3.添加内存数据查看的滚动条<br><a href="/tools/配置工具-20190426.rar">配置工具-20190426</a></p>
 
+        
+        <br>
+        <div id="comment-container">
+        </div>
+        <div id="disqus_thread"></div>
+
+        <div id="lv-container">
+        </div>
+
+    </div>
+</div>
 
     </div>
 </div>
@@ -202,7 +183,7 @@
     // We expose some of the variables needed by the front end
     window.hexo_search_path = "search.xml"
     window.hexo_root = "/"
-    window.isPost = false
+    window.isPost = true
 </script>
 <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
 <script src="/js/index.js"></script>
