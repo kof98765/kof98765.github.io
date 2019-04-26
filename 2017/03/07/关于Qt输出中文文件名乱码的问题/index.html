@@ -130,7 +130,7 @@
 </span>
 
     </div>
-    <div class="post-content ">
+    <div class="post-content no-indent">
         <p>最近为项目添加一个电能数据导出的功能<br>导出的格式为csv,一开始文件名是1.csv,2.csv这样的，不过客户不满意呀〜〜<br>那只能改成带有中文的呗</p>
 <p>环境：嵌入式linux<br>文件编码:utf-8</p>
 <p>QFile f;<br>QString head=QString(“time,current,voltage,activePower,reactivePower,energy\n”);<br>QString name=QString(“%1/直流支路%2数据.csv”).arg(“data”).arg(i+1);<br>QString energyData=”12344”;<br>f.setFileName(name);<br>f.open(QIODevice::WriteOnly);<br>f.write(head.toLocal8Bit());<br>f.write(energyData.toUtf8());<br>f.close();</p>
