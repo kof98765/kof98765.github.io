@@ -11,7 +11,7 @@
 
     <title>
         
-        tags - undefined
+        syslog使用方法 - undefined
         
     </title>
 
@@ -59,7 +59,7 @@
                     <span>主页</span>
                 </a>
             </li>
-            <li class="active">
+            <li>
                 <a href="/tags">
                     <i class="iconfont icon-biaoqian1"></i>
                     <span>标签</span>
@@ -88,6 +88,10 @@
         </ul>
     </div>
     
+        <div id="toc" class="toc-article">
+    
+</div>
+    
 </div>
 
 
@@ -110,59 +114,55 @@
     
     <div class="index-middle">
         <!-- Main Content -->
-        <div id="tag_cloud" class="tags">
-    
-    <a href="#linux" title="linux" rel="1">linux</a>
-    
-    <a href="#git" title="git" rel="1">git</a>
-    
-</div>
-
-<!-- 标签列表 -->
+        
 
 
-<div class="one-tag-list">
-                <span class="fa fa-tag listing-seperator" id="linux">
-                    <span class="tag-text">linux</span>
-                </span>
-    
-    <!-- <li class="listing-item">
-    <time datetime="{{ post.date | date:"%Y-%m-%d" }}">{{ post.date | date:"%Y-%m-%d" }}</time>
-    <a href="{{ post.url }}" title="{{ post.title }}">{{ post.title }}</a>
-    </li> -->
-    <div class="post-preview">
-        <a href="/2017/03/07/Linux-C编程-打造一个插件系统/">
-            <h2 class="post-title">
-                Linux C编程:打造一个插件系统
-            </h2>
-            
-        </a>
-        <!-- <p class="post-meta">{{ post.date | date:"%Y-%m-%d" }}</p> -->
+<div class="post-container">
+    <div class="post-title">
+        syslog使用方法
     </div>
-    
-</div>
 
-<div class="one-tag-list">
-                <span class="fa fa-tag listing-seperator" id="git">
-                    <span class="tag-text">git</span>
-                </span>
-    
-    <!-- <li class="listing-item">
-    <time datetime="{{ post.date | date:"%Y-%m-%d" }}">{{ post.date | date:"%Y-%m-%d" }}</time>
-    <a href="{{ post.url }}" title="{{ post.title }}">{{ post.title }}</a>
-    </li> -->
-    <div class="post-preview">
-        <a href="/2019/04/25/git使用指南/">
-            <h2 class="post-title">
-                git使用指南
-            </h2>
-            
-        </a>
-        <!-- <p class="post-meta">{{ post.date | date:"%Y-%m-%d" }}</p> -->
+    <div class="post-meta">
+        <span class="attr">发布于：<span>2019-04-28 11:59:34</span></span>
+        
+        
+        <span class="attr">访问：<span id="busuanzi_value_page_pv"></span>
+</span>
+
     </div>
-    
-</div>
+    <div class="post-content no-indent">
+        <p>三个函数的原型和说明:<br>(<code>)
+void openlog(char *ident,int option,int facility);
+void syslog(int priority,char *format,   ...);
+void closelog();
+(</code>)</p>
+<p>log以时间，标题，内容组成<br>log的生成路径可以通过修改配置文件来改变<br>以下先看代码写法：<br>(<code>`</code>)</p>
+<p>#include &lt;syslog.h&gt;</p>
+<p>#include &lt;pthread.h&gt;<br>//如果使用的是syslogd服务，则需要添加多线程锁，如果是使用rsyslog,则不需要<br>pthread_mutex_t infoLock=PTHREAD_MUTEX_INITIALIZER;</p>
+<p>#define NoticeLog(format,args…) \<br>{ \<br>    pthread_mutex_lock(&amp;infoLock); \<br>    openlog(“demo”,0,LOG_LOCAL0); \<br>    syslog(LOG_INFO,format, ## args); \<br>    pthread_mutex_unlock(&amp;infoLock); \<br>}</p>
+<p>int main()<br>{<br>    NoticeLog(“a=%s”,”1111111111”);<br>}</p>
+<p>(<code>`</code>)<br>以上代码会生成的以下这样的log<br>Apr 28 11:00:41.850  demo: 1111111111</p>
+<p>如果没有配置文件的话，log默认会输出到/var/log/message下</p>
+<p>配置文件的格式为   facility.priority   action，这些字段的定义如下：<br>facility<br>  指定产生消息的子系统。facility   有效的关键字有   auth、authpriv、cron、daemon、kern、lpr、mail、news、syslog、user、uucp   以及   local0   到   local7。  </p>
+<p>priority<br>  指定消息的最低严重性，即此优先级和高于此优先级的消息将由这个规则匹配。priority   的有效关键字有   debug、info、notice、warning、err、crit、alert   和   emerg。  </p>
+<p>action<br>  action   字段可以是文件名、tty（如   /dev/console）、以   @   为前缀的远程机器、以逗号分隔的用户列表，或是   *   以表明向所有登录用户发送消息。最常见的操作是一个简单的文件名。  </p>
+<p>以下是例子：<br>local0.info    /root/app/data/info.log<br>local0.info    @192.168.162.245<br>local0.notice    /root/app/data/info1.log<br>local1.<em>    /root/app/data/notice.log<br>local2.</em>    /root/app/data/debug.log<br>local3.<em>    /root/app/data/warning.log<br>local4.</em>    /root/app/data/error.log<br>local5.<em>    /root/app/data/crit.log<br>local6.</em>    /root/app/data/alert.log<br>kern.<em>      /var/log/message<br>user.</em>      /var/log/message   </p>
+<p>local0-7一般由用户自定义使用<br>配置文件上配置有@ip的，则是将log发送到指定的机器上，默认是发到514的udp端口<br>其它则是将log写到不同文件中</p>
+<p>如下代码的意思是，将log输出到locall0.notice配置对应的文件里<br>其中demo是此条log的名称，可以自定义<br>openlog(“demo”,0,LOG_LOCAL0);<br>syslog(LOG_NOTICE,format, ## args); </p>
+<p>系统一般会启动一个syslogd进程，不带配置文件的，所以我们需要修改启动项<br>添加syslogd -f /etc/syslog.cfg -n &amp;  作为启动条件<br>当更新了配置文件以后，也需要手动重新启动syslogd服务</p>
+<p>log的文件大小是不作限制的，所以还需要配合logrotate 使用</p>
 
+        
+        <br>
+        <div id="comment-container">
+        </div>
+        <div id="disqus_thread"></div>
+
+        <div id="lv-container">
+        </div>
+
+    </div>
+</div>
 
     </div>
 </div>
@@ -202,7 +202,7 @@
     // We expose some of the variables needed by the front end
     window.hexo_search_path = "search.xml"
     window.hexo_root = "/"
-    window.isPost = false
+    window.isPost = true
 </script>
 <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
 <script src="/js/index.js"></script>
