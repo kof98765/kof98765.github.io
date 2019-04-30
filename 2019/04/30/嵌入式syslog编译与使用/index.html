@@ -56,32 +56,32 @@
             <li>
                 <a href="/">
                     <i class="iconfont icon-shouye1"></i>
-                    <span>HOME</span>
+                    <span>主页</span>
                 </a>
             </li>
             <li>
                 <a href="/tags">
                     <i class="iconfont icon-biaoqian1"></i>
-                    <span>TAGS</span>
+                    <span>标签</span>
                 </a>
             </li>
             <li>
                 <a href="/archives">
                     <i class="iconfont icon-guidang2"></i>
-                    <span>ARCHIVES</span>
+                    <span>存档</span>
                 </a>
             </li>
             <li>
                 <a href="/about/">
                     <i class="iconfont icon-guanyu2"></i>
-                    <span>ABOUT</span>
+                    <span>关于</span>
                 </a>
             </li>
             
             <li>
                 <a id="search">
                     <i class="iconfont icon-sousuo1"></i>
-                    <span>SEARCH</span>
+                    <span>搜索</span>
                 </a>
             </li>
             
@@ -100,7 +100,7 @@
         <div class="search-input">
             <span id="esc-search"> <i class="icon-fanhui iconfont"></i></span>
             <input id="search-input">
-            <span id="begin-search">search</span>
+            <span id="begin-search">搜索</span>
         </div>
         <div class="search-result-container" id="search-result-container">
 
@@ -123,10 +123,10 @@
     </div>
 
     <div class="post-meta">
-        <span class="attr">Post：<span>2019-04-30 14:37:07</span></span>
+        <span class="attr">发布于：<span>2019-04-30 14:37:07</span></span>
         
         
-        <span class="attr">Visit：<span id="busuanzi_value_page_pv"></span>
+        <span class="attr">访问：<span id="busuanzi_value_page_pv"></span>
 </span>
 
     </div>
@@ -146,7 +146,7 @@
 <h2 id="构建logrotate"><a href="#构建logrotate" class="headerlink" title="构建logrotate"></a>构建logrotate</h2><p>下载最新的源码logrotate,并编译<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">git clone https://github.com/logrotate/logrotate </span><br><span class="line">./autogen.sh</span><br><span class="line">#./configure --host=arm-linux --prefix=/opt/logrotate LDFLAGS=-L/opt/POPT/lib CPPFLAGS=-I/opt/POPT/include</span><br><span class="line">make </span><br><span class="line">make install</span><br></pre></td></tr></table></figure></p>
 <p>其中LDFLAGS指定logrotate编译依赖库lpopt路径；而CPPFLAGS指定logrotate编译依赖头文件popt.h路径。<br>构建好后会在/opt/logrotate目录生成sbin/logrotate文件。</p>
 <p>将/opt/POPT/lib/libpopt.so.0.0.0 复制到开发板的/lib下，并将名称改为libpopt.so.0<br>将/opt/logrotate/sbin/logrotate 复制到开发板的/sbin目录</p>
-<p>编写一个配置文件,存放到开发板的/etc目录下，名称为logrotate.cfg<br>内容如下：<br>/var/log/testlog.log {<br>     size=100k<br>     rotate 2<br>     postrotate<br>                    /usr/bin/killall -HUP syslogd<br>     endscript<br>}</p>
+<p>编写一个配置文件,存放到开发板的/etc目录下，名称为logrotate.cfg<br>内容如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">/var/log/testlog.log &#123;</span><br><span class="line">     size=100k</span><br><span class="line">     rotate 2</span><br><span class="line">     postrotate</span><br><span class="line">                    /usr/bin/killall -HUP syslogd</span><br><span class="line">     endscript</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
 <p>脚本的功能为监控/var/log/testlog.log,当该文件大于100k时，备份，最多备份2次，每次备份时，会kill掉syslogd，不过syslogd是会自动重启的不用担心</p>
 <p>之后还需要启动一个定时任务来周期性调用logrotate命令</p>
 <p>首先在开发板上创建/etc/cron目录<br>开机脚本写上<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">crond -c /etc/cron</span><br><span class="line">crontab -c /etc/cron /etc/cron/logrotate</span><br></pre></td></tr></table></figure></p>
