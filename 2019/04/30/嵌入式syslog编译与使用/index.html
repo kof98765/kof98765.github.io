@@ -149,7 +149,7 @@
 <p>编写一个配置文件,存放到开发板的/etc目录下，名称为logrotate.cfg<br>内容如下：<br>/var/log/testlog.log {<br>     size=100k<br>     rotate 2<br>     postrotate<br>                    /usr/bin/killall -HUP syslogd<br>     endscript<br>}</p>
 <p>脚本的功能为监控/var/log/testlog.log,当该文件大于100k时，备份，最多备份2次，每次备份时，会kill掉syslogd，不过syslogd是会自动重启的不用担心</p>
 <p>之后还需要启动一个定时任务来周期性调用logrotate命令</p>
-<p>首先在开发板上创建/etc/cron目录<br>开机脚本写上<br>crond -c /etc/cron<br>crontab -c /etc/cron /etc/cron/logrotate</p>
+<p>首先在开发板上创建/etc/cron目录<br>开机脚本写上<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">crond -c /etc/cron</span><br><span class="line">crontab -c /etc/cron /etc/cron/logrotate</span><br></pre></td></tr></table></figure></p>
 <p>开机脚本每个系统都不太一样，就不说了<br>之后编写一个cron的配置文件放在/etc/cron目录下，文件名为logrotate<br>内容为:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">* * * * * logrotate /etc/logrotate.cfg</span><br></pre></td></tr></table></figure></p>
 <p>内容的意思是每分钟执行一次logrotate，这样就可以自动备份转存日志了</p>
 
