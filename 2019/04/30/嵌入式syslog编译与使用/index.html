@@ -155,11 +155,10 @@
 
         
         <br>
-		{% if site.comment_gitment_repo %}
-<div id="gitmentContainer"></div>
-<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">
-<script src="https://imsun.github.io/gitment/dist/gitment.browser.js"></script>
-<script>
+     <div id="gitmentContainer"></div>
+     <link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">
+     <script src="https://imsun.github.io/gitment/dist/gitment.browser.js"></script>
+     <script>
     var gitment = new Gitment({
         id: 'Tue Apr 30 2019 14:37:07 GMT+0800',
         owner: '{{site.github_username}}',
@@ -171,7 +170,6 @@
     });
     gitment.render('gitmentContainer')
 </script>
-{% endif %}
         <div id="comment-container">
         </div>
         <div id="disqus_thread"></div>
