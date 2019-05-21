@@ -138,13 +138,8 @@
 <p>如果系统中没有/usr/share/terminfo/v/vt100这个文件，就需要将pc上的文件复制过来了</p>
 <h1 id="使用mutt发邮件"><a href="#使用mutt发邮件" class="headerlink" title="使用mutt发邮件"></a>使用mutt发邮件</h1><p>发送邮件前需要准备下配置文件</p>
 <h2 id="etc-msmpt-conf"><a href="#etc-msmpt-conf" class="headerlink" title="/etc/msmpt.conf"></a>/etc/msmpt.conf</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">host smtp.163.com  </span><br><span class="line">port 465</span><br><span class="line">auth login</span><br><span class="line">tls on</span><br><span class="line">tls_starttls off</span><br><span class="line">tls_certcheck off          #关闭cert证书的检测，嵌入式下不关闭会有问题</span><br><span class="line">proxy_host 192.168.162.85  #这里使用了代理</span><br><span class="line">from xxxx@163.com</span><br><span class="line">user xxxx@163.com</span><br><span class="line">password xxxxxx</span><br><span class="line">timeout 10</span><br><span class="line">logfile /var/log/msmtp.log</span><br></pre></td></tr></table></figure>
-<h2 id="etc-mutt-conf"><a href="#etc-mutt-conf" class="headerlink" title="/etc/mutt.conf"></a>/etc/mutt.conf</h2><pre><code>set sendmail=&quot;/bin/msmtp -C /etc/msmtp.conf&quot;
-set use_from=yes
-set realname=&quot;xxxxx&quot;
-set editor=&quot;vi&quot;
-set from=xxxx@163.com  #这里必须和msmtp的一样
-set envelope_from=yes
-</code></pre><p>准备好配置文件后，就可以试试发送邮件了<br>echo “hello world!”|mutt -s “hello,boy” <a href="mailto:277835572@qq.com" target="_blank" rel="noopener">277835572@qq.com</a> -a hello.jpg -F /etc/mutt.conf</p>
+<h2 id="etc-mutt-conf"><a href="#etc-mutt-conf" class="headerlink" title="/etc/mutt.conf"></a>/etc/mutt.conf</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">set sendmail=&quot;/bin/msmtp -C /etc/msmtp.conf&quot;</span><br><span class="line">set use_from=yes</span><br><span class="line">set realname=&quot;xxxxx&quot;</span><br><span class="line">set editor=&quot;vi&quot;</span><br><span class="line">set from=xxxx@163.com  #这里必须和msmtp的一样</span><br><span class="line">set envelope_from=yes</span><br></pre></td></tr></table></figure>
+<p>准备好配置文件后，就可以试试发送邮件了<br>echo “hello world!”|mutt -s “hello,boy” <a href="mailto:277835572@qq.com" target="_blank" rel="noopener">277835572@qq.com</a> -a hello.jpg -F /etc/mutt.conf</p>
 <p>hello world!是邮件的内容，hello,boy是邮件的主题，后面接着接收人邮件地址，hello.jpg是附件，最后指定mutt的配置文件，这样就算大功告成啦</p>
 <p>也可以预先把邮件内容写到某个文件中<br>cat mail.txt |mutt -s “hello” <a href="mailto:277835572@qq.com" target="_blank" rel="noopener">277835572@qq.com</a> -a hello.jpg -F /etc/mutt.conf</p>
 
