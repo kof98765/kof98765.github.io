@@ -115,55 +115,6 @@
     <div class="index-middle">
         <!-- Main Content -->
         
-
-
-<div class="post-container">
-    <div class="post-title">
-        关于Qt输出中文文件名乱码的问题
-    </div>
-
-    <div class="post-meta">
-        <span class="attr">Post：<span>2017-03-07 12:21:26</span></span>
-        
-        
-        <span class="attr">Visit：<span id="busuanzi_value_page_pv"></span>
-</span>
-
-    </div>
-    <div class="post-content no-indent">
-        <p>最近为项目添加一个电能数据导出的功能<br>导出的格式为csv,一开始文件名是1.csv,2.csv这样的，不过客户不满意呀〜〜<br>那只能改成带有中文的呗</p>
-<p>环境：嵌入式linux<br>文件编码:utf-8</p>
-<p>QFile f;<br>QString head=QString(“time,current,voltage,activePower,reactivePower,energy\n”);<br>QString name=QString(“%1/直流支路%2数据.csv”).arg(“data”).arg(i+1);<br>QString energyData=”12344”;<br>f.setFileName(name);<br>f.open(QIODevice::WriteOnly);<br>f.write(head.toLocal8Bit());<br>f.write(energyData.toUtf8());<br>f.close();</p>
-<p>在嵌入式linux下，输出的文件名是乱码〜，因为在嵌入式linux下没有做中文处理<br>不要紧，把文件输出到windows就行<br>有一点要注意，这块代码的编码必须是utf-8的。。。<br>平时我处理中文的时候，一般都会使用gbk编码来存代码，结果嘛，各种乱码输出。。。</p>
-<p>这段代码唯一不足的就是head不能是中文，残念。。</p>
-
-        
-        <br>
-     <div id="gitmentContainer"></div>
-     <link rel="stylesheet" href="https://billts.site/extra_css/gitment.css">
-     <script src="https://billts.site/js/gitment.js"></script>
-     <script>
-    var gitment = new Gitment({
-        id: 'Tue Mar 07 2017 12:21:26 GMT+0800',
-        owner: '{{site.github_username}}',
-        repo: '{{site.comment_gitment_repo}}',
-        oauth: {
-            client_id: '{{site.comment_gitment_clientId}}',
-            client_secret: '{{site.comment_gitment_clientSecret}}',
-        },
-    });
-    gitment.render('gitmentContainer')
-</script>
-        <div id="comment-container">
-        </div>
-        <div id="disqus_thread"></div>
-
-        <div id="lv-container">
-        </div>
-
-    </div>
-</div>
-
     </div>
 </div>
 
