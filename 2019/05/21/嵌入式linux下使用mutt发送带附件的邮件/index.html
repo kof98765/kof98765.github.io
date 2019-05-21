@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta name="generator" content="Hexo 3.8.0">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="null">
+    <meta name="keyword" content="undefined">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+        嵌入式linux下使用mutt发送带附件的邮件 - undefined
+        
+    </title>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/aircloud.css">
+    <link rel="stylesheet" href="/css/gitment.css">
+    <!--<link rel="stylesheet" href="/css/style/default.css">-->
+    <link href="/css/font_620856_pl6z7sid89qkt9.css" rel="stylesheet" type="text/css">
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+<body>
+
+<div class="site-nav-toggle" id="site-nav-toggle">
+    <button>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+    </button>
+</div>
+
+<div class="index-about">
+    <i> 会当凌绝顶，一览众山小 </i>
+</div>
+
+<div class="index-container">
+    
+    <div class="index-left">
+        
+<div class="nav" id="nav">
+    <div class="avatar-name">
+        <div class="avatar">
+            <img src="/img/head.jpg">
+        </div>
+        <div class="name">
+            <i>bingone</i>
+        </div>
+    </div>
+    <div class="contents" id="nav-content">
+        <ul>
+            <li>
+                <a href="/">
+                    <i class="iconfont icon-shouye1"></i>
+                    <span>HOME</span>
+                </a>
+            </li>
+            <li>
+                <a href="/tags">
+                    <i class="iconfont icon-biaoqian1"></i>
+                    <span>TAGS</span>
+                </a>
+            </li>
+            <li>
+                <a href="/archives">
+                    <i class="iconfont icon-guidang2"></i>
+                    <span>ARCHIVES</span>
+                </a>
+            </li>
+            <li>
+                <a href="/about/">
+                    <i class="iconfont icon-guanyu2"></i>
+                    <span>ABOUT</span>
+                </a>
+            </li>
+            
+            <li>
+                <a id="search">
+                    <i class="iconfont icon-sousuo1"></i>
+                    <span>SEARCH</span>
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+    
+        <div id="toc" class="toc-article">
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#编译mutt"><span class="toc-text">编译mutt</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#使用mutt发邮件"><span class="toc-text">使用mutt发邮件</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#etc-msmpt-conf"><span class="toc-text">/etc/msmpt.conf</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#etc-mutt-conf"><span class="toc-text">/etc/mutt.conf</span></a></li></ol></li></ol>
+</div>
+    
+</div>
+
+
+<div class="search-field" id="search-field">
+    <div class="search-container">
+        <div class="search-input">
+            <span id="esc-search"> <i class="icon-fanhui iconfont"></i></span>
+            <input id="search-input">
+            <span id="begin-search">search</span>
+        </div>
+        <div class="search-result-container" id="search-result-container">
+
+        </div>
+    </div>
+</div>
+        <div class="index-about-mobile">
+            <i> 会当凌绝顶，一览众山小 </i>
+        </div>
+    </div>
+    
+    <div class="index-middle">
+        <!-- Main Content -->
+        
+
+
+<div class="post-container">
+    <div class="post-title">
+        嵌入式linux下使用mutt发送带附件的邮件
+    </div>
+
+    <div class="post-meta">
+        <span class="attr">Post：<span>2019-05-21 08:37:56</span></span>
+        
+        
+        <span class="attr">Visit：<span id="busuanzi_value_page_pv"></span>
+</span>
+
+    </div>
+    <div class="post-content no-indent">
+        <p>之前已经使用msmtp成功发送了邮件，但如果要发送带附件的邮件，就需要配合mutt了</p>
+<h1 id="编译mutt"><a href="#编译mutt" class="headerlink" title="编译mutt"></a>编译mutt</h1><p>编译mutt前，要先编译openssl和ncurses这两个库，编译方法就不在这说了<br>在mutt官网上虽然有下载链接，但下不了，还好在github上找到了项目的源码，地址是<a href="https://github.com/muttmua/mutt" target="_blank" rel="noopener">https://github.com/muttmua/mutt</a><br>可以使用git clone命令，或者直接下载zip包<br>下载后进入到源码目录，执行<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">./prepare #生成configure</span><br><span class="line"></span><br><span class="line">./configure --host=arm-linux --prefix=/opt/mutt --with-curses=/opt/ncurses -with-ssl CFLAGS=&quot;-I/opt/ncurses/include -I/opt/ncurses/include/ncurses -I/opt/openssl -L/opt/openssl/lib -lssl -lcrypto -L/opt/ncurses/lib&quot; LD=arm-linux-ld --disable-doc --disable-filemonitor</span><br><span class="line"></span><br><span class="line">make &amp;&amp;make install</span><br></pre></td></tr></table></figure></p>
+<p>将编译生成的mutt丢到板子上的/bin目录<br>这里提供一个现成的<br>点击下载：<a href="/tools/mutt.tar.gz">mutt.tar.gz</a><br>执行mutt的时候有可能会出现vt100这类的错误,解决方法如下</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">export TERM=vt100</span><br><span class="line">export TERMINFO=/usr/share/terminfo/v</span><br></pre></td></tr></table></figure>
+<p>如果系统中没有/usr/share/terminfo/v/vt100这个文件，就需要将pc上的文件复制过来了</p>
+<h1 id="使用mutt发邮件"><a href="#使用mutt发邮件" class="headerlink" title="使用mutt发邮件"></a>使用mutt发邮件</h1><p>发送邮件前需要准备下配置文件</p>
+<h2 id="etc-msmpt-conf"><a href="#etc-msmpt-conf" class="headerlink" title="/etc/msmpt.conf"></a>/etc/msmpt.conf</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">host smtp.163.com  </span><br><span class="line">port 465</span><br><span class="line">auth login</span><br><span class="line">tls on</span><br><span class="line">tls_starttls off</span><br><span class="line">tls_certcheck off          #关闭cert证书的检测，嵌入式下不关闭会有问题</span><br><span class="line">proxy_host 192.168.162.85  #这里使用了代理</span><br><span class="line">from xxxx@163.com</span><br><span class="line">user xxxx@163.com</span><br><span class="line">password xxxxxx</span><br><span class="line">timeout 10</span><br><span class="line">logfile /var/log/msmtp.log</span><br></pre></td></tr></table></figure>
+<h2 id="etc-mutt-conf"><a href="#etc-mutt-conf" class="headerlink" title="/etc/mutt.conf"></a>/etc/mutt.conf</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">set sendmail=&quot;/bin/msmtp -C /etc/msmtp.conf&quot;</span><br><span class="line">set use_from=yes</span><br><span class="line">set realname=&quot;xxxxx&quot;</span><br><span class="line">set editor=&quot;vi&quot;</span><br><span class="line">set from=xxxx@163.com  #这里必须和msmtp的一样</span><br><span class="line">set envelope_from=yes</span><br></pre></td></tr></table></figure>
+<p>准备好配置文件后，就可以试试发送邮件了<br>echo “hello world!”|mutt -s “hello,boy” <a href="mailto:277835572@qq.com" target="_blank" rel="noopener">277835572@qq.com</a> -a hello.jpg -F /etc/mutt.conf</p>
+<p>hello world!是邮件的内容，hello,boy是邮件的主题，后面接着接收人邮件地址，hello.jpg是附件，最后指定mutt的配置文件，这样就算大功告成啦</p>
+<p>也可以预先把邮件内容写到某个文件中<br>cat mail.txt |mutt -s “hello” <a href="mailto:277835572@qq.com" target="_blank" rel="noopener">277835572@qq.com</a> -a hello.jpg -F /etc/mutt.conf</p>
+
+        
+        <br>
+        <div id="comment-container">
+        </div>
+        <div id="disqus_thread"></div>
+
+        <div id="lv-container">
+        </div>
+
+    </div>
+</div>
+
+    </div>
+</div>
+
+
+<footer class="footer">
+    <ul class="list-inline text-center">
+        
+        
+
+        
+
+        
+
+        
+
+        
+
+    </ul>
+    
+    <p>
+        <span id="busuanzi_container_site_pv">
+            <span id="busuanzi_value_site_pv"></span>PV
+        </span>
+        <span id="busuanzi_container_site_uv">
+            <span id="busuanzi_value_site_uv"></span>UV
+        </span>
+        Created By <a href="https://hexo.io/">Hexo</a>  Theme <a href="https://github.com/aircloud/hexo-theme-aircloud">AirCloud</a></p>
+</footer>
+
+
+
+
+</body>
+
+<script>
+    // We expose some of the variables needed by the front end
+    window.hexo_search_path = "search.xml"
+    window.hexo_root = "/"
+    window.isPost = true
+</script>
+<script src="/js/jquery.min.js"></script>
+<script src="/js/index.js"></script>
+<script async src="/js/busuanzi.pure.mini.js"></script>
+
+
+
+
+</html>
