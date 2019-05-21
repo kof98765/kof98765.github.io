@@ -56,32 +56,32 @@
             <li>
                 <a href="/">
                     <i class="iconfont icon-shouye1"></i>
-                    <span>HOME</span>
+                    <span>主页</span>
                 </a>
             </li>
             <li>
                 <a href="/tags">
                     <i class="iconfont icon-biaoqian1"></i>
-                    <span>TAGS</span>
+                    <span>标签</span>
                 </a>
             </li>
             <li>
                 <a href="/archives">
                     <i class="iconfont icon-guidang2"></i>
-                    <span>ARCHIVES</span>
+                    <span>存档</span>
                 </a>
             </li>
             <li>
                 <a href="/about/">
                     <i class="iconfont icon-guanyu2"></i>
-                    <span>ABOUT</span>
+                    <span>关于</span>
                 </a>
             </li>
             
             <li>
                 <a id="search">
                     <i class="iconfont icon-sousuo1"></i>
-                    <span>SEARCH</span>
+                    <span>搜索</span>
                 </a>
             </li>
             
@@ -100,7 +100,7 @@
         <div class="search-input">
             <span id="esc-search"> <i class="icon-fanhui iconfont"></i></span>
             <input id="search-input">
-            <span id="begin-search">search</span>
+            <span id="begin-search">搜索</span>
         </div>
         <div class="search-result-container" id="search-result-container">
 
@@ -123,17 +123,17 @@
     </div>
 
     <div class="post-meta">
-        <span class="attr">Post：<span>2019-05-21 08:37:56</span></span>
+        <span class="attr">发布于：<span>2019-05-21 08:37:56</span></span>
         
         
-        <span class="attr">Visit：<span id="busuanzi_value_page_pv"></span>
+        <span class="attr">访问：<span id="busuanzi_value_page_pv"></span>
 </span>
 
     </div>
     <div class="post-content no-indent">
         <p>之前已经使用msmtp成功发送了邮件，但如果要发送带附件的邮件，就需要配合mutt了</p>
 <h1 id="编译mutt"><a href="#编译mutt" class="headerlink" title="编译mutt"></a>编译mutt</h1><p>编译mutt前，要先编译openssl和ncurses这两个库，编译方法就不在这说了<br>在mutt官网上虽然有下载链接，但下不了，还好在github上找到了项目的源码，地址是<a href="https://github.com/muttmua/mutt" target="_blank" rel="noopener">https://github.com/muttmua/mutt</a><br>可以使用git clone命令，或者直接下载zip包<br>下载后进入到源码目录，执行<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">./prepare #生成configure</span><br><span class="line"></span><br><span class="line">./configure --host=arm-linux --prefix=/opt/mutt --with-curses=/opt/ncurses -with-ssl CFLAGS=&quot;-I/opt/ncurses/include -I/opt/ncurses/include/ncurses -I/opt/openssl -L/opt/openssl/lib -lssl -lcrypto -L/opt/ncurses/lib&quot; LD=arm-linux-ld --disable-doc --disable-filemonitor</span><br><span class="line"></span><br><span class="line">make &amp;&amp;make install</span><br></pre></td></tr></table></figure></p>
-<p>将编译生成的mutt丢到板子上的/bin目录<br>执行mutt的时候有可能会出现vt100这类的错误,解决方法如下</p>
+<p>将编译生成的mutt丢到板子上的/bin目录<br>这里提供一个现成的<br>点击下载：<a href="/tools/mutt.tar.gz">mutt.tar.gz</a><br>执行mutt的时候有可能会出现vt100这类的错误,解决方法如下</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">export TERM=vt100</span><br><span class="line">export TERMINFO=/usr/share/terminfo/v</span><br></pre></td></tr></table></figure>
 <p>如果系统中没有/usr/share/terminfo/v/vt100这个文件，就需要将pc上的文件复制过来了</p>
 <h1 id="使用mutt发邮件"><a href="#使用mutt发邮件" class="headerlink" title="使用mutt发邮件"></a>使用mutt发邮件</h1><p>发送邮件前需要准备下配置文件<br>/etc/msmpt.conf<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">host smtp.163.com  </span><br><span class="line">port 465</span><br><span class="line">auth login</span><br><span class="line">tls on</span><br><span class="line">tls_starttls off</span><br><span class="line">tls_certcheck off          #关闭cert证书的检测，嵌入式下不关闭会有问题</span><br><span class="line">proxy_host 192.168.162.85  #这里使用了代理</span><br><span class="line">from xxxx@163.com</span><br><span class="line">user xxxx@163.com</span><br><span class="line">password xxxxxx</span><br><span class="line">timeout 10</span><br><span class="line">logfile /var/log/msmtp.log</span><br></pre></td></tr></table></figure></p>
