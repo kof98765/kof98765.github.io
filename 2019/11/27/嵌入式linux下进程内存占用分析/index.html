@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta name="generator" content="Hexo 3.8.0">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="null">
+    <meta name="keyword" content="undefined">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+        嵌入式linux下进程内存占用分析 - undefined
+        
+    </title>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/aircloud.css">
+    <link rel="stylesheet" href="/css/gitment.css">
+    <!--<link rel="stylesheet" href="/css/style/default.css">-->
+    <link href="/css/font_620856_pl6z7sid89qkt9.css" rel="stylesheet" type="text/css">
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+<body>
+
+<div class="site-nav-toggle" id="site-nav-toggle">
+    <button>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+    </button>
+</div>
+
+<div class="index-about">
+    <i> 会当凌绝顶，一览众山小 </i>
+</div>
+
+<div class="index-container">
+    
+    <div class="index-left">
+        
+<div class="nav" id="nav">
+    <div class="avatar-name">
+        <div class="avatar">
+            <img src="/img/head.jpg">
+        </div>
+        <div class="name">
+            <i>bingone</i>
+        </div>
+    </div>
+    <div class="contents" id="nav-content">
+        <ul>
+            <li>
+                <a href="/">
+                    <i class="iconfont icon-shouye1"></i>
+                    <span>HOME</span>
+                </a>
+            </li>
+            <li>
+                <a href="/tags">
+                    <i class="iconfont icon-biaoqian1"></i>
+                    <span>TAGS</span>
+                </a>
+            </li>
+            <li>
+                <a href="/archives">
+                    <i class="iconfont icon-guidang2"></i>
+                    <span>ARCHIVES</span>
+                </a>
+            </li>
+            <li>
+                <a href="/about/">
+                    <i class="iconfont icon-guanyu2"></i>
+                    <span>ABOUT</span>
+                </a>
+            </li>
+            
+            <li>
+                <a id="search">
+                    <i class="iconfont icon-sousuo1"></i>
+                    <span>SEARCH</span>
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+    
+        <div id="toc" class="toc-article">
+    
+</div>
+    
+</div>
+
+
+<div class="search-field" id="search-field">
+    <div class="search-container">
+        <div class="search-input">
+            <span id="esc-search"> <i class="icon-fanhui iconfont"></i></span>
+            <input id="search-input">
+            <span id="begin-search">search</span>
+        </div>
+        <div class="search-result-container" id="search-result-container">
+
+        </div>
+    </div>
+</div>
+        <div class="index-about-mobile">
+            <i> 会当凌绝顶，一览众山小 </i>
+        </div>
+    </div>
+    
+    <div class="index-middle">
+        <!-- Main Content -->
+        
+
+
+<div class="post-container">
+    <div class="post-title">
+        嵌入式linux下进程内存占用分析
+    </div>
+
+    <div class="post-meta">
+        <span class="attr">Post：<span>2019-11-27 16:31:27</span></span>
+        
+        
+        <span class="attr">Visit：<span id="busuanzi_value_page_pv"></span>
+</span>
+
+    </div>
+    <div class="post-content no-indent">
+        <p>在嵌入式linux下，可以通过cat /proc/进程号/smas查看该进程的内存使用情况<br>在smaps文件中，每一条记录（如下所示）表示进程虚拟内存空间中一块连续的区域。其中第一行从左到右依次表示地址范围、权限标识、映射文件偏移、设备号、inode、文件路径。<br>smaps部分内容：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">2e37a000-2e3b5000 r-xp 00000000 b3:01 4151       /opt/qt4.8.6/lib/libQtXml.so.4.8.6</span><br><span class="line">Size:                236 kB</span><br><span class="line">Rss:                  52 kB</span><br><span class="line">Pss:                  52 kB</span><br><span class="line">Shared_Clean:          0 kB</span><br><span class="line">Shared_Dirty:          0 kB</span><br><span class="line">Private_Clean:        52 kB</span><br><span class="line">Private_Dirty:         0 kB</span><br><span class="line">Referenced:           52 kB</span><br><span class="line">Anonymous:             0 kB</span><br><span class="line">AnonHugePages:         0 kB</span><br><span class="line">Swap:                  0 kB</span><br><span class="line">KernelPageSize:        4 kB</span><br><span class="line">MMUPageSize:           4 kB</span><br><span class="line">Locked:                0 kB</span><br><span class="line">2e3b5000-2e3bc000 ---p 0003b000 b3:01 4151       /opt/qt4.8.6/lib/libQtXml.so.4.8.6</span><br><span class="line">Size:                 28 kB</span><br><span class="line">Rss:                   0 kB</span><br><span class="line">Pss:                   0 kB</span><br><span class="line">Shared_Clean:          0 kB</span><br><span class="line">Shared_Dirty:          0 kB</span><br><span class="line">Private_Clean:         0 kB</span><br><span class="line">Private_Dirty:         0 kB</span><br><span class="line">Referenced:            0 kB</span><br><span class="line">Anonymous:             0 kB</span><br><span class="line">AnonHugePages:         0 kB</span><br><span class="line">Swap:                  0 kB</span><br><span class="line">KernelPageSize:        4 kB</span><br><span class="line">MMUPageSize:           4 kB</span><br><span class="line">Locked:                0 kB</span><br></pre></td></tr></table></figure></p>
+<p>接下来8个字段的含义分别如下：</p>
+<p>Size：表示该映射区域在虚拟内存空间中的大小。<br>Rss：表示该映射区域当前在物理内存中占用了多少空间　　　　　　<br>Shared_Clean：和其他进程共享的未被改写的page的大小<br>Shared_Dirty： 和其他进程共享的被改写的page的大小<br>Private_Clean：未被改写的私有页面的大小。<br>Private_Dirty： 已被改写的私有页面的大小。<br>Swap：表示非mmap内存（也叫anonymous memory，比如malloc动态分配出来的内存）由于物理内存不足被swap到交换空间的大小。<br>Pss：该虚拟内存区域平摊计算后使用的物理内存大小(有些内存会和其他进程共享，例如mmap进来的)。比如该区域所映射的物理内存部分同时也被另一个进程映射了，且该部分物理内存的大小为1000KB，那么该进程分摊其中一半的内存，即Pss=500KB。 </p>
+<p>以下是快速计算的命令，也可以通过cat /proc/进程号/status查看<br>计算某进程的内存实际占用<br>如进程号为12713,则<br>cat /proc/12713/smaps |grep ^Rss|awk ‘{s+=$2}END{print “sum=”s}’<br>计算某进程的虚拟内存占用<br>cat /proc/12713/smaps |grep ^Size|awk ‘{s+=$2}END{print “sum=”s}’</p>
+<p>awk将输出的数据进行统计</p>
+
+        
+        <br>
+        <div id="comment-container">
+        </div>
+        <div id="disqus_thread"></div>
+
+        <div id="lv-container">
+        </div>
+
+    </div>
+</div>
+
+    </div>
+</div>
+
+
+<footer class="footer">
+    <ul class="list-inline text-center">
+        
+        
+
+        
+
+        
+
+        
+
+        
+
+    </ul>
+    
+    <p>
+        <span id="busuanzi_container_site_pv">
+            <span id="busuanzi_value_site_pv"></span>PV
+        </span>
+        <span id="busuanzi_container_site_uv">
+            <span id="busuanzi_value_site_uv"></span>UV
+        </span>
+        Created By <a href="https://hexo.io/">Hexo</a>  Theme <a href="https://github.com/aircloud/hexo-theme-aircloud">AirCloud</a></p>
+</footer>
+
+
+
+
+</body>
+
+<script>
+    // We expose some of the variables needed by the front end
+    window.hexo_search_path = "search.xml"
+    window.hexo_root = "/"
+    window.isPost = true
+</script>
+<script src="/js/jquery.min.js"></script>
+<script src="/js/index.js"></script>
+<script async src="/js/busuanzi.pure.mini.js"></script>
+
+
+
+
+</html>
