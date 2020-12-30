@@ -26,7 +26,7 @@
 <meta property="og:site_name" content="privatearea">
 <meta property="og:description" content="创建镜像文件，指定镜像原始大小为1G1dd if=/dev/zero of=linux-rootfs.img bs=1M count=1024 /dev/zero：为虚拟盘的名字。linux-rootfs.img为你的穿建的镜像文件。bs=1Mcount=1024为此镜像的大小 设置镜像格式1mkfs.ext4 linux-rootfs.img 将镜像挂载为一个目录1mount linux-roo">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2020-12-30T06:50:25.324Z">
+<meta property="og:updated_time" content="2020-12-30T11:45:24.109Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Linux下将根文件系统打包为镜像">
 <meta name="twitter:description" content="创建镜像文件，指定镜像原始大小为1G1dd if=/dev/zero of=linux-rootfs.img bs=1M count=1024 /dev/zero：为虚拟盘的名字。linux-rootfs.img为你的穿建的镜像文件。bs=1Mcount=1024为此镜像的大小 设置镜像格式1mkfs.ext4 linux-rootfs.img 将镜像挂载为一个目录1mount linux-roo">
@@ -216,10 +216,10 @@
                 
               </p>
               <p class="item-title">
-                <a href="/blog/2020/12/30/sftp服务器搭建/" class="title">sftp服务器搭建</a>
+                <a href="/blog/2020/12/30/linux下将根文件系统打包为镜像/" class="title">Linux下将根文件系统打包为镜像</a>
               </p>
               <p class="item-date">
-                <time datetime="2020-12-30T11:40:02.824Z" itemprop="datePublished">2020-12-30</time>
+                <time datetime="2020-12-30T11:45:24.109Z" itemprop="datePublished">2020-12-30</time>
               </p>
             </div>
           </li>
@@ -231,10 +231,10 @@
                 
               </p>
               <p class="item-title">
-                <a href="/blog/2020/12/30/linux下将根文件系统打包为镜像/" class="title">Linux下将根文件系统打包为镜像</a>
+                <a href="/blog/2020/12/30/sftp服务器搭建/" class="title">sftp服务器搭建</a>
               </p>
               <p class="item-date">
-                <time datetime="2020-12-30T06:50:25.324Z" itemprop="datePublished">2020-12-30</time>
+                <time datetime="2020-12-30T11:40:02.824Z" itemprop="datePublished">2020-12-30</time>
               </p>
             </div>
           </li>
@@ -313,7 +313,7 @@
         <span class="article-date">
     <i class="icon icon-calendar-check"></i>
 	<a href="/blog/2020/12/30/linux下将根文件系统打包为镜像/" class="article-date">
-	  <time datetime="2020-12-30T06:50:25.324Z" itemprop="datePublished">2020-12-30</time>
+	  <time datetime="2020-12-30T11:45:24.109Z" itemprop="datePublished">2020-12-30</time>
 	</a>
 </span>
         
@@ -332,12 +332,12 @@
     </div>
     <div class="article-entry marked-body" itemprop="articleBody">
       
-        <p>创建镜像文件，指定镜像原始大小为1G<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dd if=/dev/zero of=linux-rootfs.img bs=1M count=1024</span><br></pre></td></tr></table></figure></p>
+        <h3 id="创建镜像文件，指定镜像原始大小为1G"><a href="#创建镜像文件，指定镜像原始大小为1G" class="headerlink" title="创建镜像文件，指定镜像原始大小为1G"></a>创建镜像文件，指定镜像原始大小为1G</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dd if=/dev/zero of=linux-rootfs.img bs=1M count=1024</span><br></pre></td></tr></table></figure>
 <p>/dev/zero：为虚拟盘的名字。<br>linux-rootfs.img为你的穿建的镜像文件。<br>bs=1M<br>count=1024为此镜像的大小</p>
-<p>设置镜像格式<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mkfs.ext4 linux-rootfs.img</span><br></pre></td></tr></table></figure></p>
-<p>将镜像挂载为一个目录<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mount linux-rootfs.img tmp</span><br></pre></td></tr></table></figure></p>
-<p>将文件复制到镜像目录<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cp -rfp rootfs/ tmp</span><br><span class="line">umount tmp</span><br></pre></td></tr></table></figure></p>
-<p>调整镜像大小<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">e2fsck -p -f linux-rootfs.img</span><br><span class="line">resize2fs  -M linux-rootfs.img</span><br></pre></td></tr></table></figure></p>
+<h3 id="设置镜像格式"><a href="#设置镜像格式" class="headerlink" title="设置镜像格式"></a>设置镜像格式</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mkfs.ext4 linux-rootfs.img</span><br></pre></td></tr></table></figure>
+<h3 id="将镜像挂载为一个目录"><a href="#将镜像挂载为一个目录" class="headerlink" title="将镜像挂载为一个目录"></a>将镜像挂载为一个目录</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mount linux-rootfs.img tmp</span><br></pre></td></tr></table></figure>
+<h3 id="将文件复制到镜像目录"><a href="#将文件复制到镜像目录" class="headerlink" title="将文件复制到镜像目录"></a>将文件复制到镜像目录</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cp -rfp rootfs/ tmp</span><br><span class="line">umount tmp</span><br></pre></td></tr></table></figure>
+<h3 id="调整镜像大小"><a href="#调整镜像大小" class="headerlink" title="调整镜像大小"></a>调整镜像大小</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">e2fsck -p -f linux-rootfs.img</span><br><span class="line">resize2fs  -M linux-rootfs.img</span><br></pre></td></tr></table></figure>
 
       
     </div>
@@ -393,13 +393,9 @@
   
   <ul class="pager pull-left">
     
-    <li class="prev">
-      <a href="/blog/2020/12/30/sftp服务器搭建/" title="sftp服务器搭建"><i class="icon icon-angle-left" aria-hidden="true"></i><span>&nbsp;&nbsp;上一篇</span></a>
-    </li>
-    
     
     <li class="next">
-      <a href="/blog/2019/11/27/嵌入式linux下进程内存占用分析/" title="嵌入式linux下进程内存占用分析"><span>下一篇&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
+      <a href="/blog/2020/12/30/sftp服务器搭建/" title="sftp服务器搭建"><span>下一篇&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
     </li>
     
     
