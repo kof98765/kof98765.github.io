@@ -17,21 +17,21 @@
   <meta http-equiv="window-target" content="_top">
   
   
-  <title>git使用指南 | blog</title>
-  <meta name="description" content="git 是一个开源的分布式版本控制系统，是Linus Torvalds 为了帮助管理Linux内核开发而开发的，适用于各种大大小小的项目版本管理 分布式相比于集中式的最大区别在于开发者可以提交到本地，每个开发者通过克隆，在本地机器上拷贝一个完整的Git仓库 首先来说一下基本使用流程1.从服务器上克隆完整的代码仓库git clone http://192.168.162.180:/git/charg">
-<meta name="keywords" content="git">
+  <title>sftp服务器搭建 | blog</title>
+  <meta name="description" content="sftp和ftp是两种不同的协议,sftp是ssh内含的协议，只要sshd服务器启动了，它就可用，它本身不需要ftp服务器启动。  1、查看软件版本,想sftp服务用户只能访问特定的文件目录,版本需要4.8以上 12345[root@localhostftp]# rpm -qa | grep openssh openssh-server-5.3p1-81.el6_3.x86_64 openssh-">
+<meta name="keywords" content="linux">
 <meta property="og:type" content="article">
-<meta property="og:title" content="git使用指南">
-<meta property="og:url" content="http://mijiku.com.cn/blog/2019/04/25/git使用指南/index.html">
+<meta property="og:title" content="sftp服务器搭建">
+<meta property="og:url" content="http://mijiku.com.cn/blog/2020/12/30/sftp服务器搭建/index.html">
 <meta property="og:site_name" content="privatearea">
-<meta property="og:description" content="git 是一个开源的分布式版本控制系统，是Linus Torvalds 为了帮助管理Linux内核开发而开发的，适用于各种大大小小的项目版本管理 分布式相比于集中式的最大区别在于开发者可以提交到本地，每个开发者通过克隆，在本地机器上拷贝一个完整的Git仓库 首先来说一下基本使用流程1.从服务器上克隆完整的代码仓库git clone http://192.168.162.180:/git/charg">
+<meta property="og:description" content="sftp和ftp是两种不同的协议,sftp是ssh内含的协议，只要sshd服务器启动了，它就可用，它本身不需要ftp服务器启动。  1、查看软件版本,想sftp服务用户只能访问特定的文件目录,版本需要4.8以上 12345[root@localhostftp]# rpm -qa | grep openssh openssh-server-5.3p1-81.el6_3.x86_64 openssh-">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-04-29T03:02:35.866Z">
+<meta property="og:updated_time" content="2020-12-30T11:23:44.476Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="git使用指南">
-<meta name="twitter:description" content="git 是一个开源的分布式版本控制系统，是Linus Torvalds 为了帮助管理Linux内核开发而开发的，适用于各种大大小小的项目版本管理 分布式相比于集中式的最大区别在于开发者可以提交到本地，每个开发者通过克隆，在本地机器上拷贝一个完整的Git仓库 首先来说一下基本使用流程1.从服务器上克隆完整的代码仓库git clone http://192.168.162.180:/git/charg">
+<meta name="twitter:title" content="sftp服务器搭建">
+<meta name="twitter:description" content="sftp和ftp是两种不同的协议,sftp是ssh内含的协议，只要sshd服务器启动了，它就可用，它本身不需要ftp服务器启动。  1、查看软件版本,想sftp服务用户只能访问特定的文件目录,版本需要4.8以上 12345[root@localhostftp]# rpm -qa | grep openssh openssh-server-5.3p1-81.el6_3.x86_64 openssh-">
   <!-- Canonical links -->
-  <link rel="canonical" href="http://mijiku.com.cn/blog/2019/04/25/git使用指南/index.html">
+  <link rel="canonical" href="http://mijiku.com.cn/blog/2020/12/30/sftp服务器搭建/index.html">
   
     <link rel="alternate" href="/atom.xml" title="privatearea" type="application/atom+xml">
   
@@ -297,14 +297,14 @@
   
 <main class="main" role="main">
   <div class="content">
-  <article id="post-git使用指南" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
+  <article id="post-sftp服务器搭建" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
     
     <div class="article-header">
       
         
   
     <h1 class="article-title" itemprop="name">
-      git使用指南
+      sftp服务器搭建
     </h1>
   
 
@@ -312,40 +312,36 @@
       <div class="article-meta">
         <span class="article-date">
     <i class="icon icon-calendar-check"></i>
-	<a href="/blog/2019/04/25/git使用指南/" class="article-date">
-	  <time datetime="2019-04-25T04:51:01.000Z" itemprop="datePublished">2019-04-25</time>
+	<a href="/blog/2020/12/30/sftp服务器搭建/" class="article-date">
+	  <time datetime="2020-12-30T11:23:44.476Z" itemprop="datePublished">2020-12-30</time>
 	</a>
 </span>
         
         
   <span class="article-tag">
     <i class="icon icon-tags"></i>
-	<a class="article-tag-link" href="/blog/tags/git/">git</a>
+	<a class="article-tag-link" href="/blog/tags/linux/">linux</a>
   </span>
 
 
         
 
-        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/blog/2019/04/25/git使用指南/#comments" class="article-comment-link">评论</a></span>
+        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/blog/2020/12/30/sftp服务器搭建/#comments" class="article-comment-link">评论</a></span>
         
       </div>
     </div>
     <div class="article-entry marked-body" itemprop="articleBody">
       
-        <p>git 是一个开源的分布式版本控制系统，是Linus Torvalds 为了帮助管理Linux内核开发而开发的，适用于各种大大小小的项目版本管理</p>
-<p>分布式相比于集中式的最大区别在于开发者可以提交到本地，每个开发者通过克隆，在本地机器上拷贝一个完整的Git仓库</p>
-<p>首先来说一下基本使用流程<br>1.从服务器上克隆完整的代码仓库<br>git clone <a href="http://192.168.162.180:/git/charge" target="_blank" rel="noopener">http://192.168.162.180:/git/charge</a></p>
-<p>2.在自己的机器上根据不同的开发目的，创建分支，修改代码<br>git branch charge //创建了一个与服务器同名的本地仓库，作为自己的工作仓库，也可以命名为其它的，一般情况下，分支的默认名为master</p>
-<p>3.修改完代码后，将修改提交到本地仓库<br>git commit -a -m “修改记录”    //-m参数后面接的是之前修改过的内容描述</p>
-<p>4.上传到服务器<br>git push origin master //origin 代表远程服务器的别名，默认情况下是origin,master为默认分支名</p>
-<p>以上4步为第一次使用的场景，后面介绍使用过程中的一些命令</p>
-<p>1.查看远程服务器别名<br>git remote -v</p>
-<p>2.添加远程服务器<br>git remote add xxx <a href="http://xxx.com/xxx" target="_blank" rel="noopener">http://xxx.com/xxx</a></p>
-<p>3.查看所有分支<br>git branch -a //前面带星号的为当前分支</p>
-<p>4.创建分支<br>git branch xxx  //以当前分支为起点，创建一个新的分支</p>
-<p>5.重置分支<br>git reset –hard  //如果修改了很多东西，又觉得不满意，可以一键重置所有改动</p>
-<p>6.合并远程服务器最新代码<br>git pull origin master //如果本地的文件与服务器上的有差异，但差异点不一样，会自动合并成一个新的文件，如果差异点都在同一个地方，则需要手动合并，将冲突的地方修改好后，重新提交，上传到服务器</p>
-<p>7.忽略文件权限<br>git config core.filemode false //当前版本<br>git config –global core.fileMode false //所有版本库7.忽略文件权限<br>git config core.filemode false //当前版本<br>git config –global core.fileMode false //所有版本库7.忽略文件权限<br>git config core.filemode false //当前版本<br>git config –global core.fileMode false //所有版本库7.忽略文件权限<br>git config core.filemode false //当前版本<br>git config –global core.fileMode false //所有版本库7.忽略文件权限<br>git config core.filemode false //当前版本<br>git config –global core.fileMode false //所有版本库7.忽略文件权限<br>git config core.filemode false //当前版本<br>git config –global core.fileMode false //所有版本库7.忽略文件权限<br>git config core.filemode false //当前版本<br>git config –global core.fileMode false //所有版本库</p>
+        <p>sftp和ftp是两种不同的协议,sftp是ssh内含的协议，只要sshd服务器启动了，它就可用，它本身不需要ftp服务器启动。 </p>
+<h2 id="1、查看软件版本-想sftp服务用户只能访问特定的文件目录-版本需要4-8以上"><a href="#1、查看软件版本-想sftp服务用户只能访问特定的文件目录-版本需要4-8以上" class="headerlink" title="1、查看软件版本,想sftp服务用户只能访问特定的文件目录,版本需要4.8以上 "></a>1、查看软件版本,想sftp服务用户只能访问特定的文件目录,版本需要4.8以上 </h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[root@localhostftp]# rpm -qa | grep openssh </span><br><span class="line"></span><br><span class="line">openssh-server-5.3p1-81.el6_3.x86_64 </span><br><span class="line">openssh-5.3p1-81.el6_3.x86_64 </span><br><span class="line">openssh-clients-5.3p1-81.el6_3.x86_64</span><br></pre></td></tr></table></figure>
+<h2 id="2、新增用户-限制用户只能通过sftp访问"><a href="#2、新增用户-限制用户只能通过sftp访问" class="headerlink" title="2、新增用户,限制用户只能通过sftp访问 "></a>2、新增用户,限制用户只能通过sftp访问 </h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@localhostftp]# useradd -m -d /home/useradmin -s /sbin/nologin useradmin</span><br></pre></td></tr></table></figure>
+<h2 id="3、限制用户通过sftp登录进来时只能进入主目录，修改-etc-ssh-sshd-config文件"><a href="#3、限制用户通过sftp登录进来时只能进入主目录，修改-etc-ssh-sshd-config文件" class="headerlink" title="3、限制用户通过sftp登录进来时只能进入主目录，修改/etc/ssh/sshd_config文件 "></a>3、限制用户通过sftp登录进来时只能进入主目录，修改/etc/ssh/sshd_config文件 </h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">[root@localhostftp]# vim /etc/ssh/sshd_config </span><br><span class="line">#Subsystem  sftp    /usr/libexec/openssh/sftp-server </span><br><span class="line">Subsystem sftp internal-sftp </span><br><span class="line">Match User cxjbb </span><br><span class="line">ChrootDirectory /home/cxjbb </span><br><span class="line">X11Forwarding no </span><br><span class="line">AllowTcpForwarding no </span><br><span class="line">ForceCommand internal-sftp</span><br></pre></td></tr></table></figure>
+<h2 id="4、重启sshd服务"><a href="#4、重启sshd服务" class="headerlink" title="4、重启sshd服务 "></a>4、重启sshd服务 </h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@localhostftp]#service sshd restart</span><br></pre></td></tr></table></figure>
+<h2 id="5、测试访问"><a href="#5、测试访问" class="headerlink" title="5、测试访问 "></a>5、测试访问 </h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">root@10.1.1.200:test# sftp -oPort=22 useradmin@10.0.100.175 </span><br><span class="line">Connecting to 10.0.100.175... </span><br><span class="line">useradmin@10.0.100.175&apos;s password:  </span><br><span class="line">Read from remote host 10.1.6.175: Connection reset by peer </span><br><span class="line">Couldn&apos;t read packet: Connection reset by peer </span><br><span class="line">发现连接不上,查看日志 </span><br><span class="line">[root@localhostftp]# tail /var/log/messages </span><br><span class="line">Jan  6 11:41:41 localhost sshd[4907]: fatal: bad ownership or modes forchroot directory &quot;/opt/ftp/dave&quot; </span><br><span class="line">Jan  6 11:41:41 localhost sshd[4905]: pam_unix(sshd:session): session closed</span><br></pre></td></tr></table></figure>
+<h2 id="6、解决方法-目录权限设置上要遵循2点："><a href="#6、解决方法-目录权限设置上要遵循2点：" class="headerlink" title="6、解决方法: 目录权限设置上要遵循2点： "></a>6、解决方法: 目录权限设置上要遵循2点： </h2><p>ChrootDirectory设置的目录权限及其所有的上级文件夹权限，属主和属组必须是root； <br>ChrootDirectory设置的目录权限及其所有的上级文件夹权限，只有属主能拥有写权限，权限最大设置只能是755。 <br>如果不能遵循以上2点，即使是该目录仅属于某个用户，也可能会影响到所有的SFTP用户。 <br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[root@localhostftp]# ll </span><br><span class="line">total 4 drwxr-xr-x 3 dave dave 4096 Jan  5 13:06 useradmin </span><br><span class="line">[root@localhostftp]# chown root:root useradmin </span><br><span class="line">[root@localhostftp]# chmod 755 useradmin </span><br><span class="line">[root@localhostftp]# ll </span><br><span class="line">total 4 drwxr-xr-x 3 root root 4096 Jan  5 13:06 useradmin</span><br></pre></td></tr></table></figure></p>
+<p>然后在测试通过 <br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">root@10.1.1.200:test# sftp -oPort=22 useradmin@10.0.100.175 </span><br><span class="line">Connecting to 10.0.100.175... </span><br><span class="line">dave@10.0.100.175&apos;s password:  </span><br><span class="line">sftp&gt;ls test  </span><br><span class="line">sftp&gt;cd.. </span><br><span class="line">sftp&gt;ls test  </span><br><span class="line">sftp&gt;cdtest </span><br><span class="line">sftp&gt;ls 1.txt  </span><br><span class="line">sftp&gt; get 1.txt </span><br><span class="line">Fetching/test/1.txt to 1.txt </span><br><span class="line">/test/1.txt</span><br></pre></td></tr></table></figure></p>
+<p>可以看到已经限制用户在家目录,同时该用户也不能登录该机器。 </p>
+<h2 id="7、linux下sftp关闭步骤-linux下ftp分为ftp和sftp，sftp属于带权限的传输方式-传输过程加密，从原理上看-sftp属于ssh的一部分。"><a href="#7、linux下sftp关闭步骤-linux下ftp分为ftp和sftp，sftp属于带权限的传输方式-传输过程加密，从原理上看-sftp属于ssh的一部分。" class="headerlink" title="7、linux下sftp关闭步骤 linux下ftp分为ftp和sftp，sftp属于带权限的传输方式,传输过程加密，从原理上看,sftp属于ssh的一部分。 "></a>7、linux下sftp关闭步骤 linux下ftp分为ftp和sftp，sftp属于带权限的传输方式,传输过程加密，从原理上看,sftp属于ssh的一部分。 </h2><p>如果不需要sftp需要关闭,执行如下方法: 编辑 /etc/ssh/sshd_config 文件 <br>vim /etc/ssh/sshd_config  <br>找到 PasswordAuthentication 项，将值由yes 修改为no <br>以root 权限重启SSH，命令： /etc/init.d/ssh restart</p>
 
       
     </div>
@@ -355,7 +351,7 @@
     
     <li class="post-copyright-link hidden-xs">
       <strong>本文链接：</strong>
-      <a href="http://mijiku.com.cn/blog/2019/04/25/git使用指南/" title="git使用指南" target="_blank" rel="external">http://mijiku.com.cn/blog/2019/04/25/git使用指南/</a>
+      <a href="http://mijiku.com.cn/blog/2020/12/30/sftp服务器搭建/" title="sftp服务器搭建" target="_blank" rel="external">http://mijiku.com.cn/blog/2020/12/30/sftp服务器搭建/</a>
     </li>
     
     <li class="post-copyright-license">
@@ -401,13 +397,9 @@
   
   <ul class="pager pull-left">
     
-    <li class="prev">
-      <a href="/blog/2019/04/25/使用hexo生成博客/" title="使用hexo 生成个人博客"><i class="icon icon-angle-left" aria-hidden="true"></i><span>&nbsp;&nbsp;上一篇</span></a>
-    </li>
-    
     
     <li class="next">
-      <a href="/blog/2017/03/29/apache-php搭建经历/" title="apache+php搭建经历"><span>下一篇&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
+      <a href="/blog/2020/12/30/linux下将根文件系统打包为镜像/" title="Linux下将根文件系统打包为镜像"><span>下一篇&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
     </li>
     
     
