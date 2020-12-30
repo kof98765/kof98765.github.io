@@ -18,18 +18,18 @@
   
   
   <title>sftp服务器搭建 | blog</title>
-  <meta name="description" content="sftp和ftp是两种不同的协议,sftp是ssh内含的协议，只要sshd服务器启动了，它就可用，它本身不需要ftp服务器启动。  1、查看软件版本,想sftp服务用户只能访问特定的文件目录,版本需要4.8以上 12345[root@localhostftp]# rpm -qa | grep openssh openssh-server-5.3p1-81.el6_3.x86_64 openssh-">
+  <meta name="description" content="sftp和ftp是两种不同的协议,sftp是ssh内含的协议，只要sshd服务器启动了，它就可用，它本身不需要ftp服务器启动。  1、查看软件版本,想sftp服务用户只能访问特定的文件目录,版本需要4.8以上 12[root@localhostftp]# ssh -V OpenSSH_8.1p1, LibreSSL 2.7.3 2、新增用户,限制用户只能通过sftp访问 1[root@local">
 <meta name="keywords" content="linux">
 <meta property="og:type" content="article">
 <meta property="og:title" content="sftp服务器搭建">
 <meta property="og:url" content="http://mijiku.com.cn/blog/2020/12/30/sftp服务器搭建/index.html">
 <meta property="og:site_name" content="privatearea">
-<meta property="og:description" content="sftp和ftp是两种不同的协议,sftp是ssh内含的协议，只要sshd服务器启动了，它就可用，它本身不需要ftp服务器启动。  1、查看软件版本,想sftp服务用户只能访问特定的文件目录,版本需要4.8以上 12345[root@localhostftp]# rpm -qa | grep openssh openssh-server-5.3p1-81.el6_3.x86_64 openssh-">
+<meta property="og:description" content="sftp和ftp是两种不同的协议,sftp是ssh内含的协议，只要sshd服务器启动了，它就可用，它本身不需要ftp服务器启动。  1、查看软件版本,想sftp服务用户只能访问特定的文件目录,版本需要4.8以上 12[root@localhostftp]# ssh -V OpenSSH_8.1p1, LibreSSL 2.7.3 2、新增用户,限制用户只能通过sftp访问 1[root@local">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2020-12-30T11:23:44.476Z">
+<meta property="og:updated_time" content="2020-12-30T11:40:02.824Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="sftp服务器搭建">
-<meta name="twitter:description" content="sftp和ftp是两种不同的协议,sftp是ssh内含的协议，只要sshd服务器启动了，它就可用，它本身不需要ftp服务器启动。  1、查看软件版本,想sftp服务用户只能访问特定的文件目录,版本需要4.8以上 12345[root@localhostftp]# rpm -qa | grep openssh openssh-server-5.3p1-81.el6_3.x86_64 openssh-">
+<meta name="twitter:description" content="sftp和ftp是两种不同的协议,sftp是ssh内含的协议，只要sshd服务器启动了，它就可用，它本身不需要ftp服务器启动。  1、查看软件版本,想sftp服务用户只能访问特定的文件目录,版本需要4.8以上 12[root@localhostftp]# ssh -V OpenSSH_8.1p1, LibreSSL 2.7.3 2、新增用户,限制用户只能通过sftp访问 1[root@local">
   <!-- Canonical links -->
   <link rel="canonical" href="http://mijiku.com.cn/blog/2020/12/30/sftp服务器搭建/index.html">
   
@@ -219,7 +219,7 @@
                 <a href="/blog/2020/12/30/sftp服务器搭建/" class="title">sftp服务器搭建</a>
               </p>
               <p class="item-date">
-                <time datetime="2020-12-30T11:23:44.476Z" itemprop="datePublished">2020-12-30</time>
+                <time datetime="2020-12-30T11:40:02.824Z" itemprop="datePublished">2020-12-30</time>
               </p>
             </div>
           </li>
@@ -313,7 +313,7 @@
         <span class="article-date">
     <i class="icon icon-calendar-check"></i>
 	<a href="/blog/2020/12/30/sftp服务器搭建/" class="article-date">
-	  <time datetime="2020-12-30T11:23:44.476Z" itemprop="datePublished">2020-12-30</time>
+	  <time datetime="2020-12-30T11:40:02.824Z" itemprop="datePublished">2020-12-30</time>
 	</a>
 </span>
         
@@ -333,7 +333,7 @@
     <div class="article-entry marked-body" itemprop="articleBody">
       
         <p>sftp和ftp是两种不同的协议,sftp是ssh内含的协议，只要sshd服务器启动了，它就可用，它本身不需要ftp服务器启动。 </p>
-<h2 id="1、查看软件版本-想sftp服务用户只能访问特定的文件目录-版本需要4-8以上"><a href="#1、查看软件版本-想sftp服务用户只能访问特定的文件目录-版本需要4-8以上" class="headerlink" title="1、查看软件版本,想sftp服务用户只能访问特定的文件目录,版本需要4.8以上 "></a>1、查看软件版本,想sftp服务用户只能访问特定的文件目录,版本需要4.8以上 </h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[root@localhostftp]# rpm -qa | grep openssh </span><br><span class="line"></span><br><span class="line">openssh-server-5.3p1-81.el6_3.x86_64 </span><br><span class="line">openssh-5.3p1-81.el6_3.x86_64 </span><br><span class="line">openssh-clients-5.3p1-81.el6_3.x86_64</span><br></pre></td></tr></table></figure>
+<h2 id="1、查看软件版本-想sftp服务用户只能访问特定的文件目录-版本需要4-8以上"><a href="#1、查看软件版本-想sftp服务用户只能访问特定的文件目录-版本需要4-8以上" class="headerlink" title="1、查看软件版本,想sftp服务用户只能访问特定的文件目录,版本需要4.8以上 "></a>1、查看软件版本,想sftp服务用户只能访问特定的文件目录,版本需要4.8以上 </h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@localhostftp]# ssh -V </span><br><span class="line">OpenSSH_8.1p1, LibreSSL 2.7.3</span><br></pre></td></tr></table></figure>
 <h2 id="2、新增用户-限制用户只能通过sftp访问"><a href="#2、新增用户-限制用户只能通过sftp访问" class="headerlink" title="2、新增用户,限制用户只能通过sftp访问 "></a>2、新增用户,限制用户只能通过sftp访问 </h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@localhostftp]# useradd -m -d /home/useradmin -s /sbin/nologin useradmin</span><br></pre></td></tr></table></figure>
 <h2 id="3、限制用户通过sftp登录进来时只能进入主目录，修改-etc-ssh-sshd-config文件"><a href="#3、限制用户通过sftp登录进来时只能进入主目录，修改-etc-ssh-sshd-config文件" class="headerlink" title="3、限制用户通过sftp登录进来时只能进入主目录，修改/etc/ssh/sshd_config文件 "></a>3、限制用户通过sftp登录进来时只能进入主目录，修改/etc/ssh/sshd_config文件 </h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">[root@localhostftp]# vim /etc/ssh/sshd_config </span><br><span class="line">#Subsystem  sftp    /usr/libexec/openssh/sftp-server </span><br><span class="line">Subsystem sftp internal-sftp </span><br><span class="line">Match User cxjbb </span><br><span class="line">ChrootDirectory /home/cxjbb </span><br><span class="line">X11Forwarding no </span><br><span class="line">AllowTcpForwarding no </span><br><span class="line">ForceCommand internal-sftp</span><br></pre></td></tr></table></figure>
 <h2 id="4、重启sshd服务"><a href="#4、重启sshd服务" class="headerlink" title="4、重启sshd服务 "></a>4、重启sshd服务 </h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@localhostftp]#service sshd restart</span><br></pre></td></tr></table></figure>
