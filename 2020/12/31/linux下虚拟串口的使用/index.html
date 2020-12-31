@@ -17,20 +17,21 @@
   <meta http-equiv="window-target" content="_top">
   
   
-  <title>嵌入式linux下使用mutt发送带附件的邮件 | blog</title>
-  <meta name="description" content="之前已经使用msmtp成功发送了邮件，但如果要发送带附件的邮件，就需要配合mutt了 编译mutt编译mutt前，要先编译openssl和ncurses这两个库，编译方法就不在这说了在mutt官网上虽然有下载链接，但下不了，还好在github上找到了项目的源码，地址是https://github.com/muttmua/mutt可以使用git clone命令，或者直接下载zip包下载后进入到源码目">
+  <title>blog</title>
+  <meta name="description" content="在linux下开发串口程序的时候，都要接上usb串口，连到设备上调试，很不方便，windows上有串口虚拟助手，linux下也有，叫socat,安装很简单1apt-get install socat 模拟两个串口1234socat -d -d pty pty2020/12/25 11:30:13 socat[16005] N PTY is /dev/pts/32020/12/25 11:30:13">
+<meta name="keywords" content="linux">
 <meta property="og:type" content="article">
-<meta property="og:title" content="嵌入式linux下使用mutt发送带附件的邮件">
-<meta property="og:url" content="http://mijiku.com.cn/blog/2019/05/21/嵌入式linux下使用mutt发送带附件的邮件/index.html">
+<meta property="og:title" content="privatearea">
+<meta property="og:url" content="http://mijiku.com.cn/blog/2020/12/31/linux下虚拟串口的使用/index.html">
 <meta property="og:site_name" content="privatearea">
-<meta property="og:description" content="之前已经使用msmtp成功发送了邮件，但如果要发送带附件的邮件，就需要配合mutt了 编译mutt编译mutt前，要先编译openssl和ncurses这两个库，编译方法就不在这说了在mutt官网上虽然有下载链接，但下不了，还好在github上找到了项目的源码，地址是https://github.com/muttmua/mutt可以使用git clone命令，或者直接下载zip包下载后进入到源码目">
+<meta property="og:description" content="在linux下开发串口程序的时候，都要接上usb串口，连到设备上调试，很不方便，windows上有串口虚拟助手，linux下也有，叫socat,安装很简单1apt-get install socat 模拟两个串口1234socat -d -d pty pty2020/12/25 11:30:13 socat[16005] N PTY is /dev/pts/32020/12/25 11:30:13">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-05-21T06:26:56.409Z">
+<meta property="og:updated_time" content="2020-12-31T08:04:51.252Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="嵌入式linux下使用mutt发送带附件的邮件">
-<meta name="twitter:description" content="之前已经使用msmtp成功发送了邮件，但如果要发送带附件的邮件，就需要配合mutt了 编译mutt编译mutt前，要先编译openssl和ncurses这两个库，编译方法就不在这说了在mutt官网上虽然有下载链接，但下不了，还好在github上找到了项目的源码，地址是https://github.com/muttmua/mutt可以使用git clone命令，或者直接下载zip包下载后进入到源码目">
+<meta name="twitter:title" content="privatearea">
+<meta name="twitter:description" content="在linux下开发串口程序的时候，都要接上usb串口，连到设备上调试，很不方便，windows上有串口虚拟助手，linux下也有，叫socat,安装很简单1apt-get install socat 模拟两个串口1234socat -d -d pty pty2020/12/25 11:30:13 socat[16005] N PTY is /dev/pts/32020/12/25 11:30:13">
   <!-- Canonical links -->
-  <link rel="canonical" href="http://mijiku.com.cn/blog/2019/05/21/嵌入式linux下使用mutt发送带附件的邮件/index.html">
+  <link rel="canonical" href="http://mijiku.com.cn/blog/2020/12/31/linux下虚拟串口的使用/index.html">
   
     <link rel="alternate" href="/atom.xml" title="privatearea" type="application/atom+xml">
   
@@ -296,47 +297,39 @@
   
 <main class="main" role="main">
   <div class="content">
-  <article id="post-嵌入式linux下使用mutt发送带附件的邮件" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
+  <article id="post-linux下虚拟串口的使用" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
     
     <div class="article-header">
-      
-        
-  
-    <h1 class="article-title" itemprop="name">
-      嵌入式linux下使用mutt发送带附件的邮件
-    </h1>
-  
-
       
       <div class="article-meta">
         <span class="article-date">
     <i class="icon icon-calendar-check"></i>
-	<a href="/blog/2019/05/21/嵌入式linux下使用mutt发送带附件的邮件/" class="article-date">
-	  <time datetime="2019-05-21T00:37:56.000Z" itemprop="datePublished">2019-05-21</time>
+	<a href="/blog/2020/12/31/linux下虚拟串口的使用/" class="article-date">
+	  <time datetime="2020-12-31T08:04:51.252Z" itemprop="datePublished">2020-12-31</time>
 	</a>
 </span>
         
         
+  <span class="article-tag">
+    <i class="icon icon-tags"></i>
+	<a class="article-tag-link" href="/blog/tags/linux/">linux</a>
+  </span>
+
 
         
 
-        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/blog/2019/05/21/嵌入式linux下使用mutt发送带附件的邮件/#comments" class="article-comment-link">评论</a></span>
+        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/blog/2020/12/31/linux下虚拟串口的使用/#comments" class="article-comment-link">评论</a></span>
         
       </div>
     </div>
     <div class="article-entry marked-body" itemprop="articleBody">
       
-        <p>之前已经使用msmtp成功发送了邮件，但如果要发送带附件的邮件，就需要配合mutt了</p>
-<h1 id="编译mutt"><a href="#编译mutt" class="headerlink" title="编译mutt"></a>编译mutt</h1><p>编译mutt前，要先编译openssl和ncurses这两个库，编译方法就不在这说了<br>在mutt官网上虽然有下载链接，但下不了，还好在github上找到了项目的源码，地址是<a href="https://github.com/muttmua/mutt" target="_blank" rel="noopener">https://github.com/muttmua/mutt</a><br>可以使用git clone命令，或者直接下载zip包<br>下载后进入到源码目录，执行<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">./prepare #生成configure</span><br><span class="line"></span><br><span class="line">./configure --host=arm-linux --prefix=/opt/mutt --with-curses=/opt/ncurses -with-ssl CFLAGS=&quot;-I/opt/ncurses/include -I/opt/ncurses/include/ncurses -I/opt/openssl -L/opt/openssl/lib -lssl -lcrypto -L/opt/ncurses/lib&quot; LD=arm-linux-ld --disable-doc --disable-filemonitor</span><br><span class="line"></span><br><span class="line">make &amp;&amp;make install</span><br></pre></td></tr></table></figure></p>
-<p>将编译生成的mutt丢到板子上的/bin目录<br>这里提供一个现成的<br>点击下载：<a href="/tools/mutt.tar.gz">mutt.tar.gz</a><br>执行mutt的时候有可能会出现vt100这类的错误,解决方法如下</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">export TERM=vt100</span><br><span class="line">export TERMINFO=/usr/share/terminfo/v</span><br></pre></td></tr></table></figure>
-<p>如果系统中没有/usr/share/terminfo/v/vt100这个文件，就需要将pc上的文件复制过来了</p>
-<h1 id="使用mutt发邮件"><a href="#使用mutt发邮件" class="headerlink" title="使用mutt发邮件"></a>使用mutt发邮件</h1><p>发送邮件前需要准备下配置文件</p>
-<h2 id="etc-msmpt-conf"><a href="#etc-msmpt-conf" class="headerlink" title="/etc/msmpt.conf"></a>/etc/msmpt.conf</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">host smtp.163.com  </span><br><span class="line">port 465</span><br><span class="line">auth login</span><br><span class="line">tls on</span><br><span class="line">tls_starttls off</span><br><span class="line">tls_certcheck off          #关闭cert证书的检测，嵌入式下不关闭会有问题</span><br><span class="line">proxy_host 192.168.162.85  #这里使用了代理</span><br><span class="line">from xxxx@163.com</span><br><span class="line">user xxxx@163.com</span><br><span class="line">password xxxxxx</span><br><span class="line">timeout 10</span><br><span class="line">logfile /var/log/msmtp.log</span><br></pre></td></tr></table></figure>
-<h2 id="etc-mutt-conf"><a href="#etc-mutt-conf" class="headerlink" title="/etc/mutt.conf"></a>/etc/mutt.conf</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">set sendmail=&quot;/bin/msmtp -C /etc/msmtp.conf&quot;</span><br><span class="line">set use_from=yes</span><br><span class="line">set realname=&quot;xxxxx&quot;</span><br><span class="line">set editor=&quot;vi&quot;</span><br><span class="line">set from=xxxx@163.com  #这里必须和msmtp的一样</span><br><span class="line">set envelope_from=yes</span><br></pre></td></tr></table></figure>
-<p>准备好配置文件后，就可以试试发送邮件了<br>echo “hello world!”|mutt -s “hello,boy” <a href="mailto:277835572@qq.com" target="_blank" rel="noopener">277835572@qq.com</a> -a hello.jpg -F /etc/mutt.conf</p>
-<p>hello world!是邮件的内容，hello,boy是邮件的主题，后面接着接收人邮件地址，hello.jpg是附件，最后指定mutt的配置文件，这样就算大功告成啦</p>
-<p>也可以预先把邮件内容写到某个文件中<br>cat mail.txt |mutt -s “hello” <a href="mailto:277835572@qq.com" target="_blank" rel="noopener">277835572@qq.com</a> -a hello.jpg -F /etc/mutt.conf</p>
+        <p>在linux下开发串口程序的时候，都要接上usb串口，连到设备上调试，很不方便，windows上有串口虚拟助手，<br>linux下也有，叫socat,安装很简单<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">apt-get install socat</span><br></pre></td></tr></table></figure></p>
+<p>模拟两个串口<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">socat -d -d pty pty</span><br><span class="line">2020/12/25 11:30:13 socat[16005] N PTY is /dev/pts/3</span><br><span class="line">2020/12/25 11:30:13 socat[16005] N PTY is /dev/pts/4</span><br><span class="line">2020/12/25 11:30:13 socat[16005] N starting data transfer loop with FDs [5,5] and [7,7]</span><br></pre></td></tr></table></figure></p>
+<p>会生成两个串口的设备文件/dev/pts/3和/dev/pts/4，可以创建软链接，方便程序开发<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ln -s /dev/pts/3 /dev/ttyS1</span><br><span class="line">ln -s /dev/pts/4 /dev/ttyS2</span><br></pre></td></tr></table></figure></p>
+<p>用以上方式就能很方便地调试基于串口通讯的程序了</p>
+<p>socat可不止这么点功能，还可以将物理串口映射到虚拟串口上，比如物理串口是/dev/ttyS3<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">socat -d -d /dev/ttyS3 pty</span><br></pre></td></tr></table></figure></p>
+<p>除了可以映射串口，还可以映射到tcp口上<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">socat /dev/ttyS3 tcp-listen:8888</span><br></pre></td></tr></table></figure></p>
 
       
     </div>
@@ -346,7 +339,7 @@
     
     <li class="post-copyright-link hidden-xs">
       <strong>本文链接：</strong>
-      <a href="http://mijiku.com.cn/blog/2019/05/21/嵌入式linux下使用mutt发送带附件的邮件/" title="嵌入式linux下使用mutt发送带附件的邮件" target="_blank" rel="external">http://mijiku.com.cn/blog/2019/05/21/嵌入式linux下使用mutt发送带附件的邮件/</a>
+      <a href="http://mijiku.com.cn/blog/2020/12/31/linux下虚拟串口的使用/" title target="_blank" rel="external">http://mijiku.com.cn/blog/2020/12/31/linux下虚拟串口的使用/</a>
     </li>
     
     <li class="post-copyright-license">
@@ -392,13 +385,9 @@
   
   <ul class="pager pull-left">
     
-    <li class="prev">
-      <a href="/blog/2019/05/21/使用mongoose搭建嵌入式网页服务器/" title="使用mongoose搭建嵌入式网页服务器(一)"><i class="icon icon-angle-left" aria-hidden="true"></i><span>&nbsp;&nbsp;上一篇</span></a>
-    </li>
-    
     
     <li class="next">
-      <a href="/blog/2019/05/13/嵌入式linux下使用msmtp发送邮件/" title="嵌入式linux下使用msmtp发送邮件"><span>下一篇&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
+      <a href="/blog/2020/12/31/linux下将根文件系统打包为镜像/" title="Linux下将目录打包为镜像"><span>下一篇&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
     </li>
     
     
