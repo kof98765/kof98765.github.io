@@ -26,7 +26,7 @@
 <meta property="og:site_name" content="privatearea">
 <meta property="og:description" content="由于公司使用代理上网，无法通过ssh的方式clone在自己服务器上的仓库代码，所以研究了这个方法来使用git 创建git仓库12345$ cd /home$ mkdir git$ cd /home/git$ git init --bare test.git    //初始化仓库$ chown -R www-data:www-data ../git //使用http访问的话，一般指定www-data">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2020-12-31T07:28:37.830Z">
+<meta property="og:updated_time" content="2020-12-31T07:34:00.127Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="搭建支持http访问的git服务">
 <meta name="twitter:description" content="由于公司使用代理上网，无法通过ssh的方式clone在自己服务器上的仓库代码，所以研究了这个方法来使用git 创建git仓库12345$ cd /home$ mkdir git$ cd /home/git$ git init --bare test.git    //初始化仓库$ chown -R www-data:www-data ../git //使用http访问的话，一般指定www-data">
@@ -219,7 +219,7 @@
                 <a href="/blog/2020/12/31/搭建支持http访问的git服务/" class="title">搭建支持http访问的git服务</a>
               </p>
               <p class="item-date">
-                <time datetime="2020-12-31T07:28:37.830Z" itemprop="datePublished">2020-12-31</time>
+                <time datetime="2020-12-31T07:34:00.127Z" itemprop="datePublished">2020-12-31</time>
               </p>
             </div>
           </li>
@@ -313,7 +313,7 @@
         <span class="article-date">
     <i class="icon icon-calendar-check"></i>
 	<a href="/blog/2020/12/31/搭建支持http访问的git服务/" class="article-date">
-	  <time datetime="2020-12-31T07:28:37.830Z" itemprop="datePublished">2020-12-31</time>
+	  <time datetime="2020-12-31T07:34:00.127Z" itemprop="datePublished">2020-12-31</time>
 	</a>
 </span>
         
@@ -341,7 +341,7 @@
 <h3 id="修改nginx的工作用户"><a href="#修改nginx的工作用户" class="headerlink" title="修改nginx的工作用户"></a>修改nginx的工作用户</h3><p>nginx默认是nobody, 这里我们改为www-data,<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">vim /etc/nginx/nginx.conf</span><br><span class="line">#user nobody;</span><br><span class="line">user www-data;</span><br></pre></td></tr></table></figure></p>
 <p>重新启动nginx<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/etc/init.d/nginx restart</span><br></pre></td></tr></table></figure></p>
 <h3 id="生成用户密码"><a href="#生成用户密码" class="headerlink" title="生成用户密码"></a>生成用户密码</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">htpasswd -c -d /home/git/passwd.db test</span><br></pre></td></tr></table></figure>
-<p>输入密码之后就可以通过git clone <a href="http://127.0.0.1/test.git下载代码了" target="_blank" rel="noopener">http://127.0.0.1/test.git下载代码了</a></p>
+<p>输入密码之后就可以通过git clone <a href="http://127.0.0.1/test.git下载代码了,用户密码为刚才设置的密码对，如果忘记了，就删掉重来吧" target="_blank" rel="noopener">http://127.0.0.1/test.git下载代码了,用户密码为刚才设置的密码对，如果忘记了，就删掉重来吧</a></p>
 
       
     </div>
