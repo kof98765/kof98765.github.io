@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="format-detection" content="telephone=no,email=no,adress=no">
+  <!-- Color theme for statusbar -->
+  <meta name="theme-color" content="#000000">
+  <!-- 强制页面在当前窗口以独立页面显示,防止别人在框架里调用页面 -->
+  <meta http-equiv="window-target" content="_top">
+  
+  
+  <title>linux 蓝牙服务端和客户端编写 | blog</title>
+  <meta name="description" content="服务端设置：启动蓝牙设备1hciconfig hci0 up 启动蓝牙可搜索状态1hciconfig piscan 添加蓝牙服务描述，具体的服务需要自已实现，这里只是让外人能搜索出支持什么功能1sdptool add --channel=1 DID SP DUN LAN FAX OPUSH FTP HS HF SAP NAP GN PANU HID CIP CTP A2SRC A2SNK SYNC">
+<meta name="keywords" content="linux">
+<meta property="og:type" content="article">
+<meta property="og:title" content="linux 蓝牙服务端和客户端编写">
+<meta property="og:url" content="http://mijiku.com.cn/blog/2020/12/31/linux下蓝牙服务端和客户端编写/index.html">
+<meta property="og:site_name" content="privatearea">
+<meta property="og:description" content="服务端设置：启动蓝牙设备1hciconfig hci0 up 启动蓝牙可搜索状态1hciconfig piscan 添加蓝牙服务描述，具体的服务需要自已实现，这里只是让外人能搜索出支持什么功能1sdptool add --channel=1 DID SP DUN LAN FAX OPUSH FTP HS HF SAP NAP GN PANU HID CIP CTP A2SRC A2SNK SYNC">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2020-12-31T08:24:13.593Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="linux 蓝牙服务端和客户端编写">
+<meta name="twitter:description" content="服务端设置：启动蓝牙设备1hciconfig hci0 up 启动蓝牙可搜索状态1hciconfig piscan 添加蓝牙服务描述，具体的服务需要自已实现，这里只是让外人能搜索出支持什么功能1sdptool add --channel=1 DID SP DUN LAN FAX OPUSH FTP HS HF SAP NAP GN PANU HID CIP CTP A2SRC A2SNK SYNC">
+  <!-- Canonical links -->
+  <link rel="canonical" href="http://mijiku.com.cn/blog/2020/12/31/linux下蓝牙服务端和客户端编写/index.html">
+  
+    <link rel="alternate" href="/atom.xml" title="privatearea" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png" type="image/x-icon">
+  
+  <link rel="stylesheet" href="/blog/css/style.css">
+  
+  
+  
+  
+    <link rel="stylesheet" href="/css//gitalk.min.css">
+  
+</head>
+
+
+<body class="main-center" itemscope itemtype="http://schema.org/WebPage">
+  <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+  <div class="slimContent">
+    <div class="navbar-header">
+      
+      
+      <div class="profile-block text-center">
+        <a id="avatar" href="https://github.com/kof98765" target="_blank">
+          <img class="img-circle img-rotate" src="/blog/images/head.jpg" width="200" height="200">
+        </a>
+        <h2 id="name" class="hidden-xs hidden-sm">陶大少</h2>
+        <h3 id="title" class="hidden-xs hidden-sm hidden-md">野火烧不尽，春风吹又生</h3>
+        <small id="location" class="text-muted hidden-xs hidden-sm"><i class="icon icon-map-marker"></i> Dongguan, China</small>
+      </div>
+      
+      <div class="search" id="search-form-wrap">
+
+    <form class="search-form sidebar-form">
+        <div class="input-group">
+            <input type="text" class="search-form-input form-control" placeholder="搜索">
+            <span class="input-group-btn">
+                <button type="submit" class="search-form-submit btn btn-flat" onclick="return false;"><i class="icon icon-search"></i></button>
+            </span>
+        </div>
+    </form>
+    <div class="ins-search">
+  <div class="ins-search-mask"></div>
+  <div class="ins-search-container">
+    <div class="ins-input-wrapper">
+      <input type="text" class="ins-search-input" placeholder="想要查找什么..." x-webkit-speech>
+      <button type="button" class="close ins-close ins-selectable" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+    </div>
+    <div class="ins-section-wrapper">
+      <div class="ins-section-container"></div>
+    </div>
+  </div>
+</div>
+
+
+</div>
+      <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#main-navbar" aria-controls="main-navbar" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <nav id="main-navbar" class="collapse navbar-collapse" itemscope itemtype="http://schema.org/SiteNavigationElement" role="navigation">
+      <ul class="nav navbar-nav main-nav ">
+        
+        
+        <li class="menu-item menu-item-home">
+          <a href="/blog/.">
+            
+            <i class="icon icon-home-fill"></i>
+            
+            <span class="menu-title">首页</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/blog/archives">
+            
+            <i class="icon icon-archives-fill"></i>
+            
+            <span class="menu-title">归档</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/blog/tags">
+            
+            <i class="icon icon-tags"></i>
+            
+            <span class="menu-title">标签</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-about">
+          <a href="/blog/about">
+            
+            <i class="icon icon-cup-fill"></i>
+            
+            <span class="menu-title">关于</span>
+          </a>
+        </li>
+        
+      </ul>
+      
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/kof98765" target="_blank" title="Github" data-toggle="tooltip" data-placement="top"><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="http://weibo.com/98765kof" target="_blank" title="Weibo" data-toggle="tooltip" data-placement="top"><i class="icon icon-weibo"></i></a></li>
+        
+        <li><a href="/blog/atom.xml" target="_blank" title="Rss" data-toggle="tooltip" data-placement="top"><i class="icon icon-rss"></i></a></li>
+        
+    </ul>
+
+    </nav>
+  </div>
+</header>
+
+  
+    <aside class="sidebar" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    
+      <div class="widget">
+    <h3 class="widget-title">公告</h3>
+    <div class="widget-body">
+        <div id="board">
+            <div class="content">
+                <p>欢迎交流与分享经验!</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+      
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget-body">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/blog/tags/git/">git</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/blog/tags/linux/">linux</a><span class="tag-list-count">6</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget-body tagcloud">
+      <a href="/blog/tags/git/" style="font-size: 13px;">git</a> <a href="/blog/tags/linux/" style="font-size: 14px;">linux</a>
+    </div>
+  </div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget-body">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/blog/archives/2020/12/">十二月 2020</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/blog/archives/2019/11/">十一月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/blog/archives/2019/05/">五月 2019</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/blog/archives/2019/04/">四月 2019</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/blog/archives/2017/03/">三月 2017</a><span class="archive-list-count">3</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget-body">
+      <ul class="recent-post-list list-unstyled no-thumbnail">
+        
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                
+              </p>
+              <p class="item-title">
+                <a href="/blog/2020/12/31/linux下蓝牙服务端和客户端编写/" class="title">linux 蓝牙服务端和客户端编写</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2020-12-31T08:24:13.593Z" itemprop="datePublished">2020-12-31</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                
+              </p>
+              <p class="item-title">
+                <a href="/blog/2020/12/31/linux下虚拟串口的使用/" class="title">linux下虚拟串口的使用</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2020-12-31T08:06:35.251Z" itemprop="datePublished">2020-12-31</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                
+              </p>
+              <p class="item-title">
+                <a href="/blog/2020/12/31/linux下将根文件系统打包为镜像/" class="title">Linux下将目录打包为镜像</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2020-12-31T07:39:19.966Z" itemprop="datePublished">2020-12-31</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                
+              </p>
+              <p class="item-title">
+                <a href="/blog/2020/12/31/搭建支持http访问的git服务/" class="title">搭建支持http访问的git服务</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2020-12-31T07:34:00.127Z" itemprop="datePublished">2020-12-31</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                
+              </p>
+              <p class="item-title">
+                <a href="/blog/2020/12/30/sftp服务器搭建/" class="title">sftp服务器搭建</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2020-12-30T11:40:02.824Z" itemprop="datePublished">2020-12-30</time>
+              </p>
+            </div>
+          </li>
+          
+      </ul>
+    </div>
+  </div>
+  
+
+    
+  </div>
+</aside>
+
+  
+  
+<main class="main" role="main">
+  <div class="content">
+  <article id="post-linux下蓝牙服务端和客户端编写" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
+    
+    <div class="article-header">
+      
+        
+  
+    <h1 class="article-title" itemprop="name">
+      linux 蓝牙服务端和客户端编写
+    </h1>
+  
+
+      
+      <div class="article-meta">
+        <span class="article-date">
+    <i class="icon icon-calendar-check"></i>
+	<a href="/blog/2020/12/31/linux下蓝牙服务端和客户端编写/" class="article-date">
+	  <time datetime="2020-12-31T08:24:13.593Z" itemprop="datePublished">2020-12-31</time>
+	</a>
+</span>
+        
+        
+  <span class="article-tag">
+    <i class="icon icon-tags"></i>
+	<a class="article-tag-link" href="/blog/tags/linux/">linux</a>
+  </span>
+
+
+        
+
+        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/blog/2020/12/31/linux下蓝牙服务端和客户端编写/#comments" class="article-comment-link">评论</a></span>
+        
+      </div>
+    </div>
+    <div class="article-entry marked-body" itemprop="articleBody">
+      
+        <h3 id="服务端设置："><a href="#服务端设置：" class="headerlink" title="服务端设置："></a>服务端设置：</h3><h4 id="启动蓝牙设备"><a href="#启动蓝牙设备" class="headerlink" title="启动蓝牙设备"></a>启动蓝牙设备</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hciconfig hci0 up</span><br></pre></td></tr></table></figure>
+<h4 id="启动蓝牙可搜索状态"><a href="#启动蓝牙可搜索状态" class="headerlink" title="启动蓝牙可搜索状态"></a>启动蓝牙可搜索状态</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hciconfig piscan</span><br></pre></td></tr></table></figure>
+<h4 id="添加蓝牙服务描述，具体的服务需要自已实现，这里只是让外人能搜索出支持什么功能"><a href="#添加蓝牙服务描述，具体的服务需要自已实现，这里只是让外人能搜索出支持什么功能" class="headerlink" title="添加蓝牙服务描述，具体的服务需要自已实现，这里只是让外人能搜索出支持什么功能"></a>添加蓝牙服务描述，具体的服务需要自已实现，这里只是让外人能搜索出支持什么功能</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sdptool add --channel=1 DID SP DUN LAN FAX OPUSH FTP HS HF SAP NAP GN PANU HID CIP CTP A2SRC A2SNK SYNCML NOKID PCSUITE SR1</span><br></pre></td></tr></table></figure>
+<h4 id="取消设置pin码，即取消配对功能"><a href="#取消设置pin码，即取消配对功能" class="headerlink" title="取消设置pin码，即取消配对功能"></a>取消设置pin码，即取消配对功能</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hciconfig hci0 noauth</span><br></pre></td></tr></table></figure>
+<h4 id="指定pin"><a href="#指定pin" class="headerlink" title="指定pin"></a>指定pin</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">修改/etc/bluetooth/hcid.conf </span><br><span class="line"></span><br><span class="line">options &#123;</span><br><span class="line">        # Automatically initialize new devices</span><br><span class="line">        autoinit yes;</span><br><span class="line"></span><br><span class="line">        # Security Manager mode</span><br><span class="line">        #   none - Security manager disabled</span><br><span class="line">        #   auto - Use local PIN for incoming connections</span><br><span class="line">        #   user - Always ask user for a PIN</span><br><span class="line">        #</span><br><span class="line">        security auto;</span><br><span class="line"></span><br><span class="line">        # Pairing mode</span><br><span class="line">        #   none  - Pairing disabled</span><br><span class="line">        #   multi - Allow pairing with already paired devices</span><br><span class="line">        #   once  - Pair once and deny successive attempts</span><br><span class="line">        pairing multi;</span><br><span class="line">        pin_helper /usr/bin/bluepin;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">新建文件/usr/bin/bluepin,写入以下内容</span><br><span class="line">#!/bin/sh</span><br><span class="line">echo &quot;PIN:1234&quot;</span><br><span class="line"></span><br><span class="line">也可以是c编译好的文件：</span><br><span class="line">#include &lt;stdio.h&gt;</span><br><span class="line"></span><br><span class="line">int main(int argc, char* argv[])</span><br><span class="line">&#123;</span><br><span class="line">printf(&quot;PIN:1234&quot;);</span><br><span class="line">&#125;</span><br><span class="line">编译为bluepin，并复制到/usr/bin</span><br></pre></td></tr></table></figure>
+<h4 id="绑定pin码，即添加密码配对功能"><a href="#绑定pin码，即添加密码配对功能" class="headerlink" title="绑定pin码，即添加密码配对功能"></a>绑定pin码，即添加密码配对功能</h4><p>编辑/var/lib/bluetooth/XX:XX:XX:XX:XX:XX/pincodes （XX:XX:XX:XX:XX:XX为本地蓝牙设备地址）<br>文件内容格式为： XX:XX:XX:XX:XX:XX 1234 （XX:XX:XX:XX:XX:XX为目标设备地址）</p>
+<p>###客户端设置：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">mknod /dev/rfcomm0 c 216 0</span><br><span class="line">chmod 666 /dev/rfcomm0</span><br><span class="line">rfcomm bind 0 xx:xx:xx:xx:xx:xx 1  //0表示rfcomm0,xx:xx:xx:xx:xx:xx为服务器地址，1为通道1</span><br></pre></td></tr></table></figure></p>
+<p>以上的配置都需要bluetoothd的支持，如果是嵌入式系统，需要注意有没有这个程序</p>
+<p>以下是具体的代码实现，先上服务端<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br></pre></td><td class="code"><pre><span class="line">rfcomm_server.c</span><br><span class="line"></span><br><span class="line">#include &lt;stdio.h&gt;</span><br><span class="line">#include &lt;unistd.h&gt;</span><br><span class="line">#include &lt;sys/socket.h&gt;</span><br><span class="line">#include &lt;bluetooth/bluetooth.h&gt;</span><br><span class="line">#include &lt;bluetooth/rfcomm.h&gt;</span><br><span class="line"></span><br><span class="line">int str2ba(const char *str, bdaddr_t *ba)</span><br><span class="line">&#123;</span><br><span class="line">    uint8_t b[6];</span><br><span class="line">    const char *ptr = str;</span><br><span class="line">    int i;</span><br><span class="line"></span><br><span class="line">    for (i = 0; i &lt; 6; i++) </span><br><span class="line">    &#123;</span><br><span class="line">          b[i] = (uint8_t) strtol(ptr, NULL, 16);</span><br><span class="line">          if (i != 5 &amp;&amp; !(ptr = strchr(ptr, &apos;:&apos;)))</span><br><span class="line">           ptr = &quot;:00:00:00:00:00&quot;;</span><br><span class="line">          ptr++;</span><br><span class="line">      &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">void baswap(bdaddr_t *dst, const bdaddr_t *src)</span><br><span class="line">&#123;</span><br><span class="line">    unsigned char *d = (unsigned char *) dst;</span><br><span class="line">    const unsigned char *s = (const unsigned char *) src;</span><br><span class="line">    int i;</span><br><span class="line">    for (i = 0; i &lt; 6; i++)</span><br><span class="line">          d[i] = s[5-i];</span><br><span class="line">&#125;</span><br><span class="line">int ba2str(const bdaddr_t *ba, char *str)</span><br><span class="line">&#123;</span><br><span class="line">    uint8_t b[6];</span><br><span class="line"></span><br><span class="line">    baswap((bdaddr_t *) b, ba);</span><br><span class="line">    return sprintf(str, &quot;%2.2X:%2.2X:%2.2X:%2.2X:%2.2X:%2.2X&quot;,</span><br><span class="line">        b[0], b[1], b[2], b[3], b[4], b[5]);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">int main(int argc, char **argv)</span><br><span class="line">&#123;</span><br><span class="line">    struct sockaddr_rc loc_addr = &#123; 0 &#125;, rem_addr = &#123; 0 &#125;;</span><br><span class="line">    char buf[1024] = &#123; 0 &#125;;</span><br><span class="line">    int s, client, bytes_read;</span><br><span class="line">    socklen_t opt = sizeof(rem_addr);</span><br><span class="line">    </span><br><span class="line">    char write_buf[1204]=&quot;hello world&quot;;</span><br><span class="line">    char flag = 1;</span><br><span class="line">    char count=0;</span><br><span class="line">    // allocate socket</span><br><span class="line">    s = socket(AF_BLUETOOTH, SOCK_STREAM, BTPROTO_RFCOMM);</span><br><span class="line"></span><br><span class="line">    // bind socket to port 1 of the first available </span><br><span class="line">    // local bluetooth adapter</span><br><span class="line">    loc_addr.rc_family = AF_BLUETOOTH;</span><br><span class="line">    loc_addr.rc_bdaddr = *BDADDR_ANY;</span><br><span class="line">    loc_addr.rc_channel = (uint8_t) 1;</span><br><span class="line">    bind(s, (struct sockaddr *)&amp;loc_addr, sizeof(loc_addr));</span><br><span class="line"></span><br><span class="line">    // put socket into listening mode</span><br><span class="line">    listen(s, 1);</span><br><span class="line"></span><br><span class="line">    // accept one connection</span><br><span class="line">    client = accept(s, (struct sockaddr *)&amp;rem_addr, &amp;opt);</span><br><span class="line"></span><br><span class="line">    ba2str( &amp;rem_addr.rc_bdaddr, buf );</span><br><span class="line">    fprintf(stderr, &quot;accepted connection from %s\n&quot;, buf);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    while( flag )</span><br><span class="line">    &#123;</span><br><span class="line">        memset(buf, 0, sizeof(buf));</span><br><span class="line">#if 0</span><br><span class="line">        // read data from the client</span><br><span class="line">        bytes_read = read(client, buf, sizeof(buf));</span><br><span class="line">        if( bytes_read &gt; 0 ) </span><br><span class="line">        &#123;</span><br><span class="line">                printf(&quot;[rcv]:%s\n&quot;, buf);</span><br><span class="line">                    if(!strcmp(buf,&quot;exit&quot;))</span><br><span class="line">                    &#123;</span><br><span class="line">                        flag = 0;</span><br><span class="line">                    &#125;</span><br><span class="line">        //    write( client,write_buf,16 );</span><br><span class="line">        &#125;</span><br><span class="line">        usleep(5000);</span><br><span class="line">#endif</span><br><span class="line">#if 1</span><br><span class="line">//write data to client</span><br><span class="line">strcpy( buf, &quot;abcdefgh&quot; );</span><br><span class="line">bytes_read = 9;</span><br><span class="line">        write( client,buf,bytes_read );</span><br><span class="line">        usleep(50000);</span><br><span class="line">#endif</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    // close connection</span><br><span class="line">    close(client);</span><br><span class="line">    close(s);</span><br><span class="line">    return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>接着是客户端代码<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line">rfcomm_client.c</span><br><span class="line"></span><br><span class="line">#include &lt;stdio.h&gt;</span><br><span class="line">#include &lt;sys/types.h&gt;</span><br><span class="line"> #include &lt;sys/stat.h&gt;</span><br><span class="line"> #include &lt;fcntl.h&gt;</span><br><span class="line"> #include &lt;unistd.h&gt;</span><br><span class="line"> #include &lt;string.h&gt;</span><br><span class="line">int main( int argc, char **argv ) </span><br><span class="line">&#123;</span><br><span class="line">    int fd ;</span><br><span class="line">    unsigned char buff[64] = &quot;hello&quot;;</span><br><span class="line">    char read_buff[128] = &#123;0&#125;;</span><br><span class="line">    int read_n;</span><br><span class="line">    int write_n;</span><br><span class="line">    fd = open( &quot;/dev/rfcomm0&quot;,O_RDWR);</span><br><span class="line">    </span><br><span class="line">    if( fd&lt;0 )</span><br><span class="line">        printf( &quot;open rfcomm0 error\n&quot; );</span><br><span class="line">        </span><br><span class="line">    while(1)</span><br><span class="line">    &#123;</span><br><span class="line">#if 0</span><br><span class="line">    //    printf( &quot;write hello to rfcomm\n&quot; );    </span><br><span class="line">        write_n = write( fd, buff, 64 );</span><br><span class="line">        if( write_n&lt;0)</span><br><span class="line">            printf( &quot;write error\n&quot; );</span><br><span class="line">        else if(write_n==0)</span><br><span class="line">            printf( &quot;write nothing\n&quot; );</span><br><span class="line">        else</span><br><span class="line">            printf( &quot;write %d byte\n&quot;,write_n );</span><br><span class="line">    //    sleep(1);</span><br><span class="line">#endif</span><br><span class="line">#if 1</span><br><span class="line">        memset( read_buff, 0, sizeof(read_buff) );</span><br><span class="line">        read_n = read( fd, read_buff, sizeof(read_buff) );</span><br><span class="line">        if( read_n &gt; 0 )</span><br><span class="line">            &#123;</span><br><span class="line">                printf( &quot;[receive]:%s\n&quot;,read_buff );</span><br><span class="line">            &#125;</span><br><span class="line">            </span><br><span class="line">            usleep(50000);</span><br><span class="line">            #endif</span><br><span class="line">    &#125;</span><br><span class="line">    close(fd);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>以下是一个扫描蓝牙设备的demo</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line">#include &lt;stdio.h&gt; </span><br><span class="line">#include &lt;stdlib.h&gt; </span><br><span class="line">#include &lt;unistd.h&gt; </span><br><span class="line">#include &lt;sys/socket.h&gt; </span><br><span class="line">#include &lt;bluetooth/bluetooth.h&gt; </span><br><span class="line">#include &lt;bluetooth/hci.h&gt; #include &lt;bluetooth/hci_lib.h&gt; </span><br><span class="line"> </span><br><span class="line">int main(int argc, char **argv) </span><br><span class="line">&#123; </span><br><span class="line">    inquiry_info *ii = NULL; </span><br><span class="line">    int max_rsp, num_rsp; </span><br><span class="line">    int dev_id, sock, len, flags; </span><br><span class="line">    int i; </span><br><span class="line">    char addr[19] = &#123; 0 &#125;; </span><br><span class="line">    char name[248] = &#123; 0 &#125;; </span><br><span class="line"> </span><br><span class="line">   dev_id = hci_get_route(NULL); </span><br><span class="line">    sock = hci_open_dev( dev_id ); </span><br><span class="line">    if (dev_id &lt; 0 || sock &lt; 0) &#123; </span><br><span class="line">        perror(&quot;opening socket&quot;); </span><br><span class="line">        exit(1); </span><br><span class="line">    &#125; </span><br><span class="line"> </span><br><span class="line">    len = 8; </span><br><span class="line">    max_rsp = 255; </span><br><span class="line">    flags = IREQ_CACHE_FLUSH; </span><br><span class="line">    ii = (inquiry_info*)malloc(max_rsp * sizeof(inquiry_info)); </span><br><span class="line">     </span><br><span class="line">    num_rsp = hci_inquiry(dev_id, len, max_rsp, NULL, &amp;ii, flags); </span><br><span class="line">    if( num_rsp &lt; 0 ) perror(&quot;hci_inquiry&quot;); </span><br><span class="line"> </span><br><span class="line">    for (i = 0; i &lt; num_rsp; i++) &#123; </span><br><span class="line">        ba2str(&amp;(ii+i)-&gt;bdaddr, addr); </span><br><span class="line">        memset(name, 0, sizeof(name)); </span><br><span class="line">        if (hci_read_remote_name(sock, &amp;(ii+i)-&gt;bdaddr, sizeof(name),  </span><br><span class="line">            name, 0) &lt; 0) </span><br><span class="line">        strcpy(name, &quot;[unknown]&quot;); </span><br><span class="line">        printf(&quot;%s %s\n&quot;, addr, name); </span><br><span class="line">    &#125; </span><br><span class="line"> </span><br><span class="line">    free( ii ); </span><br><span class="line">    close( sock ); </span><br><span class="line">    return 0; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    <div class="article-footer">
+      <blockquote class="mt-2x">
+  <ul class="post-copyright list-unstyled">
+    
+    <li class="post-copyright-link hidden-xs">
+      <strong>本文链接：</strong>
+      <a href="http://mijiku.com.cn/blog/2020/12/31/linux下蓝牙服务端和客户端编写/" title="linux 蓝牙服务端和客户端编写" target="_blank" rel="external">http://mijiku.com.cn/blog/2020/12/31/linux下蓝牙服务端和客户端编写/</a>
+    </li>
+    
+    <li class="post-copyright-license">
+      <strong>版权声明： </strong> 本博客所有文章除特别声明外，均采用 <a href="http://creativecommons.org/licenses/by/4.0/deed.zh" target="_blank" rel="external">CC BY 4.0 CN协议</a> 许可协议。转载请注明出处！
+    </li>
+  </ul>
+</blockquote>
+
+
+<div class="panel panel-default panel-badger">
+  <div class="panel-body">
+    <figure class="media">
+      <div class="media-left">
+        <a href="https://github.com/kof98765" target="_blank" class="img-burn thumb-sm visible-lg">
+          <img src="/blog/images/head.jpg" class="img-rounded w-full" alt>
+        </a>
+      </div>
+      <div class="media-body">
+        <h3 class="media-heading"><a href="https://github.com/kof98765" target="_blank"><span class="text-dark">陶大少</span><small class="ml-1x">野火烧不尽，春风吹又生</small></a></h3>
+        <div>塞尔达传说</div>
+      </div>
+    </figure>
+  </div>
+</div>
+
+
+    </div>
+  </article>
+  
+    
+  <section id="comments">
+  	
+           
+    
+  </section>
+
+
+  
+</div>
+
+  <nav class="bar bar-footer clearfix" data-stick-bottom>
+  <div class="bar-inner">
+  
+  <ul class="pager pull-left">
+    
+    
+    <li class="next">
+      <a href="/blog/2020/12/31/linux下虚拟串口的使用/" title="linux下虚拟串口的使用"><span>下一篇&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
+    </li>
+    
+    
+  </ul>
+  
+  
+  
+  <div class="bar-right">
+    
+    <div class="share-component" data-sites="weibo,qq,wechat" data-mobile-sites="weibo,qq,qzone"></div>
+    
+  </div>
+  </div>
+</nav>
+  
+
+
+</main>
+
+  <footer class="footer" itemscope itemtype="http://schema.org/WPFooter">
+	
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/kof98765" target="_blank" title="Github" data-toggle="tooltip" data-placement="top"><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="http://weibo.com/98765kof" target="_blank" title="Weibo" data-toggle="tooltip" data-placement="top"><i class="icon icon-weibo"></i></a></li>
+        
+        <li><a href="/blog/atom.xml" target="_blank" title="Rss" data-toggle="tooltip" data-placement="top"><i class="icon icon-rss"></i></a></li>
+        
+    </ul>
+
+    <div class="copyright">
+    	
+        <div class="publishby">
+        	Theme by <a href="https://github.com/cofess" target="_blank"> cofess </a>base on <a href="https://github.com/cofess/hexo-theme-pure" target="_blank">pure</a>.
+        </div>
+    </div>
+</footer>
+  <script src="/js/jquery.min.js"></script>
+<script>
+window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
+</script>
+<script src="/blog/js/plugin.min.js"></script>
+<script src="/blog/js/application.js"></script>
+
+    <script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/blog/',
+        CONTENT_URL: '/blog/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/blog/js/insight.js"></script>
+
+
+
+
+
+   
+
+
+
+
+   
+    
+  <!-- <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css"> -->
+  <script src="/js/gitalk.min.js"></script>
+  <script src="/js/md5.min.js"></script>
+  <script type="text/javascript">
+  var gitalk = new Gitalk({
+    clientID: '18d1dbf08be917781fd0',
+    clientSecret: 'f87d036360e8a7c25e6810211f149b4b8955b8f3',
+    repo: 'blog_by_talk',
+    owner: 'kof98765',
+    admin: ['kof98765'],
+    id: md5(location.pathname),
+    distractionFreeMode: true
+  })
+  gitalk.render('comments')
+  </script>
+
+      
+
+
+
+
+
+
+
+
+</body>
+</html>
