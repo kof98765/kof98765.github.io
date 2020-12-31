@@ -17,16 +17,16 @@
   <meta http-equiv="window-target" content="_top">
   
   
-  <title>归档: 2019/5 | blog</title>
+  <title>blog</title>
   <meta property="og:type" content="website">
 <meta property="og:title" content="privatearea">
-<meta property="og:url" content="http://mijiku.com.cn/blog/archives/2019/05/index.html">
+<meta property="og:url" content="http://mijiku.com.cn/blog/page/3/index.html">
 <meta property="og:site_name" content="privatearea">
 <meta property="og:locale" content="zh-CN">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="privatearea">
   <!-- Canonical links -->
-  <link rel="canonical" href="http://mijiku.com.cn/blog/archives/2019/05/index.html">
+  <link rel="canonical" href="http://mijiku.com.cn/blog/page/3/index.html">
   
     <link rel="alternate" href="/atom.xml" title="privatearea" type="application/atom+xml">
   
@@ -289,80 +289,115 @@
 </aside>
 
   
+  <main class="main" role="main">
   
-<main class="main" role="main">
-  	<article class="content article article-archives article-type-list" itemscope>
-	    <header class="article-header">
-	      <h1 itemprop="title">归档: 2019/5</h1>
-	      <p class="text-muted">共 4 篇文章</p>
-	    </header>
-	    <div class="article-body">
-	      
   
+    <div class="content">
+  <article id="post-关于Qt输出中文文件名乱码的问题" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
+    
+    <div class="article-header">
+      
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/blog/2017/03/07/关于Qt输出中文文件名乱码的问题/">关于Qt输出中文文件名乱码的问题</a>
+    </h1>
+  
+
+      
+      <div class="article-meta">
+        <span class="article-date">
+    <i class="icon icon-calendar-check"></i>
+	<a href="/blog/2017/03/07/关于Qt输出中文文件名乱码的问题/" class="article-date">
+	  <time datetime="2017-03-07T04:21:26.000Z" itemprop="datePublished">2017-03-07</time>
+	</a>
+</span>
+        
+        
+
+        
+
+        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/blog/2017/03/07/关于Qt输出中文文件名乱码的问题/#comments" class="article-comment-link">评论</a></span>
+        
+      </div>
+    </div>
+    <div class="article-entry marked-body" itemprop="articleBody">
+      
+        <p>最近为项目添加一个电能数据导出的功能<br>导出的格式为csv,一开始文件名是1.csv,2.csv这样的，不过客户不满意呀〜〜<br>那只能改成带有中文的呗</p>
+<p>环境：嵌入式linux<br>文件编码:utf-8</p>
+<p>QFile f;<br>QString head=QString(“time,current,voltage,activePower,reactivePower,energy\n”);<br>QString name=QString(“%1/直流支路%2数据.csv”).arg(“data”).arg(i+1);<br>QString energyData=”12344”;<br>f.setFileName(name);<br>f.open(QIODevice::WriteOnly);<br>f.write(head.toLocal8Bit());<br>f.write(energyData.toUtf8());<br>f.close();</p>
+<p>在嵌入式linux下，输出的文件名是乱码〜，因为在嵌入式linux下没有做中文处理<br>不要紧，把文件输出到windows就行<br>有一点要注意，这块代码的编码必须是utf-8的。。。<br>平时我处理中文的时候，一般都会使用gbk编码来存代码，结果嘛，各种乱码输出。。。</p>
+<p>这段代码唯一不足的就是head不能是中文，残念。。</p>
+
+      
+    </div>
+    <div class="article-footer">
+      <blockquote class="mt-2x">
+  <ul class="post-copyright list-unstyled">
+    
+    <li class="post-copyright-link hidden-xs">
+      <strong>本文链接：</strong>
+      <a href="http://mijiku.com.cn/blog/2017/03/07/关于Qt输出中文文件名乱码的问题/" title="关于Qt输出中文文件名乱码的问题" target="_blank" rel="external">http://mijiku.com.cn/blog/2017/03/07/关于Qt输出中文文件名乱码的问题/</a>
+    </li>
+    
+    <li class="post-copyright-license">
+      <strong>版权声明： </strong> 本博客所有文章除特别声明外，均采用 <a href="http://creativecommons.org/licenses/by/4.0/deed.zh" target="_blank" rel="external">CC BY 4.0 CN协议</a> 许可协议。转载请注明出处！
+    </li>
+  </ul>
+</blockquote>
+
+
+<div class="panel panel-default panel-badger">
+  <div class="panel-body">
+    <figure class="media">
+      <div class="media-left">
+        <a href="https://github.com/kof98765" target="_blank" class="img-burn thumb-sm visible-lg">
+          <img src="/blog/images/head.jpg" class="img-rounded w-full" alt>
+        </a>
+      </div>
+      <div class="media-body">
+        <h3 class="media-heading"><a href="https://github.com/kof98765" target="_blank"><span class="text-dark">陶大少</span><small class="ml-1x">野火烧不尽，春风吹又生</small></a></h3>
+        <div>塞尔达传说</div>
+      </div>
+    </figure>
+  </div>
+</div>
+
+
+    </div>
+  </article>
+  
+</div>
+
+  
+
   
     
-    
-      
-      
-      <section class="panel panel-default b-no">
-        <div class="panel-heading" role="tab">
-          <h3 class="panel-title">
-            <a data-toggle="collapse" href="#collapse2019" aria-expanded="true">
-              <i class="icon icon-calendar-plus text-active"></i><i class="icon icon-calendar-minus text"></i>
-              2019
-            </a>
-            <!-- <a href="/blog/archives/2019" class="archive-year">2019</a> -->
-          </h3>
+    <nav class="bar bar-footer clearfix" data-stick-bottom>
+        <div class="bar-inner">
+        <ul class="pager pull-left">
+            
+            <li class="prev">
+                <a href="/blog/page/2/">
+                    <i class="icon icon-angle-left"></i>
+                    上一页
+                </a>
+            </li>
+            
+            
+            <li class="next disabled">
+                <a href="javascript:;">
+                    下一页
+                    <i class="icon icon-angle-right"></i>                    
+                </a>
+            </li>
+            
+        </ul>
+        <div class="total-article bar-right">Page 3 of 3</div>
         </div>
-        <div id="collapse2019" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="heading2019">
-        <div class="panel-body">
-          <div class="collection">
+    </nav>
     
-    
-<a href="/blog/2019/05/21/使用mongoose搭建嵌入式网页服务器-二/" class="collection-item" target="_blank" itemprop="url">
-  <time datetime="2019-05-21T05:00:39.000Z" itemprop="datePublished">2019-05-21</time>
-  <span>&nbsp;&nbsp;&nbsp;</span> 使用mongoose搭建嵌入式网页服务器(二)
-</a>
-
-
-  
-    
-    
-    
-<a href="/blog/2019/05/21/使用mongoose搭建嵌入式网页服务器/" class="collection-item" target="_blank" itemprop="url">
-  <time datetime="2019-05-21T05:00:03.000Z" itemprop="datePublished">2019-05-21</time>
-  <span>&nbsp;&nbsp;&nbsp;</span> 使用mongoose搭建嵌入式网页服务器(一)
-</a>
-
-
-  
-    
-    
-    
-<a href="/blog/2019/05/21/嵌入式linux下使用mutt发送带附件的邮件/" class="collection-item" target="_blank" itemprop="url">
-  <time datetime="2019-05-21T00:37:56.000Z" itemprop="datePublished">2019-05-21</time>
-  <span>&nbsp;&nbsp;&nbsp;</span> 嵌入式linux下使用mutt发送带附件的邮件
-</a>
-
-
-  
-    
-    
-    
-<a href="/blog/2019/05/13/嵌入式linux下使用msmtp发送邮件/" class="collection-item" target="_blank" itemprop="url">
-  <time datetime="2019-05-13T10:30:17.000Z" itemprop="datePublished">2019-05-13</time>
-  <span>&nbsp;&nbsp;&nbsp;</span> 嵌入式linux下使用msmtp发送邮件
-</a>
-
-
-  
-  
-    </div></div></div></section>
-  
-
-	    </div>
-  	</article>
-  	 	
+ 
 </main>
 
   <footer class="footer" itemscope itemtype="http://schema.org/WPFooter">
@@ -411,6 +446,10 @@ window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
 <script src="/blog/js/insight.js"></script>
 
 
+
+
+
+   
 
 
 
