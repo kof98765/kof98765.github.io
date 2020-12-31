@@ -17,20 +17,21 @@
   <meta http-equiv="window-target" content="_top">
   
   
-  <title>About | blog</title>
-  <meta name="description" content="QQ:277835572weixin:kof98765mail:277835572@qq.com">
-<meta property="og:type" content="website">
-<meta property="og:title" content="About">
-<meta property="og:url" content="http://mijiku.com.cn/blog/about/index.html">
+  <title>blog</title>
+  <meta name="description" content="由于公司使用代理上网，无法通过ssh的方式clone在自己服务器上的仓库代码，所以研究了这个方法来使用git 创建git仓库12345$ cd /home$ mkdir git$ cd /home/git$ git init --bare test.git    //初始化仓库$ chown -R www-data:www-data ../git //使用http访问的话，一般指定www-data">
+<meta name="keywords" content="linux">
+<meta property="og:type" content="article">
+<meta property="og:title" content="privatearea">
+<meta property="og:url" content="http://mijiku.com.cn/blog/2020/12/31/搭建支持http访问的git服务/index.html">
 <meta property="og:site_name" content="privatearea">
-<meta property="og:description" content="QQ:277835572weixin:kof98765mail:277835572@qq.com">
+<meta property="og:description" content="由于公司使用代理上网，无法通过ssh的方式clone在自己服务器上的仓库代码，所以研究了这个方法来使用git 创建git仓库12345$ cd /home$ mkdir git$ cd /home/git$ git init --bare test.git    //初始化仓库$ chown -R www-data:www-data ../git //使用http访问的话，一般指定www-data">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-04-28T08:38:28.676Z">
+<meta property="og:updated_time" content="2020-12-31T07:24:53.665Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="About">
-<meta name="twitter:description" content="QQ:277835572weixin:kof98765mail:277835572@qq.com">
+<meta name="twitter:title" content="privatearea">
+<meta name="twitter:description" content="由于公司使用代理上网，无法通过ssh的方式clone在自己服务器上的仓库代码，所以研究了这个方法来使用git 创建git仓库12345$ cd /home$ mkdir git$ cd /home/git$ git init --bare test.git    //初始化仓库$ chown -R www-data:www-data ../git //使用http访问的话，一般指定www-data">
   <!-- Canonical links -->
-  <link rel="canonical" href="http://mijiku.com.cn/blog/about/index.html">
+  <link rel="canonical" href="http://mijiku.com.cn/blog/2020/12/31/搭建支持http访问的git服务/index.html">
   
     <link rel="alternate" href="/atom.xml" title="privatearea" type="application/atom+xml">
   
@@ -296,37 +297,43 @@
   
 <main class="main" role="main">
   <div class="content">
-  <article id="abount-undefined" class="article article-type-abount" itemscope itemtype="http://schema.org/BlogPosting">
+  <article id="post-搭建支持http访问的git服务" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
     
     <div class="article-header">
-      
-        
-  
-    <h1 class="article-title" itemprop="name">
-      About
-    </h1>
-  
-
       
       <div class="article-meta">
         <span class="article-date">
     <i class="icon icon-calendar-check"></i>
-	<a href="/blog/about/index.html" class="article-date">
-	  <time datetime="2019-04-24T02:09:54.000Z" itemprop="datePublished">2019-04-24</time>
+	<a href="/blog/2020/12/31/搭建支持http访问的git服务/" class="article-date">
+	  <time datetime="2020-12-31T07:24:53.665Z" itemprop="datePublished">2020-12-31</time>
 	</a>
 </span>
         
         
+  <span class="article-tag">
+    <i class="icon icon-tags"></i>
+	<a class="article-tag-link" href="/blog/tags/linux/">linux</a>
+  </span>
+
 
         
 
-        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/blog/about/index.html#comments" class="article-comment-link">评论</a></span>
+        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/blog/2020/12/31/搭建支持http访问的git服务/#comments" class="article-comment-link">评论</a></span>
         
       </div>
     </div>
     <div class="article-entry marked-body" itemprop="articleBody">
       
-        <p>QQ:277835572<br>weixin:kof98765<br>mail:<a href="mailto:277835572@qq.com" target="_blank" rel="noopener">277835572@qq.com</a></p>
+        <p>由于公司使用代理上网，无法通过ssh的方式clone在自己服务器上的仓库代码，所以研究了这个方法来使用git</p>
+<h3 id="创建git仓库"><a href="#创建git仓库" class="headerlink" title="创建git仓库"></a>创建git仓库</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ cd /home</span><br><span class="line">$ mkdir git</span><br><span class="line">$ cd /home/git</span><br><span class="line">$ git init --bare test.git    //初始化仓库</span><br><span class="line">$ chown -R www-data:www-data ../git //使用http访问的话，一般指定www-data用户，具体设置哪一个，需要看后面的nginx服务怎么配</span><br></pre></td></tr></table></figure>
+<p>有了仓库之后，就可以使用 git clone <a href="mailto:www-data@127.0.0.1" target="_blank" rel="noopener">www-data@127.0.0.1</a>/test.git 拉取代码了，下面开始搭建http服务器</p>
+<p>需要先安装nginx和fcgiwrap,ubuntu下安装命令是<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">apt-get install nginx</span><br><span class="line">apt-get install fcgiwrap</span><br></pre></td></tr></table></figure></p>
+<h3 id="添加nginx的配置文件"><a href="#添加nginx的配置文件" class="headerlink" title="添加nginx的配置文件"></a>添加nginx的配置文件</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">vim /etc/nginx/conf.d/git.conf</span><br><span class="line">server&#123;</span><br><span class="line">listen      80;</span><br><span class="line">        server_name localhost;</span><br><span class="line"></span><br><span class="line">        client_max_body_size 100m;</span><br><span class="line"></span><br><span class="line">        auth_basic &quot;git&quot;;</span><br><span class="line">        auth_basic_user_file /home/git//pass.db;</span><br><span class="line"></span><br><span class="line">        location ~(/.*) &#123;</span><br><span class="line">           fastcgi_pass  unix:/tmp/cgi.sock;</span><br><span class="line">           fastcgi_param SCRIPT_FILENAME   /usr/lib/git-core/git-http-backend;</span><br><span class="line">           fastcgi_param PATH_INFO         $1;</span><br><span class="line">           fastcgi_param GIT_HTTP_EXPORT_ALL &quot;&quot;;</span><br><span class="line">           fastcgi_param GIT_PROJECT_ROOT  /home/git;</span><br><span class="line">           fastcgi_param REMOTE_USER $remote_user;</span><br><span class="line">           include fastcgi_params;</span><br><span class="line">        &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>以上配置，需要注意/usr/lib/git-core/git-http-backend，当前git的版本不一样，可能位置也不一样，需要提前检查下</p>
+<h3 id="修改nginx的工作用户"><a href="#修改nginx的工作用户" class="headerlink" title="修改nginx的工作用户"></a>修改nginx的工作用户</h3><p>nginx默认是nobody, 这里我们改为www-data,<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">vim /etc/nginx/nginx.conf</span><br><span class="line">#user nobody;</span><br><span class="line">user www-data;</span><br></pre></td></tr></table></figure></p>
+<p>重新启动nginx<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/etc/init.d/nginx restart</span><br></pre></td></tr></table></figure></p>
+<h3 id="生成用户密码"><a href="#生成用户密码" class="headerlink" title="生成用户密码"></a>生成用户密码</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">htpasswd -c -d /home/git/passwd.db test</span><br></pre></td></tr></table></figure>
+<p>输入密码之后就可以通过git clone <a href="http://127.0.0.1/test.git下载代码了" target="_blank" rel="noopener">http://127.0.0.1/test.git下载代码了</a></p>
 
       
     </div>
@@ -336,7 +343,7 @@
     
     <li class="post-copyright-link hidden-xs">
       <strong>本文链接：</strong>
-      <a href="http://mijiku.com.cn/blog/about/index.html" title="About" target="_blank" rel="external">http://mijiku.com.cn/blog/about/index.html</a>
+      <a href="http://mijiku.com.cn/blog/2020/12/31/搭建支持http访问的git服务/" title target="_blank" rel="external">http://mijiku.com.cn/blog/2020/12/31/搭建支持http访问的git服务/</a>
     </li>
     
     <li class="post-copyright-license">
@@ -379,6 +386,16 @@
 
   <nav class="bar bar-footer clearfix" data-stick-bottom>
   <div class="bar-inner">
+  
+  <ul class="pager pull-left">
+    
+    
+    <li class="next">
+      <a href="/blog/2020/12/30/linux下将根文件系统打包为镜像/" title="Linux下将根文件系统打包为镜像"><span>下一篇&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
+    </li>
+    
+    
+  </ul>
   
   
   
@@ -440,6 +457,10 @@ window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
 <script src="/blog/js/insight.js"></script>
 
 
+
+
+
+   
 
 
 
