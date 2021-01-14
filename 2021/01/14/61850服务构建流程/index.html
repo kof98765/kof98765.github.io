@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="format-detection" content="telephone=no,email=no,adress=no">
+  <!-- Color theme for statusbar -->
+  <meta name="theme-color" content="#000000">
+  <!-- 强制页面在当前窗口以独立页面显示,防止别人在框架里调用页面 -->
+  <meta http-equiv="window-target" content="_top">
+  
+  
+  <title>61850构建流程 | blog</title>
+  <meta name="description" content="要搭建一个61850服务器，可以通过libiec61850这个开源库实现 首先是源码下载，网址为libiec61850.com/libiec61850/downloads,此文使用的是libiec61850-1.4.2.1.tar.gz 接下来是编译12345678tar xvf libiec61850-1.4.2.1.tar.gzcd libiec61850-1.4.2.1mkdir build">
+<meta name="keywords" content="61850">
+<meta property="og:type" content="article">
+<meta property="og:title" content="61850构建流程">
+<meta property="og:url" content="http://mijiku.com.cn/blog/2021/01/14/61850服务构建流程/index.html">
+<meta property="og:site_name" content="privatearea">
+<meta property="og:description" content="要搭建一个61850服务器，可以通过libiec61850这个开源库实现 首先是源码下载，网址为libiec61850.com/libiec61850/downloads,此文使用的是libiec61850-1.4.2.1.tar.gz 接下来是编译12345678tar xvf libiec61850-1.4.2.1.tar.gzcd libiec61850-1.4.2.1mkdir build">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2021-01-14T08:32:18.592Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="61850构建流程">
+<meta name="twitter:description" content="要搭建一个61850服务器，可以通过libiec61850这个开源库实现 首先是源码下载，网址为libiec61850.com/libiec61850/downloads,此文使用的是libiec61850-1.4.2.1.tar.gz 接下来是编译12345678tar xvf libiec61850-1.4.2.1.tar.gzcd libiec61850-1.4.2.1mkdir build">
+  <!-- Canonical links -->
+  <link rel="canonical" href="http://mijiku.com.cn/blog/2021/01/14/61850服务构建流程/index.html">
+  
+    <link rel="alternate" href="/atom.xml" title="privatearea" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png" type="image/x-icon">
+  
+  <link rel="stylesheet" href="/blog/css/style.css">
+  
+  
+  
+  
+    <link rel="stylesheet" href="/css//gitalk.min.css">
+  
+</head>
+
+
+<body class="main-center" itemscope itemtype="http://schema.org/WebPage">
+  <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+  <div class="slimContent">
+    <div class="navbar-header">
+      
+      
+      <div class="profile-block text-center">
+        <a id="avatar" href="https://github.com/kof98765" target="_blank">
+          <img class="img-circle img-rotate" src="/blog/images/head.jpg" width="200" height="200">
+        </a>
+        <h2 id="name" class="hidden-xs hidden-sm">陶大少</h2>
+        <h3 id="title" class="hidden-xs hidden-sm hidden-md">野火烧不尽，春风吹又生</h3>
+        <small id="location" class="text-muted hidden-xs hidden-sm"><i class="icon icon-map-marker"></i> Dongguan, China</small>
+      </div>
+      
+      <div class="search" id="search-form-wrap">
+
+    <form class="search-form sidebar-form">
+        <div class="input-group">
+            <input type="text" class="search-form-input form-control" placeholder="搜索">
+            <span class="input-group-btn">
+                <button type="submit" class="search-form-submit btn btn-flat" onclick="return false;"><i class="icon icon-search"></i></button>
+            </span>
+        </div>
+    </form>
+    <div class="ins-search">
+  <div class="ins-search-mask"></div>
+  <div class="ins-search-container">
+    <div class="ins-input-wrapper">
+      <input type="text" class="ins-search-input" placeholder="想要查找什么..." x-webkit-speech>
+      <button type="button" class="close ins-close ins-selectable" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+    </div>
+    <div class="ins-section-wrapper">
+      <div class="ins-section-container"></div>
+    </div>
+  </div>
+</div>
+
+
+</div>
+      <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#main-navbar" aria-controls="main-navbar" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <nav id="main-navbar" class="collapse navbar-collapse" itemscope itemtype="http://schema.org/SiteNavigationElement" role="navigation">
+      <ul class="nav navbar-nav main-nav ">
+        
+        
+        <li class="menu-item menu-item-home">
+          <a href="/blog/.">
+            
+            <i class="icon icon-home-fill"></i>
+            
+            <span class="menu-title">首页</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/blog/archives">
+            
+            <i class="icon icon-archives-fill"></i>
+            
+            <span class="menu-title">归档</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/blog/tags">
+            
+            <i class="icon icon-tags"></i>
+            
+            <span class="menu-title">标签</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-about">
+          <a href="/blog/about">
+            
+            <i class="icon icon-cup-fill"></i>
+            
+            <span class="menu-title">关于</span>
+          </a>
+        </li>
+        
+      </ul>
+      
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/kof98765" target="_blank" title="Github" data-toggle="tooltip" data-placement="top"><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="http://weibo.com/98765kof" target="_blank" title="Weibo" data-toggle="tooltip" data-placement="top"><i class="icon icon-weibo"></i></a></li>
+        
+        <li><a href="/blog/atom.xml" target="_blank" title="Rss" data-toggle="tooltip" data-placement="top"><i class="icon icon-rss"></i></a></li>
+        
+    </ul>
+
+    </nav>
+  </div>
+</header>
+
+  
+    <aside class="sidebar" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    
+      <div class="widget">
+    <h3 class="widget-title">公告</h3>
+    <div class="widget-body">
+        <div id="board">
+            <div class="content">
+                <p>欢迎交流与分享经验!</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+      
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget-body">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/blog/tags/61850/">61850</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/blog/tags/git/">git</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/blog/tags/linux/">linux</a><span class="tag-list-count">6</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget-body tagcloud">
+      <a href="/blog/tags/61850/" style="font-size: 13.5px;">61850</a> <a href="/blog/tags/git/" style="font-size: 13px;">git</a> <a href="/blog/tags/linux/" style="font-size: 14px;">linux</a>
+    </div>
+  </div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget-body">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/blog/archives/2021/01/">一月 2021</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/blog/archives/2020/12/">十二月 2020</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/blog/archives/2019/11/">十一月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/blog/archives/2019/05/">五月 2019</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/blog/archives/2019/04/">四月 2019</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/blog/archives/2017/03/">三月 2017</a><span class="archive-list-count">3</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget-body">
+      <ul class="recent-post-list list-unstyled no-thumbnail">
+        
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                
+              </p>
+              <p class="item-title">
+                <a href="/blog/2021/01/14/IEC61850建模说明/" class="title">IEC61850建模说明</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2021-01-14T03:12:36.209Z" itemprop="datePublished">2021-01-14</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                
+              </p>
+              <p class="item-title">
+                <a href="/blog/2021/01/14/61850服务构建流程/" class="title">61850构建流程</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2021-01-14T01:58:48.549Z" itemprop="datePublished">2021-01-14</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                
+              </p>
+              <p class="item-title">
+                <a href="/blog/2020/12/31/蓝牙profile简介/" class="title">蓝牙profile简介</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2020-12-31T08:41:11.458Z" itemprop="datePublished">2020-12-31</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                
+              </p>
+              <p class="item-title">
+                <a href="/blog/2020/12/31/蓝牙各版本之前的区别/" class="title">蓝牙各版本之间的区别</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2020-12-31T08:29:31.819Z" itemprop="datePublished">2020-12-31</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                
+              </p>
+              <p class="item-title">
+                <a href="/blog/2020/12/31/linux下蓝牙服务端和客户端编写/" class="title">linux 蓝牙服务端和客户端编写</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2020-12-31T08:24:13.593Z" itemprop="datePublished">2020-12-31</time>
+              </p>
+            </div>
+          </li>
+          
+      </ul>
+    </div>
+  </div>
+  
+
+    
+  </div>
+</aside>
+
+  
+  
+<main class="main" role="main">
+  <div class="content">
+  <article id="post-61850服务构建流程" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
+    
+    <div class="article-header">
+      
+        
+  
+    <h1 class="article-title" itemprop="name">
+      61850构建流程
+    </h1>
+  
+
+      
+      <div class="article-meta">
+        <span class="article-date">
+    <i class="icon icon-calendar-check"></i>
+	<a href="/blog/2021/01/14/61850服务构建流程/" class="article-date">
+	  <time datetime="2021-01-14T01:58:48.549Z" itemprop="datePublished">2021-01-14</time>
+	</a>
+</span>
+        
+        
+  <span class="article-tag">
+    <i class="icon icon-tags"></i>
+	<a class="article-tag-link" href="/blog/tags/61850/">61850</a>
+  </span>
+
+
+        
+
+        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/blog/2021/01/14/61850服务构建流程/#comments" class="article-comment-link">评论</a></span>
+        
+      </div>
+    </div>
+    <div class="article-entry marked-body" itemprop="articleBody">
+      
+        <p>要搭建一个61850服务器，可以通过libiec61850这个开源库实现</p>
+<p>首先是源码下载，网址为libiec61850.com/libiec61850/downloads,此文使用的是libiec61850-1.4.2.1.tar.gz</p>
+<p>接下来是编译<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">tar xvf libiec61850-1.4.2.1.tar.gz</span><br><span class="line">cd libiec61850-1.4.2.1</span><br><span class="line">mkdir build</span><br><span class="line">cd build</span><br><span class="line">export TOOLCHAIN /usr/local/arm-6ul/bin/arm-none-gnueabi-</span><br><span class="line">cmake -DCMAKE_INSTALL_PREFIX=/opt/libiec61850 ..</span><br><span class="line">make</span><br><span class="line">make install</span><br></pre></td></tr></table></figure></p>
+<p>执行完上面一堆操作后，在/opt/libiec61850下面就有编译好的库和头文件了</p>
+<p>libiec61850支持多种开发，C/C++,donet,python都可以使用，并且提供了demo，以下是C的用法 </p>
+<p>以一个61850服务为例，需要实现几点</p>
+<h4 id="服务端程序"><a href="#服务端程序" class="headerlink" title="服务端程序"></a>服务端程序</h4><h4 id="模型文件model-cfg"><a href="#模型文件model-cfg" class="headerlink" title="模型文件model.cfg"></a>模型文件model.cfg</h4><h4 id="测试程序IEDScount"><a href="#测试程序IEDScount" class="headerlink" title="测试程序IEDScount"></a>测试程序IEDScount</h4><p>服务端程序可以使用examples/server_example_config_file/server_example_config_file.c</p>
+<p>服务端程序需要一个模型配置文件,可以自己写一个，也可以直接使用源码提供的model.cfg<br>具体写法查看另一篇文章-<a href="blog/2021/01/14/IEC61850建模说明/">IEC61850建模说明</a></p>
+<p>示例中给出的数据点读取和写入方法是相当粗糙的，这里提供一个比较方便的使用方法，但这个方法有个前提就是，需要有一个icd文件，icd文件可以通过iedout这个软件导出，<br>具体流程是，先将示例代起运行起来，打开IEDScount,点击DiscoverIED,<br>输入设备ip,等获取到数据后，点击SaveSCL,选择保存类型为.icd即可<br>之后编缉icd文件，找到数据点，添加一个属性为sAddr=”1000”,sAddr就是数据点的数字id<br>通过源码中tools/model_generator中的.jar生成model.cfg，就能生成带sAddr的模型配置文件，这样代码中就能使用数字id来定位到数据对象，而不用名字了，具体定位代码如下：</p>
+<p>先是读取模型的代码<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br></pre></td><td class="code"><pre><span class="line"> /* open configuration file */</span><br><span class="line">FileHandle configFile = FileSystem_openFile(&quot;model.cfg&quot;, false);</span><br><span class="line"></span><br><span class="line">if (configFile == NULL) &#123;</span><br><span class="line">    printf(&quot;Error opening config file!\n&quot;);</span><br><span class="line">    return NULL;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">/* parse the configuration file and create the data model */</span><br><span class="line">IedModel* model = ConfigFileParser_createModelFromConfigFile(configFile);</span><br><span class="line"></span><br><span class="line">FileSystem_closeFile(configFile);</span><br><span class="line"></span><br><span class="line">if (model == NULL) &#123;</span><br><span class="line">    printf(&quot;Error parsing config file!\n&quot;);</span><br><span class="line">    return NULL;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">iedServer = IedServer_create(model);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">//接着是模型对象的获取</span><br><span class="line"></span><br><span class="line">DataAttribute* alarmAttribList[1500]=&#123;0&#125;;//用于存储告警对象</span><br><span class="line">DataAttribute* dataAttribList[1500]=&#123;0&#125;;//用于存储数据对象</span><br><span class="line">int i;</span><br><span class="line">int index=0;</span><br><span class="line">/*搜索模型配置中的1500个数据点*/</span><br><span class="line">for(i=0;i&lt;1500;i++)</span><br><span class="line">&#123;</span><br><span class="line">    DataAttribute* attrib=NULL;</span><br><span class="line">    index=40000+i;//数据点的起始地址是40000</span><br><span class="line">    attrib = (DataAttribute*)</span><br><span class="line">    IedModel_getModelNodeByShortAddress(model, index);</span><br><span class="line">    if(attrib!=NULL)</span><br><span class="line">    &#123;</span><br><span class="line">        dataAttribList[i]=attrib;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    index=20000+i;//告警点的起始地址是20000</span><br><span class="line">    attrib = (DataAttribute*)IedModel_getModelNodeByShortAddress(model, index);</span><br><span class="line">    if(attrib!=NULL)</span><br><span class="line">    &#123;</span><br><span class="line">        alarmAttribList[i]=attrib;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">//之后就可以启动服务了</span><br><span class="line"></span><br><span class="line"> IedServer_start(iedServer, tcpPort);</span><br><span class="line"></span><br><span class="line">    if (!IedServer_isRunning(iedServer)) &#123;</span><br><span class="line">        printf(&quot;Starting server failed! Exit.\n&quot;);</span><br><span class="line">        IedServer_destroy(iedServer);</span><br><span class="line">        return NULL;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">//服务启动完成后，就需要定时填充实时数据，实时数据是由其它模块采集的，这里只给出示例</span><br><span class="line"></span><br><span class="line"> while (1) &#123;</span><br><span class="line">        uint64_t timestamp = Hal_getTimeInMs()-28800000;//减8小时时差</span><br><span class="line">        t += 0.1f;</span><br><span class="line">        for(i=0;i&lt;1500;i++)</span><br><span class="line">        &#123;</span><br><span class="line">            IedServer_lockDataModel(iedServer);</span><br><span class="line">            Timestamp iecTimestamp;</span><br><span class="line">            Timestamp_clearFlags(&amp;iecTimestamp);</span><br><span class="line">            Timestamp_setTimeInMilliseconds(&amp;iecTimestamp, timestamp);</span><br><span class="line">            Timestamp_setLeapSecondKnown(&amp;iecTimestamp, true);</span><br><span class="line"></span><br><span class="line">            /* toggle clock-not-synchronized flag in timestamp */</span><br><span class="line">            if (((int) t % 2) == 0)</span><br><span class="line">                Timestamp_setClockNotSynchronized(&amp;iecTimestamp, true);</span><br><span class="line">            if(dataAttribList[i]!=NULL)</span><br><span class="line">            &#123;</span><br><span class="line">                DataAttribute*attrib=(DataAttribute*)ModelNode_getChild((ModelNode*)dataAttribList[i],&quot;i&quot;);</span><br><span class="line">                if(attrib)</span><br><span class="line">                &#123;</span><br><span class="line">                    IedServer_updateInt32AttributeValue(iedServer, attrib, GetDevIValue(0,40000+i));//更新数据到61850服务</span><br><span class="line">                &#125;</span><br><span class="line">                attrib=(DataAttribute*)ModelNode_getChild((ModelNode*)dataAttribList[i]-&gt;parent,&quot;t&quot;);</span><br><span class="line">                if(attrib)</span><br><span class="line">                &#123;</span><br><span class="line">                    IedServer_updateTimestampAttributeValue(iedServer,attrib, &amp;iecTimestamp);//更新采集的时间戳</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            if(alarmAttribList[i]!=NULL)</span><br><span class="line">            &#123;</span><br><span class="line">                IedServer_updateBooleanAttributeValue(iedServer, alarmAttribList[i], GetDevIValue(0,20000+i));//更新告警状态</span><br><span class="line">                DataAttribute*attrib=(DataAttribute*)ModelNode_getChild((ModelNode*)alarmAttribList[i]-&gt;parent,&quot;t&quot;);</span><br><span class="line">                if(attrib)</span><br><span class="line">                &#123;</span><br><span class="line">                    IedServer_updateTimestampAttributeValue(iedServer,attrib, &amp;iecTimestamp);//更新告警时间</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            IedServer_unlockDataModel(iedServer);</span><br><span class="line"></span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        Thread_sleep(100);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></p>
+
+      
+    </div>
+    <div class="article-footer">
+      <blockquote class="mt-2x">
+  <ul class="post-copyright list-unstyled">
+    
+    <li class="post-copyright-link hidden-xs">
+      <strong>本文链接：</strong>
+      <a href="http://mijiku.com.cn/blog/2021/01/14/61850服务构建流程/" title="61850构建流程" target="_blank" rel="external">http://mijiku.com.cn/blog/2021/01/14/61850服务构建流程/</a>
+    </li>
+    
+    <li class="post-copyright-license">
+      <strong>版权声明： </strong> 本博客所有文章除特别声明外，均采用 <a href="http://creativecommons.org/licenses/by/4.0/deed.zh" target="_blank" rel="external">CC BY 4.0 CN协议</a> 许可协议。转载请注明出处！
+    </li>
+  </ul>
+</blockquote>
+
+
+<div class="panel panel-default panel-badger">
+  <div class="panel-body">
+    <figure class="media">
+      <div class="media-left">
+        <a href="https://github.com/kof98765" target="_blank" class="img-burn thumb-sm visible-lg">
+          <img src="/blog/images/head.jpg" class="img-rounded w-full" alt>
+        </a>
+      </div>
+      <div class="media-body">
+        <h3 class="media-heading"><a href="https://github.com/kof98765" target="_blank"><span class="text-dark">陶大少</span><small class="ml-1x">野火烧不尽，春风吹又生</small></a></h3>
+        <div>塞尔达传说</div>
+      </div>
+    </figure>
+  </div>
+</div>
+
+
+    </div>
+  </article>
+  
+    
+  <section id="comments">
+  	
+           
+    
+  </section>
+
+
+  
+</div>
+
+  <nav class="bar bar-footer clearfix" data-stick-bottom>
+  <div class="bar-inner">
+  
+  <ul class="pager pull-left">
+    
+    <li class="prev">
+      <a href="/blog/2021/01/14/IEC61850建模说明/" title="IEC61850建模说明"><i class="icon icon-angle-left" aria-hidden="true"></i><span>&nbsp;&nbsp;上一篇</span></a>
+    </li>
+    
+    
+    <li class="next">
+      <a href="/blog/2020/12/31/蓝牙profile简介/" title="蓝牙profile简介"><span>下一篇&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
+    </li>
+    
+    
+  </ul>
+  
+  
+  
+  <div class="bar-right">
+    
+    <div class="share-component" data-sites="weibo,qq,wechat" data-mobile-sites="weibo,qq,qzone"></div>
+    
+  </div>
+  </div>
+</nav>
+  
+
+
+</main>
+
+  <footer class="footer" itemscope itemtype="http://schema.org/WPFooter">
+	
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/kof98765" target="_blank" title="Github" data-toggle="tooltip" data-placement="top"><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="http://weibo.com/98765kof" target="_blank" title="Weibo" data-toggle="tooltip" data-placement="top"><i class="icon icon-weibo"></i></a></li>
+        
+        <li><a href="/blog/atom.xml" target="_blank" title="Rss" data-toggle="tooltip" data-placement="top"><i class="icon icon-rss"></i></a></li>
+        
+    </ul>
+
+    <div class="copyright">
+    	
+        <div class="publishby">
+        	Theme by <a href="https://github.com/cofess" target="_blank"> cofess </a>base on <a href="https://github.com/cofess/hexo-theme-pure" target="_blank">pure</a>.
+        </div>
+    </div>
+</footer>
+  <script src="/js/jquery.min.js"></script>
+<script>
+window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
+</script>
+<script src="/blog/js/plugin.min.js"></script>
+<script src="/blog/js/application.js"></script>
+
+    <script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/blog/',
+        CONTENT_URL: '/blog/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/blog/js/insight.js"></script>
+
+
+
+
+
+   
+
+
+
+
+   
+    
+  <!-- <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css"> -->
+  <script src="/js/gitalk.min.js"></script>
+  <script src="/js/md5.min.js"></script>
+  <script type="text/javascript">
+  var gitalk = new Gitalk({
+    clientID: '18d1dbf08be917781fd0',
+    clientSecret: 'f87d036360e8a7c25e6810211f149b4b8955b8f3',
+    repo: 'blog_by_talk',
+    owner: 'kof98765',
+    admin: ['kof98765'],
+    id: md5(location.pathname),
+    distractionFreeMode: true
+  })
+  gitalk.render('comments')
+  </script>
+
+      
+
+
+
+
+
+
+
+
+</body>
+</html>

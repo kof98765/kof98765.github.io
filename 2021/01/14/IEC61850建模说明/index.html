@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="format-detection" content="telephone=no,email=no,adress=no">
+  <!-- Color theme for statusbar -->
+  <meta name="theme-color" content="#000000">
+  <!-- 强制页面在当前窗口以独立页面显示,防止别人在框架里调用页面 -->
+  <meta http-equiv="window-target" content="_top">
+  
+  
+  <title>IEC61850建模说明 | blog</title>
+  <meta name="description" content="1.概述IEC61850的数据建模，主要是看IEC1850标准的第7部分，变电站和馈线高备的基本通信结构(7-1,7-2,7-3,7-4)数据建模，实际上就是将设备的点表按照IEC61850标准的规则编写的一份点表文件，该点表以XML的格式描述，后缀名为.icd，另一个名字叫智能电子设备能力描述文件 1.1 IEC61850服务以下是61850的服务与传统功能的对比列表：    服务与传统变电站功">
+<meta name="keywords" content="61850">
+<meta property="og:type" content="article">
+<meta property="og:title" content="IEC61850建模说明">
+<meta property="og:url" content="http://mijiku.com.cn/blog/2021/01/14/IEC61850建模说明/index.html">
+<meta property="og:site_name" content="privatearea">
+<meta property="og:description" content="1.概述IEC61850的数据建模，主要是看IEC1850标准的第7部分，变电站和馈线高备的基本通信结构(7-1,7-2,7-3,7-4)数据建模，实际上就是将设备的点表按照IEC61850标准的规则编写的一份点表文件，该点表以XML的格式描述，后缀名为.icd，另一个名字叫智能电子设备能力描述文件 1.1 IEC61850服务以下是61850的服务与传统功能的对比列表：    服务与传统变电站功">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2021-01-14T08:32:21.862Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="IEC61850建模说明">
+<meta name="twitter:description" content="1.概述IEC61850的数据建模，主要是看IEC1850标准的第7部分，变电站和馈线高备的基本通信结构(7-1,7-2,7-3,7-4)数据建模，实际上就是将设备的点表按照IEC61850标准的规则编写的一份点表文件，该点表以XML的格式描述，后缀名为.icd，另一个名字叫智能电子设备能力描述文件 1.1 IEC61850服务以下是61850的服务与传统功能的对比列表：    服务与传统变电站功">
+  <!-- Canonical links -->
+  <link rel="canonical" href="http://mijiku.com.cn/blog/2021/01/14/IEC61850建模说明/index.html">
+  
+    <link rel="alternate" href="/atom.xml" title="privatearea" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png" type="image/x-icon">
+  
+  <link rel="stylesheet" href="/blog/css/style.css">
+  
+  
+  
+  
+    <link rel="stylesheet" href="/css//gitalk.min.css">
+  
+</head>
+
+
+<body class="main-center" itemscope itemtype="http://schema.org/WebPage">
+  <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+  <div class="slimContent">
+    <div class="navbar-header">
+      
+      
+      <div class="profile-block text-center">
+        <a id="avatar" href="https://github.com/kof98765" target="_blank">
+          <img class="img-circle img-rotate" src="/blog/images/head.jpg" width="200" height="200">
+        </a>
+        <h2 id="name" class="hidden-xs hidden-sm">陶大少</h2>
+        <h3 id="title" class="hidden-xs hidden-sm hidden-md">野火烧不尽，春风吹又生</h3>
+        <small id="location" class="text-muted hidden-xs hidden-sm"><i class="icon icon-map-marker"></i> Dongguan, China</small>
+      </div>
+      
+      <div class="search" id="search-form-wrap">
+
+    <form class="search-form sidebar-form">
+        <div class="input-group">
+            <input type="text" class="search-form-input form-control" placeholder="搜索">
+            <span class="input-group-btn">
+                <button type="submit" class="search-form-submit btn btn-flat" onclick="return false;"><i class="icon icon-search"></i></button>
+            </span>
+        </div>
+    </form>
+    <div class="ins-search">
+  <div class="ins-search-mask"></div>
+  <div class="ins-search-container">
+    <div class="ins-input-wrapper">
+      <input type="text" class="ins-search-input" placeholder="想要查找什么..." x-webkit-speech>
+      <button type="button" class="close ins-close ins-selectable" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+    </div>
+    <div class="ins-section-wrapper">
+      <div class="ins-section-container"></div>
+    </div>
+  </div>
+</div>
+
+
+</div>
+      <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#main-navbar" aria-controls="main-navbar" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <nav id="main-navbar" class="collapse navbar-collapse" itemscope itemtype="http://schema.org/SiteNavigationElement" role="navigation">
+      <ul class="nav navbar-nav main-nav ">
+        
+        
+        <li class="menu-item menu-item-home">
+          <a href="/blog/.">
+            
+            <i class="icon icon-home-fill"></i>
+            
+            <span class="menu-title">首页</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/blog/archives">
+            
+            <i class="icon icon-archives-fill"></i>
+            
+            <span class="menu-title">归档</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/blog/tags">
+            
+            <i class="icon icon-tags"></i>
+            
+            <span class="menu-title">标签</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-about">
+          <a href="/blog/about">
+            
+            <i class="icon icon-cup-fill"></i>
+            
+            <span class="menu-title">关于</span>
+          </a>
+        </li>
+        
+      </ul>
+      
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/kof98765" target="_blank" title="Github" data-toggle="tooltip" data-placement="top"><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="http://weibo.com/98765kof" target="_blank" title="Weibo" data-toggle="tooltip" data-placement="top"><i class="icon icon-weibo"></i></a></li>
+        
+        <li><a href="/blog/atom.xml" target="_blank" title="Rss" data-toggle="tooltip" data-placement="top"><i class="icon icon-rss"></i></a></li>
+        
+    </ul>
+
+    </nav>
+  </div>
+</header>
+
+  
+    <aside class="sidebar" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    
+      <div class="widget">
+    <h3 class="widget-title">公告</h3>
+    <div class="widget-body">
+        <div id="board">
+            <div class="content">
+                <p>欢迎交流与分享经验!</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+      
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget-body">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/blog/tags/61850/">61850</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/blog/tags/git/">git</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/blog/tags/linux/">linux</a><span class="tag-list-count">6</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget-body tagcloud">
+      <a href="/blog/tags/61850/" style="font-size: 13.5px;">61850</a> <a href="/blog/tags/git/" style="font-size: 13px;">git</a> <a href="/blog/tags/linux/" style="font-size: 14px;">linux</a>
+    </div>
+  </div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget-body">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/blog/archives/2021/01/">一月 2021</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/blog/archives/2020/12/">十二月 2020</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/blog/archives/2019/11/">十一月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/blog/archives/2019/05/">五月 2019</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/blog/archives/2019/04/">四月 2019</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/blog/archives/2017/03/">三月 2017</a><span class="archive-list-count">3</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget-body">
+      <ul class="recent-post-list list-unstyled no-thumbnail">
+        
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                
+              </p>
+              <p class="item-title">
+                <a href="/blog/2021/01/14/IEC61850建模说明/" class="title">IEC61850建模说明</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2021-01-14T03:12:36.209Z" itemprop="datePublished">2021-01-14</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                
+              </p>
+              <p class="item-title">
+                <a href="/blog/2021/01/14/61850服务构建流程/" class="title">61850构建流程</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2021-01-14T01:58:48.549Z" itemprop="datePublished">2021-01-14</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                
+              </p>
+              <p class="item-title">
+                <a href="/blog/2020/12/31/蓝牙profile简介/" class="title">蓝牙profile简介</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2020-12-31T08:41:11.458Z" itemprop="datePublished">2020-12-31</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                
+              </p>
+              <p class="item-title">
+                <a href="/blog/2020/12/31/蓝牙各版本之前的区别/" class="title">蓝牙各版本之间的区别</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2020-12-31T08:29:31.819Z" itemprop="datePublished">2020-12-31</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                
+              </p>
+              <p class="item-title">
+                <a href="/blog/2020/12/31/linux下蓝牙服务端和客户端编写/" class="title">linux 蓝牙服务端和客户端编写</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2020-12-31T08:24:13.593Z" itemprop="datePublished">2020-12-31</time>
+              </p>
+            </div>
+          </li>
+          
+      </ul>
+    </div>
+  </div>
+  
+
+    
+  </div>
+</aside>
+
+  
+  
+<main class="main" role="main">
+  <div class="content">
+  <article id="post-IEC61850建模说明" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
+    
+    <div class="article-header">
+      
+        
+  
+    <h1 class="article-title" itemprop="name">
+      IEC61850建模说明
+    </h1>
+  
+
+      
+      <div class="article-meta">
+        <span class="article-date">
+    <i class="icon icon-calendar-check"></i>
+	<a href="/blog/2021/01/14/IEC61850建模说明/" class="article-date">
+	  <time datetime="2021-01-14T03:12:36.209Z" itemprop="datePublished">2021-01-14</time>
+	</a>
+</span>
+        
+        
+  <span class="article-tag">
+    <i class="icon icon-tags"></i>
+	<a class="article-tag-link" href="/blog/tags/61850/">61850</a>
+  </span>
+
+
+        
+
+        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/blog/2021/01/14/IEC61850建模说明/#comments" class="article-comment-link">评论</a></span>
+        
+      </div>
+    </div>
+    <div class="article-entry marked-body" itemprop="articleBody">
+      
+        <h2 id="1-概述"><a href="#1-概述" class="headerlink" title="1.概述"></a>1.概述</h2><p>IEC61850的数据建模，主要是看IEC1850标准的第7部分，变电站和馈线高备的基本通信结构(7-1,7-2,7-3,7-4)<br>数据建模，实际上就是将设备的点表按照IEC61850标准的规则编写的一份点表文件，该点表以XML的格式描述，后缀名为.icd，另一个名字叫智能电子设备能力描述文件</p>
+<h3 id="1-1-IEC61850服务"><a href="#1-1-IEC61850服务" class="headerlink" title="1.1 IEC61850服务"></a>1.1 IEC61850服务</h3><p>以下是61850的服务与传统功能的对比列表：</p>
+<table>
+<thead>
+<tr>
+<th>服务与传统变电站功能</th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>IEC61850服务</td>
+<td>传统功能</td>
+</tr>
+<tr>
+<td>报告服务</td>
+<td>遥信、遥测</td>
+</tr>
+<tr>
+<td>控制服务</td>
+<td>遥控、遥调</td>
+</tr>
+<tr>
+<td>定值服务</td>
+<td>定值召唤、修改、切换</td>
+</tr>
+<tr>
+<td>日志服务</td>
+<td>事件服务</td>
+</tr>
+<tr>
+<td>取代服务</td>
+<td>人工置数</td>
+</tr>
+<tr>
+<td>对时服务</td>
+<td>GPS对时</td>
+</tr>
+<tr>
+<td>文件传输服务</td>
+<td>文件传输</td>
+</tr>
+<tr>
+<td>采样值传输服务</td>
+<td>模拟量采样传输</td>
+</tr>
+<tr>
+<td>GOOSE服务</td>
+<td>装置间快速信号传输</td>
+</tr>
+</tbody>
+</table>
+<h2 id="2-数据建模介绍"><a href="#2-数据建模介绍" class="headerlink" title="2.数据建模介绍"></a>2.数据建模介绍</h2><p>在建模前，应熟知61850数据模型所含的内容及其作用。详细请看61850标准的第6部分，第7-2部分。<br>每个模型都具有四个对象，依次为<br>SERVER 服务器<br>LOGICAL-DEVICE 简称LD，逻辑设备<br>LOGICAL-NODE 简称LN，逻辑结点<br>DATA 数据，逻辑结点中的数据点</p>
+<p>每个对象都有各自的名称和对象路径名,假设有一个61850服务器，SERVER为acSystem,LOGICAL-DEVICE为ac,LOGICAL-NODE为alarm,有若干数据点名为alarm1,alarm2,alarm3，<br>外部访问服务器的一个结点引用为acSystem.ac.alarm.alarm1<br>我们通常要改的就是LN部分</p>
+<h2 id="3-建模说明"><a href="#3-建模说明" class="headerlink" title="3.建模说明"></a>3.建模说明</h2><p>一般来说，不需要从零开始配置一份数据模型icd文件，直接在已有的文件修改即可，</p>
+<h3 id="3-1-icd文件介绍"><a href="#3-1-icd文件介绍" class="headerlink" title="3.1 icd文件介绍"></a>3.1 icd文件介绍</h3><p>以下是一个最简单的icd文件<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line">&lt;SCL version=&quot;2007&quot; revision=&quot;B&quot; xmlns=&quot;http://www.iec.ch/61850/2003/SCL&quot; xmlns:xsl=&quot;http://www.w3.org/2001/XMLSchema-instance&quot; xsi:schemaLocation=&quot;http://www.iec.ch/61850/2003/SCL SCL.xsd&quot;&gt;</span><br><span class="line">&lt;Header id=&quot;&quot; version=&quot;&quot; revision=&quot;&quot; toolID=&quot;OMICRON IEDScout&quot; nameStructure=&quot;IEDName&quot; /&gt;</span><br><span class="line">&lt;IED name=&quot;EAST01&quot;&gt;</span><br><span class="line">&lt;Services&gt;</span><br><span class="line">    &lt;AccessPoint name=&quot;P1&quot;&gt;</span><br><span class="line">    &lt;Server&gt;</span><br><span class="line">    &lt;Authentication none=&quot;true&quot;/&gt;</span><br><span class="line">        &lt;LDevice inst=&quot;DEV1&quot;&gt;</span><br><span class="line">            &lt;LN0 lnType=&quot;EAST01DEV1.LLN0&quot; lnClass=&quot;LLN0&quot; inst=&quot;&quot;&gt;</span><br><span class="line">                &lt;DOI name=&quot;Mod&quot;&gt;</span><br><span class="line">                    &lt;DAI name=&quot;ctlModel&quot; &gt;</span><br><span class="line">                        &lt;Val&gt;status-only&lt;/Val&gt;</span><br><span class="line">                    &lt;/DAI&gt;</span><br><span class="line">                &lt;/DOI&gt;</span><br><span class="line">            &lt;/LN0&gt;</span><br><span class="line">        &lt;/LDevice&gt;</span><br><span class="line">    &lt;/Server&gt;</span><br><span class="line">    &lt;/AccessPoint&gt;</span><br><span class="line">&lt;/Services&gt;</span><br><span class="line">&lt;/IED&gt;</span><br><span class="line">&lt;DataTypeTemplates&gt;</span><br><span class="line">    &lt;LNodeType id=&quot;EAST01DEV1.LLN0&quot; lnClass=&quot;LLN0&quot;&gt;</span><br><span class="line">        &lt;DO name=&quot;Mod&quot; type=&quot;EAST01DEV1.LLN0.Mod&quot;/&gt;</span><br><span class="line">        &lt;DO name=&quot;ctlModel&quot; type=&quot;EAST01DEV1.LLN0.ctlModel&quot;&gt;</span><br><span class="line">    &lt;/LNodeType&gt;</span><br><span class="line">    &lt;DOType id=&quot;EAST01DEV1.LLN0.Mod&quot; cdc=&quot;INC&quot;&gt;</span><br><span class="line">        &lt;DA name=&quot;stVal&quot; fc=&quot;ST&quot; bType=&quot;Enum&quot; type=&quot;Mod&quot;&gt;</span><br><span class="line">    &lt;/DOType&gt;</span><br><span class="line">    &lt;EnumType id=&quot;Mod&quot;&gt;</span><br><span class="line">        &lt;EnumVal ord=&quot;1&quot;&gt;on&lt;/EnumVal&gt;</span><br><span class="line">        &lt;EnumVal ord=&quot;2&quot;&gt;blocked&lt;/EnumVal&gt;</span><br><span class="line">        &lt;EnumVal ord=&quot;3&quot;&gt;test&lt;/EnumVal&gt;</span><br><span class="line">        &lt;EnumVal ord=&quot;4&quot;&gt;test/blocked&lt;/EnumVal&gt;</span><br><span class="line">        &lt;EnumVal ord=&quot;5&quot;&gt;off&lt;/EnumVal&gt;</span><br><span class="line">    &lt;/EnumType&gt;</span><br><span class="line">      &lt;EnumType id=&quot;ctlModel&quot;&gt;</span><br><span class="line">        &lt;EnumVal ord=&quot;0&quot;&gt;status-only&lt;/EnumVal&gt;</span><br><span class="line">        &lt;EnumVal ord=&quot;1&quot;&gt;direct-with-normal-security&lt;/EnumVal&gt;</span><br><span class="line">        &lt;EnumVal ord=&quot;2&quot;&gt;sbo-with-normal-security&lt;/EnumVal&gt;</span><br><span class="line">        &lt;EnumVal ord=&quot;3&quot;&gt;direct-with-enhanced-security&lt;/EnumVal&gt;</span><br><span class="line">        &lt;EnumVal ord=&quot;4&quot;&gt;sbo-with-enhanced-secrity&lt;/EnumVal&gt;</span><br><span class="line">    &lt;/EnumType&gt;</span><br><span class="line">&lt;/DataTypeTemplates&gt;</span><br><span class="line">&lt;/SCL&gt;</span><br></pre></td></tr></table></figure></p>
+<p>从内容可以看出，包含两大块，IED和DataTypeTemplates,DataTypeTemplates为数据类型的模板，定义该设备拥有什么数据变量，变量的类型，单位等信息，IED为设备的对象实例，定义了数据的初始值，系数，单位，寄存器地址等信息</p>
+<p>以上文件在LNodeType字段定义了一个数据stVal,类型是EAST01DEV1.LLN0.Mod,在DOType字段中有该类型的具体定义，其中cdc(公用数据类)为INC,即可控的整数状态，而INC又定义了它必选的和可选的属懂（IEC6850标准的7-3部分的7.5.4章节有说明）</p>
+<h3 id="3-2-InClass-逻辑节点类"><a href="#3-2-InClass-逻辑节点类" class="headerlink" title="3.2 InClass 逻辑节点类"></a>3.2 InClass 逻辑节点类</h3><table>
+<thead>
+<tr>
+<th>表1 逻辑节点组表</th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>逻辑节点组指示符</td>
+<td>节点标识</td>
+</tr>
+<tr>
+<td>A</td>
+<td>自动控制</td>
+</tr>
+<tr>
+<td>C</td>
+<td>监控</td>
+</tr>
+<tr>
+<td>G</td>
+<td>通用功能引用</td>
+</tr>
+<tr>
+<td>I</td>
+<td>接口和存档</td>
+</tr>
+<tr>
+<td>L</td>
+<td>系统逻辑节点</td>
+</tr>
+<tr>
+<td>M</td>
+<td>计量和测量</td>
+</tr>
+<tr>
+<td>P</td>
+<td>保护功能</td>
+</tr>
+<tr>
+<td>R</td>
+<td>保护相关功能</td>
+</tr>
+<tr>
+<td>S</td>
+<td>传感器，监视</td>
+</tr>
+<tr>
+<td>T</td>
+<td>仪用互感器</td>
+</tr>
+<tr>
+<td>X</td>
+<td>开关设备</td>
+</tr>
+<tr>
+<td>Y</td>
+<td>电力变压器和相关功能</td>
+</tr>
+<tr>
+<td>Z</td>
+<td>其它(电力系统)设备</td>
+</tr>
+</tbody>
+</table>
+<p>一般我们接触到的类有:<br>LPHD(物理装置信息，IEC61850-7-4部分的5.3.2章节)<br>LLN0(逻辑节点零，IEC61850-7-4部分的5.3.4章节)<br>GGIO(通用过程I/O，IEC61850-7-44部分的5.7.2章节)<br>MMXN(测量，IEC61850-7-4部分的5.10.7章节)</p>
+<h3 id="3-3-cdc公用数据类"><a href="#3-3-cdc公用数据类" class="headerlink" title="3.3 cdc公用数据类"></a>3.3 cdc公用数据类</h3><p>一般可以根据遥信，遥控，遥测，遥调四个功能来选择需要的cdc<br>遥信=SPS(单点状态信息,IEC61850-7-3部分的7.3.2章节)<br>遥控=SPC(可控的单点,IEC61850-7-3部分的7.5.2章节)<br>遥测=MV(测量值，IEC61850-7-3部分的7.4.2章节)<br>遥调=APC(可控模拟设点信息,IEC61850-7-3部分的7.6.2章节)<br>其中，遥测和遥调的值可以是浮点或者整型，若选择整型，则应该增加数据属性sVC,即增加系数和偏移量<br>以下是添加浮点型的示例<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&lt;DOType id=&quot;EAST01DEV1.MMXN1.Mea1&quot; cdc=&quot;MV&quot;&gt;</span><br><span class="line">    &lt;DA name=&quot;mag&quot; fc=&quot;MX&quot; bType=&quot;Struct&quot; type=&quot;EAST01DEV1.MMXN.Mea1.mag&quot;&gt;</span><br><span class="line">&lt;/DOType&gt;</span><br><span class="line">&lt;DAType id=&quot;EAST01DEV1.MMXN1.Mea1.mag&quot;&gt;</span><br><span class="line">    &lt;BDA name=&quot;f&quot; bType=&quot;FLOAT32&quot;/&gt;</span><br><span class="line">&lt;/DAType&gt;</span><br></pre></td></tr></table></figure></p>
+<p>以下是添加整型的示例<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&lt;DOType id=&quot;EAST01DEV1.MMXN1.Mea1&quot; cdc=&quot;MV&quot;&gt;</span><br><span class="line">    &lt;DA name=&quot;sVC&quot; fc=&quot;MX&quot; bType=&quot;Struct&quot; type=&quot;ScaledValueConfig_1&quot;&gt;</span><br><span class="line">&lt;/DOType&gt;</span><br><span class="line">&lt;DAType id=&quot;ScaledValueConfig_1&quot;&gt;</span><br><span class="line">    &lt;BDA name=&quot;scaleFactor&quot; bType=&quot;FLOAT32&quot;/&gt;</span><br><span class="line">    &lt;BDA name=&quot;offset&quot; bType=&quot;FLOAT32&quot;/&gt;</span><br><span class="line">&lt;/DAType&gt;</span><br></pre></td></tr></table></figure></p>
+<h3 id="3-4-配置数据对象"><a href="#3-4-配置数据对象" class="headerlink" title="3.4 配置数据对象"></a>3.4 配置数据对象</h3><p>配置数据对象需要在DataTypeTemplates的LNodeType字段中添加DO结点，<br>DO有很多种类型，一般我们按遥信，遥控，遥测，遥测四种类型配置即可，<br>DO有三个属性，分别为name,type,desc<br>name是固定的，一般字符串就行，尽量和要表达的属性命令匹配，容易维护<br>type需要根据当前数据来定，按3.3的说明即可，详情可以看IEC61850-7-3部分的8章节<br>desc为数据的描述<br>fc为功能约束，常用的是ST(状态)，MX(测量),CO(控制),DC(描述),CF(配置)，具体可以查看IEC61850-7-3部分的附录B</p>
+<h3 id="3-5-配置数据对象实例"><a href="#3-5-配置数据对象实例" class="headerlink" title="3.5 配置数据对象实例"></a>3.5 配置数据对象实例</h3><p>配置对象实例就是将上一节所定的数据都初始化一遍，包括寄存器映射地址，变量名，单位，系数等，具体看第一节的示例</p>
+<h3 id="3-6-配置报告"><a href="#3-6-配置报告" class="headerlink" title="3.6 配置报告"></a>3.6 配置报告</h3><p>配置报告分为两个步骤，分别是配置数据集和配置报告控制块，而且都是在LN0节点中配置</p>
+<p>我们可以将数据分为遥信，遥控，遥测，遥调四个数据集，分别上报，下面配置遥信量作为数据集的例子，格式如下<br> <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;LN0 lnType=&quot;EASTDEV01DEV1.LLN0&quot; lnClass=&quot;LLN0&quot; inst=&quot;&quot;&gt;</span><br><span class="line">   &lt;DataSet name=&quot;ds01Digit&quot;&gt;</span><br><span class="line">       &lt;FCDA ldInst=&quot;DEV1&quot; prefix=&quot;&quot; lnClass=&quot;GGIO&quot; lnInst=&quot;1&quot; doName=&quot;Ind1&quot; fc=&quot;ST&quot;&gt;</span><br><span class="line">   &lt;/DataSet&gt;</span><br><span class="line">&lt;/LN0&gt;</span><br></pre></td></tr></table></figure></p>
+<p> 注意，控制集里面的数据对象一定是在DataTypeTemplates的LNodeType字段中找得到的</p>
+<p>配置报告控制块用于指定所需报告的数据集，一般来说，有多少数据集就有多少个报告控制块，以下是是控制块的例子<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;ReportControl name=&quot;urcbDigit1&quot; rptID=&quot;DEV1/LLN0$RP$urcbDigit1&quot; buffered=&quot;false&quot; bufTime=&quot;0&quot; datSet=&quot;ds01Digit&quot; intgPd=&quot;20000&quot; confRev=&quot;1&quot;&gt;</span><br><span class="line">&lt;trgOps dchg=&quot;true&quot; qchg=&quot;true&quot; dupd=&quot;false&quot; period=&quot;true&quot; gi=&quot;true&quot; /&gt;</span><br><span class="line">&lt;OptFileds seqNum=&quot;false&quot; timeStamp=&quot;true&quot; dataSet=&quot;true&quot; reasonCode=&quot;true&quot; dataRef=&quot;false&quot; entryID=&quot;false&quot; configRef=&quot;false&quot; /&gt;</span><br><span class="line">&lt;RtlEnabled max=&quot;4&quot; /&gt;</span><br><span class="line">&lt;/ReportControl&gt;</span><br></pre></td></tr></table></figure></p>
+<p>一般只要修改datset和RptEnabled的max值即可<br>datset指定上送的数据集名称，max值指定最多有多少个客户端能接收该报告</p>
+<h2 id="4-生成和检验模型"><a href="#4-生成和检验模型" class="headerlink" title="4.生成和检验模型"></a>4.生成和检验模型</h2><h3 id="4-1-生成model-cfg文件"><a href="#4-1-生成model-cfg文件" class="headerlink" title="4.1 生成model.cfg文件"></a>4.1 生成model.cfg文件</h3><p>使用iec61850库时，需要将icd文件转为其规定的cfg文件，转换工具在libiec61850库的tools/model_generator里，使用命令<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">java -jar genconfig.jar xxx.icd &gt;model.cfg</span><br></pre></td></tr></table></figure></p>
+<p>注意需要在/tools/model_generator目录下，且安装好了java运行环境</p>
+<p>如果生成文件时出现Warning….信息，则说明icd文件有错误，需要修正</p>
+<p>关于libiec61850的使用，查看另一篇文件章<a href="blog/2021/01/14/61850服务构建流程/">61850服务构建流程</a></p>
+
+      
+    </div>
+    <div class="article-footer">
+      <blockquote class="mt-2x">
+  <ul class="post-copyright list-unstyled">
+    
+    <li class="post-copyright-link hidden-xs">
+      <strong>本文链接：</strong>
+      <a href="http://mijiku.com.cn/blog/2021/01/14/IEC61850建模说明/" title="IEC61850建模说明" target="_blank" rel="external">http://mijiku.com.cn/blog/2021/01/14/IEC61850建模说明/</a>
+    </li>
+    
+    <li class="post-copyright-license">
+      <strong>版权声明： </strong> 本博客所有文章除特别声明外，均采用 <a href="http://creativecommons.org/licenses/by/4.0/deed.zh" target="_blank" rel="external">CC BY 4.0 CN协议</a> 许可协议。转载请注明出处！
+    </li>
+  </ul>
+</blockquote>
+
+
+<div class="panel panel-default panel-badger">
+  <div class="panel-body">
+    <figure class="media">
+      <div class="media-left">
+        <a href="https://github.com/kof98765" target="_blank" class="img-burn thumb-sm visible-lg">
+          <img src="/blog/images/head.jpg" class="img-rounded w-full" alt>
+        </a>
+      </div>
+      <div class="media-body">
+        <h3 class="media-heading"><a href="https://github.com/kof98765" target="_blank"><span class="text-dark">陶大少</span><small class="ml-1x">野火烧不尽，春风吹又生</small></a></h3>
+        <div>塞尔达传说</div>
+      </div>
+    </figure>
+  </div>
+</div>
+
+
+    </div>
+  </article>
+  
+    
+  <section id="comments">
+  	
+           
+    
+  </section>
+
+
+  
+</div>
+
+  <nav class="bar bar-footer clearfix" data-stick-bottom>
+  <div class="bar-inner">
+  
+  <ul class="pager pull-left">
+    
+    
+    <li class="next">
+      <a href="/blog/2021/01/14/61850服务构建流程/" title="61850构建流程"><span>下一篇&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
+    </li>
+    
+    
+  </ul>
+  
+  
+  
+  <div class="bar-right">
+    
+    <div class="share-component" data-sites="weibo,qq,wechat" data-mobile-sites="weibo,qq,qzone"></div>
+    
+  </div>
+  </div>
+</nav>
+  
+
+
+</main>
+
+  <footer class="footer" itemscope itemtype="http://schema.org/WPFooter">
+	
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/kof98765" target="_blank" title="Github" data-toggle="tooltip" data-placement="top"><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="http://weibo.com/98765kof" target="_blank" title="Weibo" data-toggle="tooltip" data-placement="top"><i class="icon icon-weibo"></i></a></li>
+        
+        <li><a href="/blog/atom.xml" target="_blank" title="Rss" data-toggle="tooltip" data-placement="top"><i class="icon icon-rss"></i></a></li>
+        
+    </ul>
+
+    <div class="copyright">
+    	
+        <div class="publishby">
+        	Theme by <a href="https://github.com/cofess" target="_blank"> cofess </a>base on <a href="https://github.com/cofess/hexo-theme-pure" target="_blank">pure</a>.
+        </div>
+    </div>
+</footer>
+  <script src="/js/jquery.min.js"></script>
+<script>
+window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
+</script>
+<script src="/blog/js/plugin.min.js"></script>
+<script src="/blog/js/application.js"></script>
+
+    <script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/blog/',
+        CONTENT_URL: '/blog/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/blog/js/insight.js"></script>
+
+
+
+
+
+   
+
+
+
+
+   
+    
+  <!-- <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css"> -->
+  <script src="/js/gitalk.min.js"></script>
+  <script src="/js/md5.min.js"></script>
+  <script type="text/javascript">
+  var gitalk = new Gitalk({
+    clientID: '18d1dbf08be917781fd0',
+    clientSecret: 'f87d036360e8a7c25e6810211f149b4b8955b8f3',
+    repo: 'blog_by_talk',
+    owner: 'kof98765',
+    admin: ['kof98765'],
+    id: md5(location.pathname),
+    distractionFreeMode: true
+  })
+  gitalk.render('comments')
+  </script>
+
+      
+
+
+
+
+
+
+
+
+</body>
+</html>
