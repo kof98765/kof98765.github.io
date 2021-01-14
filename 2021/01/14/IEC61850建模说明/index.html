@@ -26,7 +26,7 @@
 <meta property="og:site_name" content="privatearea">
 <meta property="og:description" content="1.概述IEC61850的数据建模，主要是看IEC1850标准的第7部分，变电站和馈线高备的基本通信结构(7-1,7-2,7-3,7-4)数据建模，实际上就是将设备的点表按照IEC61850标准的规则编写的一份点表文件，该点表以XML的格式描述，后缀名为.icd，另一个名字叫智能电子设备能力描述文件 1.1 IEC61850服务以下是61850的服务与传统功能的对比列表：    服务与传统变电站功">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2021-01-14T09:17:13.096Z">
+<meta property="og:updated_time" content="2021-01-14T09:17:59.568Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="IEC61850建模说明">
 <meta name="twitter:description" content="1.概述IEC61850的数据建模，主要是看IEC1850标准的第7部分，变电站和馈线高备的基本通信结构(7-1,7-2,7-3,7-4)数据建模，实际上就是将设备的点表按照IEC61850标准的规则编写的一份点表文件，该点表以XML的格式描述，后缀名为.icd，另一个名字叫智能电子设备能力描述文件 1.1 IEC61850服务以下是61850的服务与传统功能的对比列表：    服务与传统变电站功">
@@ -478,7 +478,7 @@
 <p>如果生成文件时出现Warning….信息，则说明icd文件有错误，需要修正</p>
 <p>生成后的model.cfg还不能用，需要将MODEL(xxx)前面几行的内容删除掉<br>如果是在windows下生成的，需要将文件保存为utf8格式</p>
 <p>关于libiec61850的使用，查看另一篇文章<a href="/blog/2021/01/14/61850服务构建流程/">61850服务构建流程</a></p>
-<h3 id="4-2-检验模式"><a href="#4-2-检验模式" class="headerlink" title="4.2 检验模式"></a>4.2 检验模式</h3><p>通过IEDScout 软件打开建好的模型文件，将所有内容都展开看一遍，只要文件能正常打开，且内容无误的话，就表示模型可用，也可以通过打开两个IEDScout，一个作为服务端，一个作为客户端来进行验证数据</p>
+<h3 id="4-2-检验模型"><a href="#4-2-检验模型" class="headerlink" title="4.2 检验模型"></a>4.2 检验模型</h3><p>通过IEDScout 软件打开建好的模型文件，将所有内容都展开看一遍，只要文件能正常打开，且内容无误的话，就表示模型可用，也可以通过打开两个IEDScout，一个作为服务端，一个作为客户端来进行验证数据</p>
 
       
     </div>
