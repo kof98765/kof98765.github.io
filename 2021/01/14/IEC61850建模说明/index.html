@@ -26,7 +26,7 @@
 <meta property="og:site_name" content="privatearea">
 <meta property="og:description" content="1.概述IEC61850的数据建模，主要是看IEC1850标准的第7部分，变电站和馈线高备的基本通信结构(7-1,7-2,7-3,7-4)数据建模，实际上就是将设备的点表按照IEC61850标准的规则编写的一份点表文件，该点表以XML的格式描述，后缀名为.icd，另一个名字叫智能电子设备能力描述文件 1.1 IEC61850服务以下是61850的服务与传统功能的对比列表：    服务与传统变电站功">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2021-01-14T08:33:36.370Z">
+<meta property="og:updated_time" content="2021-01-14T08:42:43.542Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="IEC61850建模说明">
 <meta name="twitter:description" content="1.概述IEC61850的数据建模，主要是看IEC1850标准的第7部分，变电站和馈线高备的基本通信结构(7-1,7-2,7-3,7-4)数据建模，实际上就是将设备的点表按照IEC61850标准的规则编写的一份点表文件，该点表以XML的格式描述，后缀名为.icd，另一个名字叫智能电子设备能力描述文件 1.1 IEC61850服务以下是61850的服务与传统功能的对比列表：    服务与传统变电站功">
@@ -469,7 +469,7 @@
 <h2 id="4-生成和检验模型"><a href="#4-生成和检验模型" class="headerlink" title="4.生成和检验模型"></a>4.生成和检验模型</h2><h3 id="4-1-生成model-cfg文件"><a href="#4-1-生成model-cfg文件" class="headerlink" title="4.1 生成model.cfg文件"></a>4.1 生成model.cfg文件</h3><p>使用iec61850库时，需要将icd文件转为其规定的cfg文件，转换工具在libiec61850库的tools/model_generator里，使用命令<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">java -jar genconfig.jar xxx.icd &gt;model.cfg</span><br></pre></td></tr></table></figure></p>
 <p>注意需要在/tools/model_generator目录下，且安装好了java运行环境</p>
 <p>如果生成文件时出现Warning….信息，则说明icd文件有错误，需要修正</p>
-<p>关于libiec61850的使用，查看另一篇文件章<a href="/blog/2021/01/14/61850服务构建流程/">61850服务构建流程</a></p>
+<p>关于libiec61850的使用，查看另一篇文章<a href="/blog/2021/01/14/61850服务构建流程/">61850服务构建流程</a></p>
 
       
     </div>
